@@ -4,7 +4,7 @@ import React from 'react'
 function NavbarComponent() {
   return (
     <div className='absolute mx-[5px] top-0 navbar-0 text-[14px] flex w-full justify-between'>
-      <div className='flex leading-[40px]'>
+      <div className='flex leading-[45px]'>
         <div>
           <Image 
           width={100}
