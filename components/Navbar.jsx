@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 function NavbarComponent() {
@@ -31,9 +32,11 @@ function NavbarComponent() {
         <div className='w-[50px] mx-2'>
           <p className='leading-[40px] text-center'>Sign up</p>
         </div>
-        <button className='w-[100px] border border-white p-3 rounded-[20px]'>
-          Sign in
+        <Link href={'/login'}>
+        <button  className='w-[100px] border border-white p-3 rounded-[20px]'>
+            Sign in
         </button>
+        </Link>
       </div>
     </div>
   )

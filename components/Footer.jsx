@@ -11,7 +11,7 @@ function Footer() {
                     <p>Hiking Buddy</p>
                 </div>
             </div>
-            <div className='absolute flex text-xl right-[-950px] max-[1200px]:right-[-500px]'>
+            <div className='absolute flex text-xl max-[1300px]:right-[-400px] right-[-950px] max-[1200px]:right-[-500px]'>
                 <div className='w-full'>
                     <div className='my-2 flex justify-end text-white'>
                         <div className='mx-5 w-[150px]'>
@@ -29,7 +29,7 @@ function Footer() {
                     <button>Contact us</button>
                 </div>
             </div>
-            <div className='absolute top-[200px] flex text-xl right-[-780px] max-[1200px]:right-[-500px]'>
+            <div className='absolute top-[200px] flex text-xl max-[1300px]:right-[-400px] right-[-780px] max-[1200px]:right-[-500px]'>
                 <div className='w-full'>
                     <div className='my-2 flex justify-end text-white'>
                         <div className='mx-5 w-[150px]'>
@@ -45,7 +45,7 @@ function Footer() {
                 </div>
             </div>
         </div>
-        <div className='w-full absolute flex bottom-[120px] left-[130px] mx-[130px] max-[1200px]:w-1/2 max-[1200px]:bottom-[5px]'>
+        <div className='w-[870px] absolute flex bottom-[120px] left-[130px] mx-[130px] max-[1200px]:w-1/2 max-[1200px]:bottom-[5px]'>
             <div>
                 <Image src={'/logo.png'} width={100} height={100} />
             </div>

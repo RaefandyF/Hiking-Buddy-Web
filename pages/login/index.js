@@ -1,3 +1,4 @@
+
 export default function Login() {
   return (
     <div className="h-screen flex flex-row justify-between">
@@ -24,7 +25,8 @@ export default function Login() {
             </button>
             <p className="text-grey">
               Belum memiliki akun?{" "}
-              <a className="text-[#f09024] hover:text-[#df933b] cursor-pointer">
+              <a 
+              className="text-[#f09024] hover:text-[#df933b] cursor-pointer">
                 {" "}
                 Sign up
               </a>
