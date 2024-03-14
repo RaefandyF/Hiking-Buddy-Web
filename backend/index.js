@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const port = 8080
 const customerRouter = require('./routes/customerRoute')
+const registerRouter = require('./routes/registerRoute')
 const cors = require('cors')
 
 app.use(express.json())
@@ -14,6 +15,7 @@ app.use(
 )
 
 app.use('/customer', customerRouter)
+app.use('/customer', registerRouter)
 
 app.get('/', (req,res) =>{
     res.json({"message": "ok"})
