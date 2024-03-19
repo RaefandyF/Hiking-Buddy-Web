@@ -2,33 +2,46 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-function NavbarComponent() {
+function NavbarComponent(props) {
   return (
-    <nav className="text-[14px] flex w-full justify-between px-10 py-6">
-      <div className="hidden md:flex lg:flex leading-[45px]">
+    <nav
+      className={`text-[14px] flex w-full justify-between px-10 py-6 ${props.taildwindStyle}`}
+    >
+      <div className="hidden gap-[1.5vw] text-[1.2vw] md:flex lg:flex leading-[3.125vw] h-[3.5vw]">
         <Image width={100} height={80} src={"/logo.png"} />
-        <div className="mx-2">
-          <p>Home</p>
-        </div>
-        <div className="mx-2">
-          <p>Rute</p>
-        </div>
-        <div className="mx-2">
-          <p>Komunitas</p>
-        </div>
-        <div className="mx-2">
-          <p>Cuaca</p>
-        </div>
-        <div className="mx-2">
-          <p>Beli tiket</p>
-        </div>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Home
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Rute
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Komunitas
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Cuaca
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Beli Tiket
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Status Gunung
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
+        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Sewa Tools
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </a>
       </div>
-      <div className="w-[200px] flex">
-        <div className="w-[50px] mx-2">
-          <p className="leading-[40px] text-center">Sign up</p>
-        </div>
+      <div className="w-[13.889vw] flex items-center gap-[2vw]">
+        <button>Sign Up</button>
         <Link href={"/login"}>
-          <button className="w-[100px] border border-white p-3 rounded-[20px]">
+          <button className="w-[6.944vw] border border-white p-3 rounded-[1.389vw]">
             Sign in
           </button>
         </Link>

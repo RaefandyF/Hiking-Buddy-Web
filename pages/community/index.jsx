@@ -10,7 +10,9 @@ export default function Community() {
         style={{ backgroundImage: `url(${"/community-bg.png"})` }}
         className="px-10 flex flex-col gap-24 lg:gap-36 h-[50vw] bg-no-repeat bg-contain"
       >
-        <Navbar />
+        <Navbar 
+          taildwindStyle="text-white"
+        />
         <div className="flex flex-col gap-5 max-w-[70vw]">
           <h1 className="font-bold text-[3vw] text-white">
             Empowering a Community of Mountain Enthusiasts to Reach New Heights
