@@ -9,9 +9,11 @@ function HeaderComponent() {
     <div>
       <div>
         <div className="relative">
-          <NavbarComponent />
           <div>
             <img style={{ width: `100%` }} src="/imagepage.png" className="" />
+            <div className="w-full absolute top-0">
+              <NavbarComponent />
+            </div>
           </div>
           <FindSelf />
           <ListFeature />
