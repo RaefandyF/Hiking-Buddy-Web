@@ -31,7 +31,7 @@ function NavbarComponent(props) {
           Beli Tiket
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
         </a>
-        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
+        <a href="/status-gunung" className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Status Gunung
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
         </a>
