@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import ListProductHome from '@/components/ListProductHome'
 import NavbarComponent from '@/components/Navbar'
 import React from 'react'
@@ -5,7 +6,7 @@ import React from 'react'
 function index() {
   return (
     <div className='min-h-screen'>
-        <div className='w-full relative'>
+        <div className='relative'>
             <img src='./rent-img.png' className='w-full h-1/3' />
             <div className='absolute top-0 w-full'>
                 <NavbarComponent />
@@ -17,7 +18,7 @@ function index() {
                 </div>
             </div>
         </div>
-        <div className='w-full flex justify-between mx-[10px] my-[50px]'>
+        <div className='flex justify-between mx-[10px] my-[50px]'>
             <div className='w-1/2 text-center text-[20px] font-bold'>
                 <p>Explore the tools you need and rent them !</p>
             </div>
@@ -26,6 +27,12 @@ function index() {
             </div>
         </div>
         <ListProductHome />
+        <div className='mt-[10px] mb-[40px] flex justify-center items-center'>
+            <button className='bg-[#F09024] w-72 h-9 font-bold text-white rounded-[15px] hover:pointer hover:text-lg'>
+                view more
+            </button>
+        </div>
+        <Footer />
     </div>
   )
 }

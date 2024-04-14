@@ -92,6 +92,11 @@ export default function Community() {
           />
         </div>
       </section>
+      <div className="mt-[10px] mb-[40px] flex justify-center items-center">
+        <button className="bg-[#F09024] w-72 h-9 font-bold text-white rounded-[15px] hover:pointer hover:text-lg">
+          View More
+        </button>
+      </div>
       <Footer />
     </main>
   );

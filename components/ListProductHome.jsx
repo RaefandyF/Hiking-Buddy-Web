@@ -2,11 +2,11 @@ import React from 'react'
 
 function ListProductHome() {
   return (
-    <div className='w-screen min-h-32 flex justify-center items-center'>
+    <div className='mb-[80px] min-h-32 flex justify-center items-center'>
         <div className='w-3/4 min-h-40 flex flex-wrap'>
             {/* lakukan looping dr api */}
             {/* kotak utama */}
-            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md m-2'>
+            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md mx-[30px]'>
                 <div className='w-full'>
                     <img className='p-2' src='/product.png' />
                 </div>
@@ -31,7 +31,7 @@ function ListProductHome() {
                     </div>
                 </div>
             </div>
-            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md m-2'>
+            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md mx-[30px]'>
                 <div className='w-full'>
                     <img className='p-2' src='/product.png' />
                 </div>
@@ -56,7 +56,7 @@ function ListProductHome() {
                     </div>
                 </div>
             </div>
-            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md m-2'>
+            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md mx-[30px]'>
                 <div className='w-full'>
                     <img className='p-2' src='/product.png' />
                 </div>
@@ -81,7 +81,7 @@ function ListProductHome() {
                     </div>
                 </div>
             </div>
-            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md m-2'>
+            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md mx-[30px]'>
                 <div className='w-full'>
                     <img className='p-2' src='/product.png' />
                 </div>
@@ -106,7 +106,7 @@ function ListProductHome() {
                     </div>
                 </div>
             </div>
-            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md m-2'>
+            <div className='min-h-[300px] w-[200px] shadow-xl drop-shadow-md mx-[30px]'>
                 <div className='w-full'>
                     <img className='p-2' src='/product.png' />
                 </div>
