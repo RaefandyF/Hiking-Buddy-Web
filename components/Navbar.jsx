@@ -3,6 +3,10 @@ import Link from "next/link";
 import React from "react";
 
 function NavbarComponent(props) {
+
+  // get current user login 
+  
+
   return (
     <nav
       className={`text-white text-[14px] flex w-full justify-between px-10 py-6 ${props.taildwindStyle}`}
@@ -41,7 +45,9 @@ function NavbarComponent(props) {
         </a>
       </div>
       <div className="w-[13.889vw] flex items-center gap-[2vw]">
-        <button className="text-[18px]">Sign Up</button>
+        <Link href={'/register'}>
+          <button className="text-[18px]">Sign Up</button>
+        </Link>
         <Link href={"/login"}>
           <button className="text-[18px] w-[6.944vw] border border-white p-3 rounded-[1.389vw]">
             Sign in

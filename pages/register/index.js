@@ -1,6 +1,53 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 function RegisterPage() {
+
+  const [fullname, setFullname] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [dob, setDob] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [msgServer, setMsgServer] = useState('')
+
+  const navigate = useRouter()
+
+  // register new user 
+  const registerNewUser = async () => {
+
+    // generate user id 
+    const num1 = Math.floor(Math.random()*(9) + 1)
+    const num2 = Math.floor(Math.random()*(9) + 1)
+    const num3 = Math.floor(Math.random()*(9) + 1)
+    const num4 = Math.floor(Math.random()*(9) + 1)
+    const num5 = Math.floor(Math.random()*(9) + 1)
+
+    const id = "US"+num1.toString()+num2.toString()+num3.toString()+num4.toString()+num5.toString()
+
+    console.log(id)
+    axios.post(`http://localhost:8080/customer/register`, {
+      Userid: id, 
+      Userfullname: fullname, 
+      Useremail: email, 
+      Userpassword: password, 
+      Userconfirmpassword: confirmPassword, 
+      UserDOB: dob, 
+      Userrole: 'Customer'
+    })
+    .then((res)=>{
+      console.log(res.data)
+      setMsgServer(res.data.message)
+
+      if(res.data.message == "register successfully !"){
+        navigate.push('/login')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   return (
     <div className="h-screen w-full flex flex-row">
       <img
@@ -21,13 +68,17 @@ function RegisterPage() {
           </div>
           <div className="my-5">
             <input
+              value={fullname}
+              onChange={(e)=>setFullname(e.target.value)}
               type="text"
-              placeholder="Username"
+              placeholder="Full name"
               className="w-full border-2 p-3 rounded-md border-[#CDCDCD]"
             />
           </div>
           <div className="my-5">
             <input
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
               type="email"
               placeholder="Email"
               className="w-full border-2 p-3 rounded-md border-[#CDCDCD]"
@@ -35,6 +86,8 @@ function RegisterPage() {
           </div>
           <div className="my-5">
             <input
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
               type="password"
               placeholder="Password"
               className="w-full border-2 p-3 rounded-md border-[#CDCDCD]"
@@ -42,16 +95,34 @@ function RegisterPage() {
           </div>
           <div className="my-5">
             <input
+              value={confirmPassword}
+              onChange={(e)=>setConfirmPassword(e.target.value)}
               type="password"
               placeholder="Confirm Password"
               className="w-full border-2 p-3 rounded-md border-[#CDCDCD]"
             />
           </div>
+          <div>
+            <input 
+              type="date"
+              value={dob}
+              onChange={(e)=>setDob(e.target.value)}
+              className="w-full border-2 p-3 rounded-md border-[#CDCDCD]"
+            />
+          </div>
           <div className="my-5">
-            <button className="w-full rounded-lg bg-[#F09024] text-white p-3">
+            <button onClick={()=>registerNewUser()} 
+            className="w-full rounded-lg bg-[#F09024] text-white p-3">
               Masuk
             </button>
           </div>
+          {
+            msgServer.length != 0 ? 
+            <div className="text-center w-full bg-red-600 text-white rounded-lg p-3">
+              <p>{msgServer}</p>
+            </div>
+            : <></>
+          }
           <div className="my-5 w-full flex flex-row items-center justify-center">
             <img src="/rec-blur.png" className="w-5/12" />
             <p>atau</p>
