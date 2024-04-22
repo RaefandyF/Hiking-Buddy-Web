@@ -3,21 +3,21 @@ const db = require('./db')
 // create new user 
 const registerUser = async (newuser) => {
     const result = await db.query(`
-        INSERT INTO Customer VALUES
-        ('${newuser.Customerid}', '${newuser.Customername}', 
-            '${newuser.Customerpassword}', '${newuser.Customerfullname}', 
-            '${newuser.Customeremail}', '${newuser.CustomerDOB}')
+        INSERT INTO Users VALUES
+        ('${newuser.Userid}', '${newuser.Userfullname}', 
+            '${newuser.Userpassword}', 
+            '${newuser.Useremail}', '${newuser.UserDOB}', '${newuser.Userrole}')
     `)
 
     let msg = "your account cannot be register !"
-    console.log(result)
+
 
     if(result.affectedRows){
         msg = "register successfully !"
     }
 
     return {
-        msg
+        "message": msg
     }
 }
 
