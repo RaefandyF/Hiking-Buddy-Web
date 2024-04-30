@@ -1,10 +1,26 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavbarComponent from "./Navbar";
 import FindSelf from "./FindSelf";
 import ListFeature from "./ListFeature";
+import axios from "axios";
 
 function HeaderComponent() {
+
+  const [log, setLog] = useState('')
+
+  // get current login
+  const getCurrentLogin = () => {
+    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
+    .then((res)=>{
+      setLog(res.data.data[0]["Userfullname"])
+    })
+  }
+
+  useEffect(()=>{
+    getCurrentLogin()
+  }, [])
+
   return (
     <div>
       <div>
@@ -12,7 +28,7 @@ function HeaderComponent() {
           <div>
             <img style={{ width: `100%` }} src="/imagepage.png" className="" />
             <div className="w-full absolute top-0">
-              <NavbarComponent />
+              <NavbarComponent log={log}  />
             </div>
           </div>
           <FindSelf />

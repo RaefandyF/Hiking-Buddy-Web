@@ -2,8 +2,37 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Card from "@/components/Card";
 import { FaSearch } from "react-icons/fa";
+import Link from "next/link";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Community() {
+
+  const [name, setFullname] = useState('')
+  const [community, setAllCommunity] = useState([])
+
+  // get all community data 
+  const getAllCommunity = () => {
+    axios.get(`http://localhost:8080/community/get-all-community`)
+    .then((res)=>{
+      console.log(res.data.data)
+      setAllCommunity(res.data.data)
+    })
+  }
+
+  // get current login data 
+  const getCurrent = () => {
+    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem('userid')}`)
+    .then((res)=>{
+      setFullname(res.data.data[0].Userfullname)
+    })
+  }
+
+  useEffect(()=>{
+    getCurrent()
+    getAllCommunity()
+  }, [])
+
   return (
     <main className="min-h-screen">
       <section
@@ -11,6 +40,7 @@ export default function Community() {
         className="px-10 flex flex-col gap-24 lg:gap-36 h-[50vw] bg-no-repeat bg-contain"
       >
         <Navbar 
+          log={name}
           taildwindStyle="text-white"
         />
         <div className="flex flex-col gap-5 max-w-[70vw]">
@@ -22,9 +52,11 @@ export default function Community() {
             dolor sit amet
           </p>
           <span>
-            <button className="bg-primary text-white p-2 px-8 text-[2vw] rounded-xl">
-              Create Community
-            </button>
+            <Link href={'/create-community'}>
+              <button className="bg-primary text-white p-2 px-8 text-[2vw] rounded-xl">
+                Create Community
+              </button>
+            </Link>
           </span>
         </div>
       </section>
@@ -50,46 +82,17 @@ export default function Community() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-[8vw] mt-[5vw] mx-[5vw]">
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
-          <Card
-            image={"/community-post1.png"}
-            title={"Lorem ipsum dolor sit amet"}
-            buttonText={"15 New Post"}
-          />
+          {
+            community.map((data, idx)=>(
+              <Card
+              key={idx}
+              id={data.Communityid}
+              image={"/community-post1.png"}
+              title={data.CommunityName}
+              buttonText={'15 post'}
+              />
+            ))
+          }
         </div>
       </section>
       <div className="mt-[10px] mb-[40px] flex justify-center items-center">

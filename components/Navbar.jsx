@@ -1,12 +1,10 @@
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useEffect} from "react";
 
 function NavbarComponent(props) {
-
-  // get current user login 
-  
-
+  console.log(props)
   return (
     <nav
       className={`text-white text-[14px] flex w-full justify-between px-10 py-6 ${props.taildwindStyle}`}
@@ -44,16 +42,26 @@ function NavbarComponent(props) {
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
         </a>
       </div>
-      <div className="w-[13.889vw] flex items-center gap-[2vw]">
-        <Link href={'/register'}>
-          <button className="text-[18px]">Sign Up</button>
-        </Link>
-        <Link href={"/login"}>
-          <button className="text-[18px] w-[6.944vw] border border-white p-3 rounded-[1.389vw]">
-            Sign in
-          </button>
-        </Link>
-      </div>
+        {
+          props.log ? 
+          <div className="w-[13.889vw] font-bold text-[18px] flex items-center text-center gap-[2vw]">
+              <div className="w-full">
+              <p>Hello, {props.log}</p>
+              </div>
+          </div>
+          :
+        <div className="w-[13.889vw] flex items-center gap-[2vw]">
+          <Link href={'/register'}>
+            <button className="text-[18px]">Sign Up</button>
+          </Link>
+          <Link href={"/login"}>
+            <button className="text-[18px] w-[6.944vw] border border-white p-3 rounded-[1.389vw]">
+              Sign in
+            </button>
+          </Link>
+        </div>
+        }
+      
     </nav>
   );
 }

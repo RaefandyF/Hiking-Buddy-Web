@@ -1,7 +1,56 @@
 import Footer from "@/components/Footer";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { imagedb } from "@/config";
+import {ref, uploadBytesResumable} from 'firebase/storage'
 
 export default function CreateCommunity() {
+
+  const [img, setImg] = useState('')
+  const [progress, setProgress] = useState(0)
+  const [cname, setCname] = useState('')
+  const [communitydesc, setCommunitydesc] = useState('')
+
+  // add community data community 
+  const AddCommunityData = () => {
+
+    // random id community 
+    let num1 = Math.floor(Math.random()*9 + 1)
+    let num2 = Math.floor(Math.random()*9 + 1)
+    let num3 = Math.floor(Math.random()*9 + 1)
+    let num4 = Math.floor(Math.random()*9 + 1)
+
+    const comm_id = "COM"+num1.toString()+num2.toString()+num3.toString()+num4.toString()
+
+    const imgref = ref(imagedb, `images/${comm_id}`)
+    const uploadTask = uploadBytesResumable(imgref, img)
+    
+    uploadTask.on('state_changed', (snapshot)=>{
+      const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      setProgress(progress)
+    })
+
+    // add community data 
+    axios.post(`http://localhost:8080/community/add-new-community`, {
+      Communityid: comm_id, 
+      Communityname: cname, 
+      Communitydesc: communitydesc, 
+      CommunityDateRelease: new Date().toISOString().split('T')[0]
+    })
+    .then((res)=>{
+      console.log(res.data)
+    })
+
+    // add new community connect 
+    axios.post(`http://localhost:8080/community/add-new-community-connect`, {
+      Userid: sessionStorage.getItem("userid"), 
+      Communityid: comm_id
+    })
+    .then((res)=>{
+      console.log(res.data)
+    })  
+  }
+
   return (
     <main>
       <section className="flex justify-center my-[4vw]">
@@ -9,6 +58,8 @@ export default function CreateCommunity() {
           <div className="flex flex-col gap-y-[1vw]">
             <textarea
               className="w-[65vw] border-gray-200 border-2 bg-[#f7f7f7] rounded-[1vw] p-[2vw]"
+              value={cname}
+              onChange={(e)=>setCname(e.target.value)}
               rows={1}
               placeholder="Write title here..."
             />
@@ -17,16 +68,25 @@ export default function CreateCommunity() {
               placeholder="Write something inspiring..."
               className="w-[65vw] border-gray-200 border-2 bg-[#f7f7f7] rounded-[1vw] p-[2vw]"
               rows={7}
+              value={communitydesc}
+              onChange={(e)=>setCommunitydesc(e.target.value)}
             />
           </div>
           <div className="flex justify-between">
-            <input type="file" />
-            <button className="bg-[#f09024] w-[10vw] p-[1vw] rounded-[2vw] text-white font-bold hover:bg-[#f08024]">
+            <input onChange={(e)=>setImg(e.target.files[0])} type="file" />
+            <button
+            onClick={()=>{
+              AddCommunityData()
+            }}
+             className="bg-[#f09024] w-[10vw] p-[1vw] rounded-[2vw] text-white font-bold hover:bg-[#f08024]">
               Publish
             </button>
           </div>
         </div>
       </section>
+        <div>
+          <p>{progress}%</p>
+        </div>
       <Footer />
     </main>
   );

@@ -7,6 +7,10 @@ const loginRouter = require('./routes/loginRoute')
 const articleRouter = require('./routes/ArticleRoute')
 const categoryArticleRoute = require(`./routes/ArticleCategoryRoute`)
 const transactionRentRoute = require('./routes/TransactionRentRoute')
+const communityRoute = require(`./routes/CommunityRoute`)
+const tentRoute = require('./routes/TentRoute')
+const userRoute = require('./routes/UserRoute')
+
 const cors = require('cors')
 
 app.use(express.json())
@@ -21,9 +25,12 @@ app.use(
 app.use('/customer', loginRouter)
 app.use('/customer', customerRouter)
 app.use('/customer', registerRouter)
+app.use('/customer', userRoute)
 app.use('/article', articleRouter)
 app.use('/article', categoryArticleRoute)
 app.use('/transaction-rent', transactionRentRoute)
+app.use('/community', communityRoute)
+app.use('/tent', tentRoute)
 
 app.get('/', (req,res) =>{
     res.json({"message": "ok"})
