@@ -11,9 +11,12 @@ export default function Home() {
 
   // get current user login data
   const getCurrentUserLogin = () => {
-    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
+    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
     .then((res)=>{
-      setCurrLogin(res.data.data[0]["Userfullname"])
+      if(!res.data.data[0]){
+        console.log(res.data.data[0]["Userfullname"])
+        setCurrLogin(res.data.data[0]["Userfullname"])
+      }
     })
   }
 

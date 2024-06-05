@@ -1,16 +1,56 @@
 import NavbarComponent from '@/components/Navbar'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoLocationSharp } from "react-icons/io5";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { FaStar } from "react-icons/fa6";
+import axios from 'axios';
+import Footer from '@/components/Footer';
+import { useRouter } from 'next/router';
+import cookie from 'cookie'
 
 function index() {
+
+    const [currLogin, setCurrLogin] = useState('')
+    const [mountains, setMountains] = useState([])
+    const router = useRouter()
+
+    // get all mountain data 
+    const getAllMountainData = () => {
+        axios.get(`http://localhost:8080/mountain/get-all-mountain`)
+        .then((res)=>{
+            console.log(res.data.mountains[0]['MountainId'])
+            setMountains(res.data.mountains)
+        })
+    }
+
+    // get current login 
+    const getCurrentLogin = () => {
+        axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
+        .then((res)=>{
+            if(res.data.data){
+                setCurrLogin(res.data.data[0]["Userfullname"])
+            }
+        })
+    } 
+
+    // direct to page
+    const directToDetail = (id) => {
+        console.log(id)
+        sessionStorage.setItem("montainid", id);
+        router.push(`/route/${id}`)
+    }
+
+    useEffect(()=>{
+        getCurrentLogin()
+        getAllMountainData()
+    }, [])
+
   return (
     <div className='min-h-screen'>
         <div className='relative'>
             <img src='/route_image.png' className='w-full' />
             <div className='absolute top-0 w-full'>
-                <NavbarComponent />
+                <NavbarComponent log={currLogin} />
                 <div className='w-1/2 my-[30px] ml-[30px] text-[40px] text-white font-bold'>
                     <h1>Welcome to Mountain Trail: "Begin Your Journey to the Summit !</h1>
                 </div>
@@ -38,47 +78,52 @@ function index() {
         </div>
         <div className='min-h-[500px] flex flex-wrap'>
             {/* api in this */}
-            <div className='h-[320px] min-w-[250px] relative mt-[5px] mx-3'>
-                <div className='absolute w-full h-full'>
-                    <img src='/route_card_image.png' className='w-full h-full' />
-                    <div className='w-[200px] flex justify-between absolute top-3 m-3 mx-5'>
-                        <div className='text-white text-center rounded-lg w-[80px] backdrop-blur-sm bg-white/30'>
-                            <p>Lombok</p>
-                        </div>
-                        <div>
-                            <img src='/save_icon.png' />
-                        </div>
-                    </div>
-                    <div className='absolute rounded-[20px] py-2 bg-black bg-opacity-50 translate-x-[10px] text-center text-white bottom-[40px]'>
-                        <div className='w-[230px] h-[100px]'>
-                            <div className='font-bold'>
-                                <p>Gunung Rinjani</p>
-                            </div>
-                            <div className='flex justify-left items-center mx-3'>
-                                <IoLocationSharp />
-                                <div className='mx-1'>
-                                    <p>Jarak 5,5km</p>
+            {
+                mountains.map((mo, idx)=>(
+                    <div onClick={()=>directToDetail(mo.MountainId)} key={idx} className='cursor-pointer h-[320px] min-w-[250px] relative mt-[5px] mx-3'>
+                        <div className='absolute w-full h-full'>
+                            <img src='/route_card_image.png' className='w-full h-full' />
+                            <div className='w-[200px] flex justify-between absolute top-3 m-3 mx-5'>
+                                <div className='text-white text-center rounded-lg min-w-[80px] backdrop-blur-sm bg-white/30'>
+                                    <p>{mo.City}</p>
+                                </div>
+                                <div>
+                                    <img src='/save_icon.png' />
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center mx-3'>
-                                <div className='flex items-center'>
-                                    <MdAccessTimeFilled />
-                                    <div className='mx-1'>
-                                        <p>4 jam</p>
+                            <div className='absolute rounded-[20px] py-2 bg-black bg-opacity-50 translate-x-[10px] text-center text-white bottom-[40px]'>
+                                <div className='w-[230px] h-[100px]'>
+                                    <div className='font-bold'>
+                                        <p>{mo.MountainName}</p>
+                                    </div>
+                                    <div className='flex justify-left items-center mx-3'>
+                                        <IoLocationSharp />
+                                        <div className='mx-1'>
+                                            <p>{`Jarak ${mo.JarakPuncak}`}</p>
+                                        </div>
+                                    </div>
+                                    <div className='flex justify-between items-center mx-3'>
+                                        <div className='flex items-center'>
+                                            <MdAccessTimeFilled />
+                                            <div className='mx-1'>
+                                                <p>{`${mo.WaktuTempuh} jam`}</p>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <FaStar color='#FFC94A' className='mx-2' />
+                                            <div className=''>
+                                                <p>4.9</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='flex items-center'>
-                                    <FaStar color='#FFC94A' className='mx-2' />
-                                    <div className=''>
-                                        <p>4.9</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                ))
+            }
         </div>
+        <Footer />
     </div>
   )
 }

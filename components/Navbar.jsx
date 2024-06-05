@@ -13,34 +13,34 @@ function NavbarComponent(props) {
         <Link href={'/'}>
           <Image width={100} height={80} src={"/logo.png"} />
         </Link>
-        <a href="/" className="group cursor-pointer hover:font-bold flex flex-col items-center">
+        <Link href={'/'} className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Home
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
-        <a href="/route" className="group cursor-pointer hover:font-bold flex flex-col items-center">
+        </Link>
+        <Link href={'/route'} className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Rute
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
-        <a href="/community" className="group cursor-pointer hover:font-bold flex flex-col items-center">
+        </Link>
+        <Link href={'/community'} className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Komunitas
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
-        <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
-          Cuaca
+        </Link>
+        <Link href={'/article'} className="group cursor-pointer hover:font-bold flex flex-col items-center">
+          Artikel
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
+        </Link>
         <a className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Beli Tiket
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
         </a>
-        <a href="/status-gunung" className="group cursor-pointer hover:font-bold flex flex-col items-center">
-          Status Gunung
-          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
-        <a href="/rent-tools" className="group cursor-pointer hover:font-bold flex flex-col items-center">
+        <Link href={"/rent-tools"} className="group cursor-pointer hover:font-bold flex flex-col items-center">
           Sewa Tools
           <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
-        </a>
+        </Link>
+        <Link href={'/medical'} className='group cursor-pointer hover:font-bold flex flex-col items-center'>
+          Medical fast 
+          <div className="hidden group-hover:block transition-transform w-full h-[0.4vw] bg-gradient-to-r from-primary to-[#beb7ae] rounded-lg"></div>
+        </Link>
       </div>
         {
           props.log ? 

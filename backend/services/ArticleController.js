@@ -21,7 +21,7 @@ const addNewArticle = async (data) => {
 
 // add Article author 
 const addArticleAuthor = async (data) => {
-    const result = db.query(`
+    const result = await db.query(`
         INSERT INTO ArticleAuthor VALUES ('${data.Articleid}', '${data.Userid}')
     `)
 
@@ -39,8 +39,44 @@ const addArticleAuthor = async (data) => {
 }
 
 // get top article data 
+const GetTopArticle = async () => {
+    const articles = await db.query(`
+    SELECT * 
+    FROM Article ar 
+    JOIN ArticleAuthor aa 
+    ON ar.Articleid = aa.Articleid
+    JOIN Users us 
+    ON us.Userid = aa.Userid
+    LIMIT 6
+    `)
+
+    return {
+        "status": "success", 
+        "article": articles
+    }
+}
+
+// get detail article id 
+const getDetailArticle = async (id) => {
+    const articleDet = await db.query(`
+    SELECT * 
+    FROM Article ar 
+    JOIN ArticleAuthor aa 
+    ON ar.Articleid = aa.Articleid
+    JOIN Users us 
+    ON us.Userid = aa.Userid
+    WHERE ar.Articleid = '${id}'
+    `)
+
+    return {
+        "status": "success", 
+        "article": articleDet
+    }
+}
 
 module.exports = {
     addNewArticle, 
-    addArticleAuthor
+    addArticleAuthor,
+    GetTopArticle, 
+    getDetailArticle
 }

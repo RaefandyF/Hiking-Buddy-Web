@@ -11,10 +11,13 @@ function HeaderComponent() {
 
   // get current login
   const getCurrentLogin = () => {
-    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
-    .then((res)=>{
-      setLog(res.data.data[0]["Userfullname"])
-    })
+    // console.log(sessionStorage.getItem("userid") == null)
+      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
+      .then((res)=>{
+        if(!res.data.data[0]){
+          setLog(res.data.data[0]["Userfullname"])
+        }
+      })
   }
 
   useEffect(()=>{
