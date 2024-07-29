@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect} from "react";
 
 function NavbarComponent(props) {
-  console.log(props)
   return (
     <nav
       className={`text-white text-[14px] flex w-full justify-between px-10 py-6 ${props.taildwindStyle}`}

@@ -1,15 +1,33 @@
 import Footer from '@/components/Footer'
 import ListProductHome from '@/components/ListProductHome'
 import NavbarComponent from '@/components/Navbar'
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 
 function index() {
+
+    const [loggedIn, setLoggedIn] = useState('')
+
+    // get current login 
+    const getCurrentLogin = () => {
+        axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
+        .then((res)=>{
+            if(res.data.data){
+                setLoggedIn(res.data.data[0]['Userfullname'])
+            }
+        })
+    }
+
+    useEffect(()=>{
+        getCurrentLogin()
+    }, [loggedIn])
+
   return (
     <div className='min-h-screen'>
         <div className='relative'>
-            <img src='./rent-img.png' className='w-full h-1/3' />
+            <img src='/rent-img.png' className='w-full h-1/3' />
             <div className='absolute top-0 w-full'>
-                <NavbarComponent />
+                <NavbarComponent log={loggedIn} />
                 <div className='w-4/6 mx-[20px] text-white text-[50px] font-bold '>
                     <h3>Peak Provisions: Rent Top-Quality Gear for Your Ultimate Mountain Adventures</h3>
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Modal({isOpen, onClose, children}) {
+function Modal({onClose, products}) {
 
     if(!isOpen) return null 
 

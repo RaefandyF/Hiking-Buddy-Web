@@ -145,6 +145,21 @@ function RouteDetail() {
               }}
               className="mx-8 bg-[#F09024] p-3 rounded">Start Route</button>
             </div>
+            <div className="absolute bottom-[-50vh] w-full flex items-center justify-center text-white">
+              <button 
+              onClick={()=>{
+                router.push({
+                  pathname: `/nearest-business/${mo.MountainName}`, 
+                  query: {
+                    MountainName: mo.MountainName, 
+                    MountainId: mo.MountainId
+                  }
+                })
+              }}
+              className="mx-8 bg-[#96C9F4] p-3 rounded">
+                Bisnis Terdekat
+              </button>
+            </div>
           </div>
         ))}
       </div>

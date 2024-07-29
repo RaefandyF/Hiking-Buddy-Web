@@ -6,15 +6,16 @@ import ListFeature from "./ListFeature";
 import axios from "axios";
 
 function HeaderComponent() {
-
   const [log, setLog] = useState('')
 
   // get current login
   const getCurrentLogin = () => {
     // console.log(sessionStorage.getItem("userid") == null)
-      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
+    console.log(sessionStorage.getItem("userid"))
+      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
       .then((res)=>{
-        if(!res.data.data[0]){
+        if(res.data.data[0]){
+          console.log(res.data.data[0]["Userfullname"])
           setLog(res.data.data[0]["Userfullname"])
         }
       })
