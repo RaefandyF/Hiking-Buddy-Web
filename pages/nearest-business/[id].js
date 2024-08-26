@@ -78,17 +78,14 @@ function NearestBusinessData() {
                             <button
                             onClick={()=>{
                                 setIsModalClick(true)
+                                router.push({
+                                    pathname:`/nearest-business-dagang/${bu.BusinessUnitId}`, 
+                                    query: {businessunitid: bu.BusinessUnitId}})
                             }}
                             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
                                 Lihat dagang
                             </button>
                         </div>
-
-                        {
-                            isModalClick && (
-                                <Modal />
-                            )
-                        }
                     </div>
                    </div> 
                 ))

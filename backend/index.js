@@ -16,6 +16,7 @@ const mountainRoute = require('./routes/mountainRoute')
 const cookiesRoute = require('./routes/CookiesRoute')
 const businessUnitRoute = require('./routes/BusinessUnitRoute')
 const businessUnitProductRoute = require('./routes/BusinessUnitProductRoute')
+const cartRoute = require('./routes/CartRoute')
 
 const cors = require('cors')
 
@@ -42,6 +43,7 @@ app.use('/tent', tentRoute)
 app.use('/mountain', mountainRoute)
 app.use('/cookies', cookiesRoute)
 app.use('/business-unit', businessUnitRoute)
+app.use('/cart', cartRoute)
 
 app.get('/', (req,res) =>{
     res.json({"message": "ok"})
