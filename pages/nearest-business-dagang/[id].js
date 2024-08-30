@@ -25,6 +25,7 @@ function NearestBusinessDagang() {
   const getProductUmkm = () => {
     axios.get(`http://localhost:8080/umkm-product/get-product-umkm/${router.query.businessunitid}`)
     .then((res)=>{
+      console.log(res.data.data)
       setDatas(res.data.data)
     })
   }
@@ -47,6 +48,7 @@ function NearestBusinessDagang() {
           getDatas.map((gd, idx)=>(
            <Card
             image={'/risol.jpeg'}
+            BusinessUnitProductId = {gd.BusinessUnitProductId}
             businessunitid = {router.query.businessunitid}
             businessunitproductprice={gd.BusinessUnitProductPrice}
             title={gd.BusinessUnitProductName}

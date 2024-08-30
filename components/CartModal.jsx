@@ -1,6 +1,23 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import CardHorizontal from './CardHorizontal';
 
-function MyModal({isOpen, onClose}) {
+function MyModal({isOpen, onClose}) {``
+
+  const [cartDatas, setCartDatas] = useState([])
+
+  // get cart data 
+  const getCartDatas = () => {
+    axios.get("http://localhost:8080/cart/get-business-products-cart")
+    .then((res)=>{
+      setCartDatas(res.data.data)
+      console.log(cartDatas)
+    })
+  }
+
+  useEffect(()=>{
+    getCartDatas()
+  }, [])
 
   return (
     <>
@@ -15,8 +32,19 @@ function MyModal({isOpen, onClose}) {
                     x
                 </button>
             </div>
-            <div>
-
+            <div className='my-3 h-3/4'>
+              {
+                cartDatas.map((ca, idx)=>(
+                  <CardHorizontal
+                    businessunitproductname={ca.businessunitproductname}
+                    businessunitproductprice={ca.businessunitproductprice}
+                    quantity={ca.quantity}
+                  />
+                ))
+              }
+            </div>
+            <div className='w-full flex justify-center'>
+              <button className='w-3/4 rounded p-2 text-white font-bold bg-teal-700'>Buy</button>
             </div>
           </div>
         </div>
