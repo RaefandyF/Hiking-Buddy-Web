@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 29 Agu 2024 pada 04.30
--- Versi server: 10.4.21-MariaDB
--- Versi PHP: 7.4.29
+-- Host: 127.0.0.1
+-- Generation Time: Aug 31, 2024 at 09:37 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,63 +18,63 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `HikingBuddy`
+-- Database: `hikingbuddy`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Article`
+-- Table structure for table `article`
 --
 
-CREATE TABLE `Article` (
+CREATE TABLE `article` (
   `Articleid` char(7) NOT NULL,
   `Articletext` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `Articlebrief` varchar(255) DEFAULT NULL,
   `Articletitle` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Article`
+-- Dumping data for table `article`
 --
 
-INSERT INTO `Article` (`Articleid`, `Articletext`, `Articlebrief`, `Articletitle`) VALUES
+INSERT INTO `article` (`Articleid`, `Articletext`, `Articlebrief`, `Articletitle`) VALUES
 ('AR99999', 'lorem lorem lorem', 'this is budi article', 'Budi artctic');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ArticleAuthor`
+-- Table structure for table `articleauthor`
 --
 
-CREATE TABLE `ArticleAuthor` (
+CREATE TABLE `articleauthor` (
   `Articleid` char(7) DEFAULT NULL,
   `Userid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `ArticleAuthor`
+-- Dumping data for table `articleauthor`
 --
 
-INSERT INTO `ArticleAuthor` (`Articleid`, `Userid`) VALUES
+INSERT INTO `articleauthor` (`Articleid`, `Userid`) VALUES
 ('AR99999', 'US99999');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ArticleCategory`
+-- Table structure for table `articlecategory`
 --
 
-CREATE TABLE `ArticleCategory` (
+CREATE TABLE `articlecategory` (
   `Categoryid` char(7) NOT NULL,
   `Categoryname` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `ArticleCategory`
+-- Dumping data for table `articlecategory`
 --
 
-INSERT INTO `ArticleCategory` (`Categoryid`, `Categoryname`) VALUES
+INSERT INTO `articlecategory` (`Categoryid`, `Categoryname`) VALUES
 ('CT99997', 'Tourist Attraction'),
 ('CT99998', 'Review'),
 ('CT99999', 'Experience');
@@ -82,51 +82,63 @@ INSERT INTO `ArticleCategory` (`Categoryid`, `Categoryname`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ArticleCategoryConnect`
+-- Table structure for table `articlecategoryconnect`
 --
 
-CREATE TABLE `ArticleCategoryConnect` (
+CREATE TABLE `articlecategoryconnect` (
   `Categoryid` char(7) DEFAULT NULL,
   `Articleid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `ArticleCategoryConnect`
+-- Dumping data for table `articlecategoryconnect`
 --
 
-INSERT INTO `ArticleCategoryConnect` (`Categoryid`, `Articleid`) VALUES
+INSERT INTO `articlecategoryconnect` (`Categoryid`, `Articleid`) VALUES
 ('CT99999', 'AR99999');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `BagCarier`
+-- Table structure for table `bagcarier`
 --
 
-CREATE TABLE `BagCarier` (
+CREATE TABLE `bagcarier` (
   `Bagcarierid` char(7) NOT NULL,
   `Bagcariername` varchar(30) DEFAULT NULL,
   `Bagcariercapacity` int(11) DEFAULT NULL,
-  `CategoryRentid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `CategoryRentid` char(7) DEFAULT NULL,
+  `bagcarierprice` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bagcarier`
+--
+
+INSERT INTO `bagcarier` (`Bagcarierid`, `Bagcariername`, `Bagcariercapacity`, `CategoryRentid`, `bagcarierprice`) VALUES
+('BC99995', 'Lim bag carier', 120, 'CR99998', 30000),
+('BC99996', 'Jem carier', 90, 'CR99998', 10000),
+('BC99997', 'Krem carier', 100, 'CR99998', 25000),
+('BC99998', 'Fer bag carier', 150, 'CR99998', 40000),
+('BC99999', 'Tambora carier', 100, 'CR99998', 28500);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `BusinessUnit`
+-- Table structure for table `businessunit`
 --
 
-CREATE TABLE `BusinessUnit` (
+CREATE TABLE `businessunit` (
   `BusinessUnitId` char(7) NOT NULL,
   `BusinessUnitName` text DEFAULT NULL,
   `BusinessUnitCategory` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `BusinessUnit`
+-- Dumping data for table `businessunit`
 --
 
-INSERT INTO `BusinessUnit` (`BusinessUnitId`, `BusinessUnitName`, `BusinessUnitCategory`) VALUES
+INSERT INTO `businessunit` (`BusinessUnitId`, `BusinessUnitName`, `BusinessUnitCategory`) VALUES
 ('BUI9997', 'Toko Oleh-Oleh Raung', 'Oleh-Oleh'),
 ('BUI9998', 'Toko Sebrbaguna Mas Andi', 'Makanan'),
 ('BUI9999', 'Warung Makan Tegal Beriman', 'Makanan');
@@ -134,20 +146,20 @@ INSERT INTO `BusinessUnit` (`BusinessUnitId`, `BusinessUnitName`, `BusinessUnitC
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `BusinessUnitProduct`
+-- Table structure for table `businessunitproduct`
 --
 
-CREATE TABLE `BusinessUnitProduct` (
+CREATE TABLE `businessunitproduct` (
   `BusinessUnitProductId` char(10) NOT NULL,
   `BusinessUnitProductName` varchar(30) DEFAULT NULL,
   `BusinessUnitProductPrice` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `BusinessUnitProduct`
+-- Dumping data for table `businessunitproduct`
 --
 
-INSERT INTO `BusinessUnitProduct` (`BusinessUnitProductId`, `BusinessUnitProductName`, `BusinessUnitProductPrice`) VALUES
+INSERT INTO `businessunitproduct` (`BusinessUnitProductId`, `BusinessUnitProductName`, `BusinessUnitProductPrice`) VALUES
 ('ARBUI99915', 'Arem Arem', 3000),
 ('BABUI66612', 'Bakwan', 2000),
 ('BEBUI77671', 'Beng Beng', 1000),
@@ -157,20 +169,20 @@ INSERT INTO `BusinessUnitProduct` (`BusinessUnitProductId`, `BusinessUnitProduct
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `BusinessUnitProductConnect`
+-- Table structure for table `businessunitproductconnect`
 --
 
-CREATE TABLE `BusinessUnitProductConnect` (
+CREATE TABLE `businessunitproductconnect` (
   `BusinessUnitId` char(7) DEFAULT NULL,
   `BusinessUnitProductId` char(10) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `BusinessUnitProductConnect`
+-- Dumping data for table `businessunitproductconnect`
 --
 
-INSERT INTO `BusinessUnitProductConnect` (`BusinessUnitId`, `BusinessUnitProductId`, `Quantity`) VALUES
+INSERT INTO `businessunitproductconnect` (`BusinessUnitId`, `BusinessUnitProductId`, `Quantity`) VALUES
 ('BUI9997', 'RIBUI99971', 10),
 ('BUI9997', 'ARBUI99915', 10),
 ('BUI9997', 'BABUI66612', 10),
@@ -180,111 +192,115 @@ INSERT INTO `BusinessUnitProductConnect` (`BusinessUnitId`, `BusinessUnitProduct
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Cart`
+-- Table structure for table `cart`
 --
 
-CREATE TABLE `Cart` (
+CREATE TABLE `cart` (
   `Cartid` char(7) NOT NULL,
   `Userid` char(7) DEFAULT NULL,
   `TotalPriceCart` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `CartBusinessUnitProduct`
+-- Table structure for table `cartbusinessunitproduct`
 --
 
-CREATE TABLE `CartBusinessUnitProduct` (
+CREATE TABLE `cartbusinessunitproduct` (
   `Userid` char(7) DEFAULT NULL,
   `BusinessUnitProductId` char(10) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `CartBusinessUnitProduct`
+-- Dumping data for table `cartbusinessunitproduct`
 --
 
-INSERT INTO `CartBusinessUnitProduct` (`Userid`, `BusinessUnitProductId`, `Quantity`) VALUES
-('US99999', 'ARBUI99915', 1);
+INSERT INTO `cartbusinessunitproduct` (`Userid`, `BusinessUnitProductId`, `Quantity`) VALUES
+('US99999', 'BABUI66612', 1),
+('US99999', 'GUBUI99981', 1),
+('US99999', 'RIBUI99971', 1),
+('US99999', 'BEBUI77671', 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `CategoryRent`
+-- Table structure for table `categoryrent`
 --
 
-CREATE TABLE `CategoryRent` (
+CREATE TABLE `categoryrent` (
   `CategoryRentid` char(7) NOT NULL,
   `CategoryRentname` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `CategoryRent`
+-- Dumping data for table `categoryrent`
 --
 
-INSERT INTO `CategoryRent` (`CategoryRentid`, `CategoryRentname`) VALUES
+INSERT INTO `categoryrent` (`CategoryRentid`, `CategoryRentname`) VALUES
+('CR99998', 'Bag carier'),
 ('CR99999', 'Tent');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Comment`
+-- Table structure for table `comment`
 --
 
-CREATE TABLE `Comment` (
+CREATE TABLE `comment` (
   `Commentid` char(7) NOT NULL,
   `Commentfill` varchar(200) DEFAULT NULL,
   `CommentCategoryid` char(7) DEFAULT NULL,
   `Userid` char(7) DEFAULT NULL,
   `CommentDate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Comment`
+-- Dumping data for table `comment`
 --
 
-INSERT INTO `Comment` (`Commentid`, `Commentfill`, `CommentCategoryid`, `Userid`, `CommentDate`) VALUES
+INSERT INTO `comment` (`Commentid`, `Commentfill`, `CommentCategoryid`, `Userid`, `CommentDate`) VALUES
 ('CME9998', 'wah bagus !', 'CCT9999', 'US99999', '2024-03-07'),
 ('CME9999', 'hallo ini keren', 'CCT9999', 'US58471', '2024-01-11');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `CommentCategory`
+-- Table structure for table `commentcategory`
 --
 
-CREATE TABLE `CommentCategory` (
+CREATE TABLE `commentcategory` (
   `CommentCategoryid` char(7) NOT NULL,
   `CommentCategoryname` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `CommentCategory`
+-- Dumping data for table `commentcategory`
 --
 
-INSERT INTO `CommentCategory` (`CommentCategoryid`, `CommentCategoryname`) VALUES
+INSERT INTO `commentcategory` (`CommentCategoryid`, `CommentCategoryname`) VALUES
 ('CCT9998', 'Sharing'),
 ('CCT9999', 'Review');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Community`
+-- Table structure for table `community`
 --
 
-CREATE TABLE `Community` (
+CREATE TABLE `community` (
   `Communityid` char(7) NOT NULL,
   `CommunityName` varchar(100) DEFAULT NULL,
   `CommunityDateRelease` date DEFAULT NULL,
   `Communitydesc` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Community`
+-- Dumping data for table `community`
 --
 
-INSERT INTO `Community` (`Communityid`, `CommunityName`, `CommunityDateRelease`, `Communitydesc`) VALUES
+INSERT INTO `community` (`Communityid`, `CommunityName`, `CommunityDateRelease`, `Communitydesc`) VALUES
 ('CM99999', 'HikersNational', '2024-04-24', NULL),
 ('COM6483', 'hikers gamer', '2024-04-27', 'hello guys'),
 ('COM7675', 'pendaki handal', '2024-04-25', 'handalisme'),
@@ -293,38 +309,38 @@ INSERT INTO `Community` (`Communityid`, `CommunityName`, `CommunityDateRelease`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `CommunityCommentConnect`
+-- Table structure for table `communitycommentconnect`
 --
 
-CREATE TABLE `CommunityCommentConnect` (
+CREATE TABLE `communitycommentconnect` (
   `Commentid` char(7) DEFAULT NULL,
   `Communityid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `CommunityCommentConnect`
+-- Dumping data for table `communitycommentconnect`
 --
 
-INSERT INTO `CommunityCommentConnect` (`Commentid`, `Communityid`) VALUES
+INSERT INTO `communitycommentconnect` (`Commentid`, `Communityid`) VALUES
 ('CME9999', 'COM6483'),
 ('CME9998', 'COM6483');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `CreateCommunityConnect`
+-- Table structure for table `createcommunityconnect`
 --
 
-CREATE TABLE `CreateCommunityConnect` (
+CREATE TABLE `createcommunityconnect` (
   `Userid` char(7) DEFAULT NULL,
   `Communityid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `CreateCommunityConnect`
+-- Dumping data for table `createcommunityconnect`
 --
 
-INSERT INTO `CreateCommunityConnect` (`Userid`, `Communityid`) VALUES
+INSERT INTO `createcommunityconnect` (`Userid`, `Communityid`) VALUES
 ('US99999', 'CM99999'),
 ('US99999', 'COM6554'),
 ('US99999', 'COM8924'),
@@ -334,59 +350,59 @@ INSERT INTO `CreateCommunityConnect` (`Userid`, `Communityid`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `DetailCartFood`
+-- Table structure for table `detailcartfood`
 --
 
-CREATE TABLE `DetailCartFood` (
+CREATE TABLE `detailcartfood` (
   `Cartid` char(7) DEFAULT NULL,
   `FoodCategoryid` char(7) DEFAULT NULL,
   `AddedDate` date DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `DetailCartRent`
+-- Table structure for table `detailcartrent`
 --
 
-CREATE TABLE `DetailCartRent` (
+CREATE TABLE `detailcartrent` (
   `Cartid` char(7) DEFAULT NULL,
   `CategoryRentid` char(7) DEFAULT NULL,
   `AddedDate` date DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Food`
+-- Table structure for table `food`
 --
 
-CREATE TABLE `Food` (
+CREATE TABLE `food` (
   `Foodid` char(7) NOT NULL,
   `Foodname` varchar(30) DEFAULT NULL,
   `FoodCategoryid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `FoodCategory`
+-- Table structure for table `foodcategory`
 --
 
-CREATE TABLE `FoodCategory` (
+CREATE TABLE `foodcategory` (
   `Foodcategoryid` char(7) NOT NULL,
   `FoodCategoryname` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Mountain`
+-- Table structure for table `mountain`
 --
 
-CREATE TABLE `Mountain` (
+CREATE TABLE `mountain` (
   `MountainId` char(7) NOT NULL,
   `MountainName` text DEFAULT NULL,
   `JarakPuncak` decimal(5,2) DEFAULT NULL,
@@ -396,34 +412,34 @@ CREATE TABLE `Mountain` (
   `City` text NOT NULL,
   `WaktuTempuh` int(11) NOT NULL,
   `Kesulitan` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Mountain`
+-- Dumping data for table `mountain`
 --
 
-INSERT INTO `Mountain` (`MountainId`, `MountainName`, `JarakPuncak`, `Ketinggian`, `StatusGunung`, `BriefGunung`, `City`, `WaktuTempuh`, `Kesulitan`) VALUES
-('MN99996', 'Gunung Raung', '23.00', 2300, 'aktif', 'Gunung raung adalah gunung yang berada di Banywangi, Jawa Timur. Gunung Raung ini terletak di timur Jawa, Gunung Raung menjadi Gunung tertinggi keempat di pulau Jawa', 'Banyuwangi', 13, 'Sulit'),
-('MN99997', 'Gunung Semeru', '34.00', 12000, 'tidak aktif', 'Gunung semeru adalah gunung yang berada di Jawa timur memiliki ketinggian 12000 mdpl', 'Malang', 12, 'Sulit'),
-('MN99998', 'Gunung Gede', '25.80', 5000, 'aktif', 'Gunung gede adalah gunung yang terletak di kawasan bogor, memiliki ketinggian sekitan 5000 mdpl diatas permukaan laut. Gunung Gede memiliki beberapa savana luas di dekat puncak summit', 'Bogor', 10, 'Menengah'),
-('MN99999', 'Rinjani', '20.00', 10000, 'aktif', 'gunung rinjani adalah gunung yang terletak di lombok', 'Lombok', 23, 'Menengah');
+INSERT INTO `mountain` (`MountainId`, `MountainName`, `JarakPuncak`, `Ketinggian`, `StatusGunung`, `BriefGunung`, `City`, `WaktuTempuh`, `Kesulitan`) VALUES
+('MN99996', 'Gunung Raung', 23.00, 2300, 'aktif', 'Gunung raung adalah gunung yang berada di Banywangi, Jawa Timur. Gunung Raung ini terletak di timur Jawa, Gunung Raung menjadi Gunung tertinggi keempat di pulau Jawa', 'Banyuwangi', 13, 'Sulit'),
+('MN99997', 'Gunung Semeru', 34.00, 12000, 'tidak aktif', 'Gunung semeru adalah gunung yang berada di Jawa timur memiliki ketinggian 12000 mdpl', 'Malang', 12, 'Sulit'),
+('MN99998', 'Gunung Gede', 25.80, 5000, 'aktif', 'Gunung gede adalah gunung yang terletak di kawasan bogor, memiliki ketinggian sekitan 5000 mdpl diatas permukaan laut. Gunung Gede memiliki beberapa savana luas di dekat puncak summit', 'Bogor', 10, 'Menengah'),
+('MN99999', 'Rinjani', 20.00, 10000, 'aktif', 'gunung rinjani adalah gunung yang terletak di lombok', 'Lombok', 23, 'Menengah');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `MountainConnect`
+-- Table structure for table `mountainconnect`
 --
 
-CREATE TABLE `MountainConnect` (
+CREATE TABLE `mountainconnect` (
   `Mountainid` char(7) DEFAULT NULL,
   `BusinessUnitId` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `MountainConnect`
+-- Dumping data for table `mountainconnect`
 --
 
-INSERT INTO `MountainConnect` (`Mountainid`, `BusinessUnitId`) VALUES
+INSERT INTO `mountainconnect` (`Mountainid`, `BusinessUnitId`) VALUES
 ('MN99996', 'BUI9999'),
 ('MN99996', 'BUI9998'),
 ('MN99996', 'BUI9997');
@@ -431,158 +447,158 @@ INSERT INTO `MountainConnect` (`Mountainid`, `BusinessUnitId`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `RatingConnect`
+-- Table structure for table `ratingconnect`
 --
 
-CREATE TABLE `RatingConnect` (
+CREATE TABLE `ratingconnect` (
   `Userid` char(7) DEFAULT NULL,
   `Mountainid` char(7) DEFAULT NULL,
   `Rating` decimal(2,1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `RatingConnect`
+-- Dumping data for table `ratingconnect`
 --
 
-INSERT INTO `RatingConnect` (`Userid`, `Mountainid`, `Rating`) VALUES
-('US99999', 'MN99999', '4.9'),
-('US99999', 'MN99998', '4.9'),
-('US99999', 'MN99997', '5.0'),
-('US99999', 'MN99996', '5.0');
+INSERT INTO `ratingconnect` (`Userid`, `Mountainid`, `Rating`) VALUES
+('US99999', 'MN99999', 4.9),
+('US99999', 'MN99998', 4.9),
+('US99999', 'MN99997', 5.0),
+('US99999', 'MN99996', 5.0);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ReplyComment`
+-- Table structure for table `replycomment`
 --
 
-CREATE TABLE `ReplyComment` (
+CREATE TABLE `replycomment` (
   `Commentid` char(7) DEFAULT NULL,
   `Communityid` char(7) DEFAULT NULL,
   `ReplyCommentfill` varchar(200) DEFAULT NULL,
   `Userid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `ReplyComment`
+-- Dumping data for table `replycomment`
 --
 
-INSERT INTO `ReplyComment` (`Commentid`, `Communityid`, `ReplyCommentfill`, `Userid`) VALUES
+INSERT INTO `replycomment` (`Commentid`, `Communityid`, `ReplyCommentfill`, `Userid`) VALUES
 ('CME9999', 'COM6483', 'IYA BENER KEREN', 'US58471');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Tent`
+-- Table structure for table `tent`
 --
 
-CREATE TABLE `Tent` (
+CREATE TABLE `tent` (
   `Tentid` char(7) NOT NULL,
   `Tentname` varchar(150) DEFAULT NULL,
   `Tentcapacity` int(11) DEFAULT NULL,
   `isCarpet` tinyint(4) DEFAULT NULL,
   `CategoryRentid` char(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Tent`
+-- Dumping data for table `tent`
 --
 
-INSERT INTO `Tent` (`Tentid`, `Tentname`, `Tentcapacity`, `isCarpet`, `CategoryRentid`) VALUES
+INSERT INTO `tent` (`Tentid`, `Tentname`, `Tentcapacity`, `isCarpet`, `CategoryRentid`) VALUES
 ('TN99999', 'Eiger tent', 5, 0, 'CR99999');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `TransactionBuydetailFood`
+-- Table structure for table `transactionbuydetailfood`
 --
 
-CREATE TABLE `TransactionBuydetailFood` (
+CREATE TABLE `transactionbuydetailfood` (
   `Transactionid` char(7) DEFAULT NULL,
   `Foodid` char(7) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `TransactionBuyFood`
+-- Table structure for table `transactionbuyfood`
 --
 
-CREATE TABLE `TransactionBuyFood` (
+CREATE TABLE `transactionbuyfood` (
   `Transactionid` char(7) NOT NULL,
   `Userid` char(7) DEFAULT NULL,
   `Transactiondate` date DEFAULT NULL,
   `Statustransaction` varchar(100) DEFAULT NULL,
   `Totalpayment` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `TransactionDetailRentBag`
+-- Table structure for table `transactiondetailrentbag`
 --
 
-CREATE TABLE `TransactionDetailRentBag` (
+CREATE TABLE `transactiondetailrentbag` (
   `TransactionRentid` char(7) DEFAULT NULL,
   `Bagcarierid` char(7) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `TransactionDetailRentTent`
+-- Table structure for table `transactiondetailrenttent`
 --
 
-CREATE TABLE `TransactionDetailRentTent` (
+CREATE TABLE `transactiondetailrenttent` (
   `TransactionRentid` char(7) DEFAULT NULL,
   `Tentid` char(7) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `TransactionRentHeader`
+-- Table structure for table `transactionrentheader`
 --
 
-CREATE TABLE `TransactionRentHeader` (
+CREATE TABLE `transactionrentheader` (
   `TransactionRentid` char(7) NOT NULL,
   `Userid` char(7) DEFAULT NULL,
   `Transactiondate` date DEFAULT NULL,
   `Paymentstatus` varchar(100) DEFAULT NULL,
   `Statusrent` varchar(200) DEFAULT NULL,
   `Totalpayment` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `TransactionRentHeader`
+-- Dumping data for table `transactionrentheader`
 --
 
-INSERT INTO `TransactionRentHeader` (`TransactionRentid`, `Userid`, `Transactiondate`, `Paymentstatus`, `Statusrent`, `Totalpayment`) VALUES
+INSERT INTO `transactionrentheader` (`TransactionRentid`, `Userid`, `Transactiondate`, `Paymentstatus`, `Statusrent`, `Totalpayment`) VALUES
 ('TR99999', 'US99999', '2024-01-04', 'success', 'keeped', 100000);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `Users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `Userid` char(7) NOT NULL,
   `Userfullname` varchar(255) DEFAULT NULL,
   `Userpassword` varchar(255) DEFAULT NULL,
   `Useremail` varchar(255) DEFAULT NULL,
   `UserDOB` date DEFAULT NULL,
   `Userrole` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `Users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `Users` (`Userid`, `Userfullname`, `Userpassword`, `Useremail`, `UserDOB`, `Userrole`) VALUES
+INSERT INTO `users` (`Userid`, `Userfullname`, `Userpassword`, `Useremail`, `UserDOB`, `Userrole`) VALUES
 ('US36498', 'dimarco', 'Dimarco112', 'dimarco11@gmail.com', '2011-06-21', 'Customer'),
 ('US58471', 'tamiya', 'tamiya123', 'tamiya321@gmail.com', '2024-01-11', 'Customer'),
 ('US99999', 'Budi', 'budi123', 'budi@gmail.com', '2020-05-01', 'Customer');
@@ -592,290 +608,290 @@ INSERT INTO `Users` (`Userid`, `Userfullname`, `Userpassword`, `Useremail`, `Use
 --
 
 --
--- Indeks untuk tabel `Article`
+-- Indexes for table `article`
 --
-ALTER TABLE `Article`
+ALTER TABLE `article`
   ADD PRIMARY KEY (`Articleid`);
 
 --
--- Indeks untuk tabel `ArticleAuthor`
+-- Indexes for table `articleauthor`
 --
-ALTER TABLE `ArticleAuthor`
+ALTER TABLE `articleauthor`
   ADD KEY `Articleid` (`Articleid`),
   ADD KEY `Userid` (`Userid`);
 
 --
--- Indeks untuk tabel `ArticleCategory`
+-- Indexes for table `articlecategory`
 --
-ALTER TABLE `ArticleCategory`
+ALTER TABLE `articlecategory`
   ADD PRIMARY KEY (`Categoryid`);
 
 --
--- Indeks untuk tabel `ArticleCategoryConnect`
+-- Indexes for table `articlecategoryconnect`
 --
-ALTER TABLE `ArticleCategoryConnect`
+ALTER TABLE `articlecategoryconnect`
   ADD KEY `Categoryid` (`Categoryid`),
   ADD KEY `Articleid` (`Articleid`);
 
 --
--- Indeks untuk tabel `BagCarier`
+-- Indexes for table `bagcarier`
 --
-ALTER TABLE `BagCarier`
+ALTER TABLE `bagcarier`
   ADD PRIMARY KEY (`Bagcarierid`),
   ADD KEY `CategoryRentid` (`CategoryRentid`);
 
 --
--- Indeks untuk tabel `BusinessUnit`
+-- Indexes for table `businessunit`
 --
-ALTER TABLE `BusinessUnit`
+ALTER TABLE `businessunit`
   ADD PRIMARY KEY (`BusinessUnitId`);
 
 --
--- Indeks untuk tabel `BusinessUnitProduct`
+-- Indexes for table `businessunitproduct`
 --
-ALTER TABLE `BusinessUnitProduct`
+ALTER TABLE `businessunitproduct`
   ADD PRIMARY KEY (`BusinessUnitProductId`);
 
 --
--- Indeks untuk tabel `Cart`
+-- Indexes for table `cart`
 --
-ALTER TABLE `Cart`
+ALTER TABLE `cart`
   ADD PRIMARY KEY (`Cartid`),
   ADD KEY `Userid` (`Userid`);
 
 --
--- Indeks untuk tabel `CategoryRent`
+-- Indexes for table `categoryrent`
 --
-ALTER TABLE `CategoryRent`
+ALTER TABLE `categoryrent`
   ADD PRIMARY KEY (`CategoryRentid`);
 
 --
--- Indeks untuk tabel `Comment`
+-- Indexes for table `comment`
 --
-ALTER TABLE `Comment`
+ALTER TABLE `comment`
   ADD PRIMARY KEY (`Commentid`),
   ADD KEY `CommentCategoryid` (`CommentCategoryid`);
 
 --
--- Indeks untuk tabel `CommentCategory`
+-- Indexes for table `commentcategory`
 --
-ALTER TABLE `CommentCategory`
+ALTER TABLE `commentcategory`
   ADD PRIMARY KEY (`CommentCategoryid`);
 
 --
--- Indeks untuk tabel `Community`
+-- Indexes for table `community`
 --
-ALTER TABLE `Community`
+ALTER TABLE `community`
   ADD PRIMARY KEY (`Communityid`);
 
 --
--- Indeks untuk tabel `CommunityCommentConnect`
+-- Indexes for table `communitycommentconnect`
 --
-ALTER TABLE `CommunityCommentConnect`
+ALTER TABLE `communitycommentconnect`
   ADD KEY `Commentid` (`Commentid`),
   ADD KEY `Communityid` (`Communityid`);
 
 --
--- Indeks untuk tabel `CreateCommunityConnect`
+-- Indexes for table `createcommunityconnect`
 --
-ALTER TABLE `CreateCommunityConnect`
+ALTER TABLE `createcommunityconnect`
   ADD KEY `communityid_fk` (`Communityid`),
   ADD KEY `usid_fk` (`Userid`);
 
 --
--- Indeks untuk tabel `DetailCartFood`
+-- Indexes for table `detailcartfood`
 --
-ALTER TABLE `DetailCartFood`
+ALTER TABLE `detailcartfood`
   ADD KEY `Cartid` (`Cartid`),
   ADD KEY `FoodCategoryid` (`FoodCategoryid`);
 
 --
--- Indeks untuk tabel `DetailCartRent`
+-- Indexes for table `detailcartrent`
 --
-ALTER TABLE `DetailCartRent`
+ALTER TABLE `detailcartrent`
   ADD KEY `Cartid` (`Cartid`),
   ADD KEY `CategoryRentid` (`CategoryRentid`);
 
 --
--- Indeks untuk tabel `Food`
+-- Indexes for table `food`
 --
-ALTER TABLE `Food`
+ALTER TABLE `food`
   ADD PRIMARY KEY (`Foodid`),
   ADD KEY `FoodCategoryid` (`FoodCategoryid`);
 
 --
--- Indeks untuk tabel `FoodCategory`
+-- Indexes for table `foodcategory`
 --
-ALTER TABLE `FoodCategory`
+ALTER TABLE `foodcategory`
   ADD PRIMARY KEY (`Foodcategoryid`);
 
 --
--- Indeks untuk tabel `Mountain`
+-- Indexes for table `mountain`
 --
-ALTER TABLE `Mountain`
+ALTER TABLE `mountain`
   ADD PRIMARY KEY (`MountainId`);
 
 --
--- Indeks untuk tabel `ReplyComment`
+-- Indexes for table `replycomment`
 --
-ALTER TABLE `ReplyComment`
+ALTER TABLE `replycomment`
   ADD KEY `Commentid` (`Commentid`),
   ADD KEY `Userid` (`Userid`);
 
 --
--- Indeks untuk tabel `Tent`
+-- Indexes for table `tent`
 --
-ALTER TABLE `Tent`
+ALTER TABLE `tent`
   ADD PRIMARY KEY (`Tentid`),
   ADD KEY `CategoryRentid` (`CategoryRentid`);
 
 --
--- Indeks untuk tabel `TransactionBuydetailFood`
+-- Indexes for table `transactionbuydetailfood`
 --
-ALTER TABLE `TransactionBuydetailFood`
+ALTER TABLE `transactionbuydetailfood`
   ADD KEY `Transactionid` (`Transactionid`),
   ADD KEY `Foodid` (`Foodid`);
 
 --
--- Indeks untuk tabel `TransactionBuyFood`
+-- Indexes for table `transactionbuyfood`
 --
-ALTER TABLE `TransactionBuyFood`
+ALTER TABLE `transactionbuyfood`
   ADD PRIMARY KEY (`Transactionid`),
   ADD KEY `Userid` (`Userid`);
 
 --
--- Indeks untuk tabel `TransactionDetailRentBag`
+-- Indexes for table `transactiondetailrentbag`
 --
-ALTER TABLE `TransactionDetailRentBag`
+ALTER TABLE `transactiondetailrentbag`
   ADD KEY `Bagcarierid` (`Bagcarierid`);
 
 --
--- Indeks untuk tabel `TransactionDetailRentTent`
+-- Indexes for table `transactiondetailrenttent`
 --
-ALTER TABLE `TransactionDetailRentTent`
+ALTER TABLE `transactiondetailrenttent`
   ADD KEY `TransactionRentid` (`TransactionRentid`),
   ADD KEY `Tentid` (`Tentid`);
 
 --
--- Indeks untuk tabel `TransactionRentHeader`
+-- Indexes for table `transactionrentheader`
 --
-ALTER TABLE `TransactionRentHeader`
+ALTER TABLE `transactionrentheader`
   ADD PRIMARY KEY (`TransactionRentid`),
   ADD KEY `Userid` (`Userid`);
 
 --
--- Indeks untuk tabel `Users`
+-- Indexes for table `users`
 --
-ALTER TABLE `Users`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`Userid`);
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `ArticleAuthor`
+-- Constraints for table `articleauthor`
 --
-ALTER TABLE `ArticleAuthor`
-  ADD CONSTRAINT `articleauthor_ibfk_1` FOREIGN KEY (`Articleid`) REFERENCES `Article` (`Articleid`),
-  ADD CONSTRAINT `articleauthor_ibfk_2` FOREIGN KEY (`Userid`) REFERENCES `Users` (`Userid`);
+ALTER TABLE `articleauthor`
+  ADD CONSTRAINT `articleauthor_ibfk_1` FOREIGN KEY (`Articleid`) REFERENCES `article` (`Articleid`),
+  ADD CONSTRAINT `articleauthor_ibfk_2` FOREIGN KEY (`Userid`) REFERENCES `users` (`Userid`);
 
 --
--- Ketidakleluasaan untuk tabel `ArticleCategoryConnect`
+-- Constraints for table `articlecategoryconnect`
 --
-ALTER TABLE `ArticleCategoryConnect`
-  ADD CONSTRAINT `articlecategoryconnect_ibfk_1` FOREIGN KEY (`Categoryid`) REFERENCES `ArticleCategory` (`Categoryid`),
-  ADD CONSTRAINT `articlecategoryconnect_ibfk_2` FOREIGN KEY (`Articleid`) REFERENCES `Article` (`Articleid`);
+ALTER TABLE `articlecategoryconnect`
+  ADD CONSTRAINT `articlecategoryconnect_ibfk_1` FOREIGN KEY (`Categoryid`) REFERENCES `articlecategory` (`Categoryid`),
+  ADD CONSTRAINT `articlecategoryconnect_ibfk_2` FOREIGN KEY (`Articleid`) REFERENCES `article` (`Articleid`);
 
 --
--- Ketidakleluasaan untuk tabel `BagCarier`
+-- Constraints for table `bagcarier`
 --
-ALTER TABLE `BagCarier`
-  ADD CONSTRAINT `bagcarier_ibfk_1` FOREIGN KEY (`CategoryRentid`) REFERENCES `CategoryRent` (`CategoryRentid`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `bagcarier`
+  ADD CONSTRAINT `bagcarier_ibfk_1` FOREIGN KEY (`CategoryRentid`) REFERENCES `categoryrent` (`CategoryRentid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `Cart`
+-- Constraints for table `cart`
 --
-ALTER TABLE `Cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `Users` (`Userid`);
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `users` (`Userid`);
 
 --
--- Ketidakleluasaan untuk tabel `Comment`
+-- Constraints for table `comment`
 --
-ALTER TABLE `Comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`CommentCategoryid`) REFERENCES `CommentCategory` (`CommentCategoryid`);
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`CommentCategoryid`) REFERENCES `commentcategory` (`CommentCategoryid`);
 
 --
--- Ketidakleluasaan untuk tabel `CommunityCommentConnect`
+-- Constraints for table `communitycommentconnect`
 --
-ALTER TABLE `CommunityCommentConnect`
-  ADD CONSTRAINT `communitycommentconnect_ibfk_1` FOREIGN KEY (`Commentid`) REFERENCES `Comment` (`Commentid`),
-  ADD CONSTRAINT `communitycommentconnect_ibfk_2` FOREIGN KEY (`Communityid`) REFERENCES `Community` (`Communityid`);
+ALTER TABLE `communitycommentconnect`
+  ADD CONSTRAINT `communitycommentconnect_ibfk_1` FOREIGN KEY (`Commentid`) REFERENCES `comment` (`Commentid`),
+  ADD CONSTRAINT `communitycommentconnect_ibfk_2` FOREIGN KEY (`Communityid`) REFERENCES `community` (`Communityid`);
 
 --
--- Ketidakleluasaan untuk tabel `DetailCartFood`
+-- Constraints for table `detailcartfood`
 --
-ALTER TABLE `DetailCartFood`
-  ADD CONSTRAINT `detailcartfood_ibfk_1` FOREIGN KEY (`Cartid`) REFERENCES `Cart` (`Cartid`),
-  ADD CONSTRAINT `detailcartfood_ibfk_2` FOREIGN KEY (`FoodCategoryid`) REFERENCES `FoodCategory` (`Foodcategoryid`);
+ALTER TABLE `detailcartfood`
+  ADD CONSTRAINT `detailcartfood_ibfk_1` FOREIGN KEY (`Cartid`) REFERENCES `cart` (`Cartid`),
+  ADD CONSTRAINT `detailcartfood_ibfk_2` FOREIGN KEY (`FoodCategoryid`) REFERENCES `foodcategory` (`Foodcategoryid`);
 
 --
--- Ketidakleluasaan untuk tabel `DetailCartRent`
+-- Constraints for table `detailcartrent`
 --
-ALTER TABLE `DetailCartRent`
-  ADD CONSTRAINT `detailcartrent_ibfk_1` FOREIGN KEY (`Cartid`) REFERENCES `Cart` (`Cartid`),
-  ADD CONSTRAINT `detailcartrent_ibfk_2` FOREIGN KEY (`CategoryRentid`) REFERENCES `CategoryRent` (`CategoryRentid`);
+ALTER TABLE `detailcartrent`
+  ADD CONSTRAINT `detailcartrent_ibfk_1` FOREIGN KEY (`Cartid`) REFERENCES `cart` (`Cartid`),
+  ADD CONSTRAINT `detailcartrent_ibfk_2` FOREIGN KEY (`CategoryRentid`) REFERENCES `categoryrent` (`CategoryRentid`);
 
 --
--- Ketidakleluasaan untuk tabel `Food`
+-- Constraints for table `food`
 --
-ALTER TABLE `Food`
-  ADD CONSTRAINT `food_ibfk_1` FOREIGN KEY (`FoodCategoryid`) REFERENCES `FoodCategory` (`Foodcategoryid`);
+ALTER TABLE `food`
+  ADD CONSTRAINT `food_ibfk_1` FOREIGN KEY (`FoodCategoryid`) REFERENCES `foodcategory` (`Foodcategoryid`);
 
 --
--- Ketidakleluasaan untuk tabel `ReplyComment`
+-- Constraints for table `replycomment`
 --
-ALTER TABLE `ReplyComment`
-  ADD CONSTRAINT `replycomment_ibfk_1` FOREIGN KEY (`Commentid`) REFERENCES `Comment` (`Commentid`),
-  ADD CONSTRAINT `replycomment_ibfk_2` FOREIGN KEY (`Userid`) REFERENCES `Users` (`Userid`);
+ALTER TABLE `replycomment`
+  ADD CONSTRAINT `replycomment_ibfk_1` FOREIGN KEY (`Commentid`) REFERENCES `comment` (`Commentid`),
+  ADD CONSTRAINT `replycomment_ibfk_2` FOREIGN KEY (`Userid`) REFERENCES `users` (`Userid`);
 
 --
--- Ketidakleluasaan untuk tabel `Tent`
+-- Constraints for table `tent`
 --
-ALTER TABLE `Tent`
-  ADD CONSTRAINT `tent_ibfk_1` FOREIGN KEY (`CategoryRentid`) REFERENCES `CategoryRent` (`CategoryRentid`);
+ALTER TABLE `tent`
+  ADD CONSTRAINT `tent_ibfk_1` FOREIGN KEY (`CategoryRentid`) REFERENCES `categoryrent` (`CategoryRentid`);
 
 --
--- Ketidakleluasaan untuk tabel `TransactionBuydetailFood`
+-- Constraints for table `transactionbuydetailfood`
 --
-ALTER TABLE `TransactionBuydetailFood`
-  ADD CONSTRAINT `transactionbuydetailfood_ibfk_1` FOREIGN KEY (`Transactionid`) REFERENCES `TransactionBuyFood` (`Transactionid`),
-  ADD CONSTRAINT `transactionbuydetailfood_ibfk_2` FOREIGN KEY (`Foodid`) REFERENCES `Food` (`Foodid`);
+ALTER TABLE `transactionbuydetailfood`
+  ADD CONSTRAINT `transactionbuydetailfood_ibfk_1` FOREIGN KEY (`Transactionid`) REFERENCES `transactionbuyfood` (`Transactionid`),
+  ADD CONSTRAINT `transactionbuydetailfood_ibfk_2` FOREIGN KEY (`Foodid`) REFERENCES `food` (`Foodid`);
 
 --
--- Ketidakleluasaan untuk tabel `TransactionBuyFood`
+-- Constraints for table `transactionbuyfood`
 --
-ALTER TABLE `TransactionBuyFood`
-  ADD CONSTRAINT `transactionbuyfood_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `Users` (`Userid`);
+ALTER TABLE `transactionbuyfood`
+  ADD CONSTRAINT `transactionbuyfood_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `users` (`Userid`);
 
 --
--- Ketidakleluasaan untuk tabel `TransactionDetailRentBag`
+-- Constraints for table `transactiondetailrentbag`
 --
-ALTER TABLE `TransactionDetailRentBag`
-  ADD CONSTRAINT `transactiondetailrentbag_ibfk_1` FOREIGN KEY (`Bagcarierid`) REFERENCES `BagCarier` (`Bagcarierid`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `transactiondetailrentbag`
+  ADD CONSTRAINT `transactiondetailrentbag_ibfk_1` FOREIGN KEY (`Bagcarierid`) REFERENCES `bagcarier` (`Bagcarierid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `TransactionDetailRentTent`
+-- Constraints for table `transactiondetailrenttent`
 --
-ALTER TABLE `TransactionDetailRentTent`
-  ADD CONSTRAINT `transactiondetailrenttent_ibfk_1` FOREIGN KEY (`TransactionRentid`) REFERENCES `TransactionRentHeader` (`TransactionRentid`),
-  ADD CONSTRAINT `transactiondetailrenttent_ibfk_2` FOREIGN KEY (`Tentid`) REFERENCES `Tent` (`Tentid`);
+ALTER TABLE `transactiondetailrenttent`
+  ADD CONSTRAINT `transactiondetailrenttent_ibfk_1` FOREIGN KEY (`TransactionRentid`) REFERENCES `transactionrentheader` (`TransactionRentid`),
+  ADD CONSTRAINT `transactiondetailrenttent_ibfk_2` FOREIGN KEY (`Tentid`) REFERENCES `tent` (`Tentid`);
 
 --
--- Ketidakleluasaan untuk tabel `TransactionRentHeader`
+-- Constraints for table `transactionrentheader`
 --
-ALTER TABLE `TransactionRentHeader`
-  ADD CONSTRAINT `transactionrentheader_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `Users` (`Userid`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `transactionrentheader`
+  ADD CONSTRAINT `transactionrentheader_ibfk_1` FOREIGN KEY (`Userid`) REFERENCES `users` (`Userid`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

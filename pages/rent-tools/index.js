@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 function index() {
 
     const [loggedIn, setLoggedIn] = useState('')
+    
 
     // get current login 
     const getCurrentLogin = () => {
@@ -20,6 +21,7 @@ function index() {
 
     useEffect(()=>{
         getCurrentLogin()
+        
     }, [loggedIn])
 
   return (

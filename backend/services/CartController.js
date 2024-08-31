@@ -1,4 +1,3 @@
-const { io } = require('..')
 const db = require('./db')
 
 // add new data to cart 

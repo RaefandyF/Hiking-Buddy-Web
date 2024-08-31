@@ -3,12 +3,10 @@ const app = express()
 const port = 8080
 const cookieParser = require('cookie-parser')
 const http = require('http')
-const {Server} = require('socket.io')
+
 
 const server = http.createServer(app)
-const io = new Server(server)
 
-module.exports = io
 
 const customerRouter = require('./routes/customerRoute')
 const registerRouter = require('./routes/registerRoute')
@@ -24,6 +22,7 @@ const cookiesRoute = require('./routes/CookiesRoute')
 const businessUnitRoute = require('./routes/BusinessUnitRoute')
 const businessUnitProductRoute = require('./routes/BusinessUnitProductRoute')
 const cartRoute = require('./routes/CartRoute')
+const bagRoute = require('./routes/BagRoute')
 
 const cors = require('cors')
 
@@ -52,14 +51,12 @@ app.use('/mountain', mountainRoute)
 app.use('/cookies', cookiesRoute)
 app.use('/business-unit', businessUnitRoute)
 app.use('/cart', cartRoute)
+app.use('/bag', bagRoute)
 
 app.get('/', (req,res) =>{
     res.json({"message": "ok"})
 })
 
-io.on('connection', (socket)=>{
-    console.log('connected')
-})
 
 server.listen(port, ()=>{
     console.log(`listening at http://localhost:${port}`)
