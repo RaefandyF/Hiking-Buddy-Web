@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import NavbarComponent from "@/components/Navbar";
+import helperSession from "@/helper/SessionHelper";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,11 +13,13 @@ function index() {
 
   // get cuurent login 
   // get current user login data
-  const getCurrentUserLogin = () => {
-    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
-    .then((res)=>{
-      setCurrLogin(res.data.data[0]["Userfullname"])
-    })
+  const getCurrentUserLogin = (sessid) => {
+    if(sessid){
+      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
+      .then((res)=>{
+        setCurrLogin(res.data.data[0]["Userfullname"])
+      })
+    }
   }
 
   // get top article limit 3
@@ -28,8 +31,11 @@ function index() {
   };
 
   useEffect(() => {
+
+    let sessid = helperSession()
+
     getTopArticle();
-    getCurrentUserLogin()
+    getCurrentUserLogin(sessid)
   }, []);
 
   return (
