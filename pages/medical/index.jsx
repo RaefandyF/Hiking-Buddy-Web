@@ -8,27 +8,26 @@ import { FaMotorcycle } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 
 function index() {
-
-  const route = useRouter()
+  const route = useRouter();
 
   return (
     <div className="h-screen w-full">
-      <div className="relative">
-        <div>
-          <img className="w-full" src="./rent-img.png" />
-          <div className="absolute top-0 w-full">
-            <NavbarComponent />
-          </div>
-          <div className="absolute top-[10rem] mx-[3rem]">
-            <h1 className="text-[35px] text-white font-bold">
-              Medical Fast Responsive
-            </h1>
-          </div>
-          <div className="absolute text-[20px] text-white top-[18rem] mx-[3rem]">
-            <p>Fast responsive for hiking accident</p>
-          </div>
+      <div
+        className="w-full h-[25rem] rounded-b-[5rem] bg-cover bg-center"
+        style={{ backgroundImage: `url("/rent-img.png")` }}
+      >
+        <NavbarComponent />
+
+        <div className="p-10 flex flex-col gap-5">
+          <h1 className="text-[3rem] text-white font-bold">
+            Medical Fast Responsive
+          </h1>
+          <p className="text-white text-[1.5rem]">
+            Fast responsive for hiking accident
+          </p>
         </div>
       </div>
+
       <div className="mt-[5rem]">
         <div className="flex justify-center">
           <div className="mx-1">
@@ -58,47 +57,49 @@ function index() {
             </div>
           </div>
           <div
-              className="w-[130px] h-[130px] 
+            className="w-[130px] h-[130px] 
               bg-gradient-to-r from-[#F04E09] to-[#8A2D05] rounded mx-3"
-            >
-              <div className="flex items-center justify-center h-[5rem]">
-                <FaCarSide color="white" size={30} />
-              </div>
-              <div className="w-full text-center text-white">
-                <div>
-                  <p>Car</p>
-                </div>
+          >
+            <div className="flex items-center justify-center h-[5rem]">
+              <FaCarSide color="white" size={30} />
+            </div>
+            <div className="w-full text-center text-white">
+              <div>
+                <p>Car</p>
               </div>
             </div>
-            <div
-              className="w-[130px] h-[130px] 
+          </div>
+          <div
+            className="w-[130px] h-[130px] 
               bg-gradient-to-r from-[#F04E09] to-[#8A2D05] rounded mx-3"
-            >
-              <div className="flex items-center justify-center h-[5rem]">
-                <FaMotorcycle color="white" size={30} />
-              </div>
-              <div className="w-full text-center text-white">
-                <div>
-                  <p>Motorcycle</p>
-                </div>
+          >
+            <div className="flex items-center justify-center h-[5rem]">
+              <FaMotorcycle color="white" size={30} />
+            </div>
+            <div className="w-full text-center text-white">
+              <div>
+                <p>Motorcycle</p>
               </div>
             </div>
+          </div>
         </div>
         <div className="min-h-[15vh] my-[3rem] flex flex-wrap px-[2rem]">
-          <div 
-          onClick={()=>{
-            route.push({
-              pathname: `/medical/${'AM001'}`, 
-              query: {
-                ambulanceName: 'Ambulance pak Budi', 
-                ratingMedical: 4.9, 
-                ownerMedical: 'pak Budi', 
-                priceMedical: 10000,
-                ambulanceDescription: 'ambulance dengan seat 6 kursi bisa menampung pasien dengan aman'
-              }
-            })
-          }}
-          className="w-[220px] h-[300px] shadow-md rounded border">
+          <div
+            onClick={() => {
+              route.push({
+                pathname: `/medical/${"AM001"}`,
+                query: {
+                  ambulanceName: "Ambulance pak Budi",
+                  ratingMedical: 4.9,
+                  ownerMedical: "pak Budi",
+                  priceMedical: 10000,
+                  ambulanceDescription:
+                    "ambulance dengan seat 6 kursi bisa menampung pasien dengan aman",
+                },
+              });
+            }}
+            className="w-[220px] h-[300px] shadow-md rounded border"
+          >
             <div className="mb-2">
               <img className="rounded-b-lg" src="./ambulance.jpeg" />
             </div>

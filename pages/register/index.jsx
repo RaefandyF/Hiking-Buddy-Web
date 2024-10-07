@@ -1,8 +1,22 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import RegisterMobile from "../../components/MobileComponent/Register/RegisterMobile";
 
 function RegisterPage() {
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 425); // Mengatur breakpoint untuk ukuran mobile (768px)
+    };
+
+    handleResize(); // Cek ukuran layar saat pertama kali komponen di-mount
+    window.addEventListener("resize", handleResize); // Event listener untuk menangani perubahan ukuran layar
+
+    return () => window.removeEventListener("resize", handleResize); // Cleanup
+  }, []);
 
   const [fullname, setFullname] = useState('')
   const [email, setEmail] = useState('')
@@ -46,6 +60,10 @@ function RegisterPage() {
     .catch((err)=>{
       console.log(err)
     })
+  }
+
+  if (isMobile) {
+    return <RegisterMobile />; // Jika ukuran layar mobile, render komponen LoginMobile
   }
 
   return (
