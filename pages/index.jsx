@@ -9,19 +9,20 @@ export default function Home() {
 
   const [currLogin, setCurrLogin] = useState('')
 
+
   // get current user login data
-  const getCurrentUserLogin = () => {
-    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
-    .then((res)=>{
-      if(!res.data.data[0]){
-        console.log(res.data.data[0]["Userfullname"])
-        setCurrLogin(res.data.data[0]["Userfullname"])
-      }
-    })
-  }
+  // const getCurrentUserLogin = () => {
+  //     axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid") || 'empty'}`)
+  //     .then((res)=>{
+  //       if(!res.data.data[0]){
+  //         console.log(res.data.data[0]["Userfullname"])
+  //         setCurrLogin(res.data.data[0]["Userfullname"])
+  //       }
+  //     })
+  // }
 
   useEffect(()=>{
-    getCurrentUserLogin()
+    // getCurrentUserLogin()
   }, [])
 
   return (

@@ -7,22 +7,31 @@ import axios from "axios";
 
 function HeaderComponent() {
   const [log, setLog] = useState('')
+  const [sessionId, setSessionId] = useState('')
 
   // get current login
-  const getCurrentLogin = () => {
+  const getCurrentLogin = (sessid) => {
+    console
     // console.log(sessionStorage.getItem("userid") == null)
-    console.log(sessionStorage.getItem("userid"))
-      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
-      .then((res)=>{
-        if(res.data.data[0]){
-          console.log(res.data.data[0]["Userfullname"])
-          setLog(res.data.data[0]["Userfullname"])
-        }
-      })
+    if(sessid){
+      
+        axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem("userid")}`)
+        .then((res)=>{
+          if(res.data.data[0]){
+            console.log(res.data.data[0]["Userfullname"])
+            setLog(res.data.data[0]["Userfullname"])
+          }
+        })
+    }
   }
 
   useEffect(()=>{
-    getCurrentLogin()
+    let sessid = ''
+    if(typeof window !== 'undefined'){
+      let sessionValue = sessionStorage.getItem("userid")
+      sessid = sessionValue
+    }
+    getCurrentLogin(sessid)
   }, [])
 
   return (

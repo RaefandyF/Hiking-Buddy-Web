@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import helperSession from "@/helper/SessionHelper";
 
 export default function Community() {
 
@@ -21,15 +22,20 @@ export default function Community() {
   }
 
   // get current login data 
-  const getCurrent = () => {
-    axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem('userid')}`)
-    .then((res)=>{
-      setFullname(res.data.data[0].Userfullname)
-    })
+  const getCurrent = (sessid) => {
+    if(sessid){
+      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem('userid')}`)
+      .then((res)=>{
+        setFullname(res.data.data[0].Userfullname)
+      })
+    }
   }
 
   useEffect(()=>{
-    getCurrent()
+
+    const sessid = helperSession()
+
+    getCurrent(sessid)
     getAllCommunity()
   }, [])
 
