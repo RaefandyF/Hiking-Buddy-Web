@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import NavbarComponent from "@/components/Navbar";
+import helperSession from "@/helper/SessionHelper";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,39 +13,40 @@ function index() {
 
   // get cuurent login
   // get current user login data
-  // const getCurrentUserLogin = () => {
-  //   axios
-  //     .get(
-  //       `http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem(
-  //         "userid"
-  //       )}`
-  //     )
-  //     .then((res) => {
-  //       setCurrLogin(res.data.data[0]["Userfullname"]);
-  //     });
-  // };
+  const getCurrentUserLogin = (sessid) => {
+    if (sessid) {
+      axios
+        .get(
+          `http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem(
+            "userid"
+          )}`
+        )
+        .then((res) => {
+          setCurrLogin(res.data.data[0]["Userfullname"]);
+        });
+    }
+  };
 
-  // // get top article limit 3
-  // const getTopArticle = () => {
-  //   axios.get(`http://localhost:8080/article/get-top-article`).then((res) => {
-  //     console.log(res.data.article);
-  //     setArticles(res.data.article);
-  //   });
-  // };
+  // get top article limit 3
+  const getTopArticle = () => {
+    axios.get(`http://localhost:8080/article/get-top-article`).then((res) => {
+      console.log(res.data.article);
+      setArticles(res.data.article);
+    });
+  };
 
-  // useEffect(() => {
-  //   getTopArticle();
-  //   getCurrentUserLogin();
-  // }, []);
+  useEffect(() => {
+    let sessid = helperSession();
+
+    getTopArticle();
+    getCurrentUserLogin(sessid);
+  }, []);
 
   return (
     <div className="min-h-screen">
       <div className="relative">
-        {/* <img src="/route_image.png" className="w-full" /> */}
-        <div
-          className="w-full h-[25rem] rounded-b-[5rem] bg-cover bg-center"
-          style={{ backgroundImage: `url("/route_image.png")` }}
-        >
+        <img src="/route_image.png" className="w-full" />
+        <div className="absolute top-0 w-full">
           <NavbarComponent log={currLogin} />
           <div className="w-1/2 my-[30px] ml-[30px] text-[40px] text-white font-bold">
             <h1>Welcome to Our Article Page !</h1>
