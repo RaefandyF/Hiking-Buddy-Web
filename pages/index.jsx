@@ -2,13 +2,13 @@ import BodyNavigation from "@/components/BodyNavigation";
 import Footer from "@/components/Footer";
 import HeaderComponent from "@/components/Header";
 import HeaderNavigation from "@/components/HeaderNavigation";
+import HomeMobile from "@/components/MobileComponent/HomeMobile/HomeMobile";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-
-  const [currLogin, setCurrLogin] = useState('')
-
+  const [currLogin, setCurrLogin] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   // get current user login data
   // const getCurrentUserLogin = () => {
@@ -21,15 +21,30 @@ export default function Home() {
   //     })
   // }
 
-  useEffect(()=>{
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 425); // Mengatur breakpoint untuk ukuran mobile (768px)
+    };
+
+    handleResize(); // Cek ukuran layar saat pertama kali komponen di-mount
+    window.addEventListener("resize", handleResize); // Event listener untuk menangani perubahan ukuran layar
+
+    return () => window.removeEventListener("resize", handleResize); // Cleanup
+  }, []);
+
+  useEffect(() => {
     // getCurrentUserLogin()
-  }, [])
+  }, []);
+
+  if (isMobile) {
+    return <HomeMobile />; // Jika ukuran layar mobile, render komponen LoginMobile
+  }
 
   return (
     <div>
       <HeaderComponent />
       <HeaderNavigation />
-      <BodyNavigation />
+      {/* <BodyNavigation /> */}
       <Footer />
     </div>
   );

@@ -15,6 +15,9 @@ module.exports = {
       colors: {
         primary: "#F09024",
       },
+      fontFamily: {
+        'poppins': ['Poppins']
+      }
     },
   },
   plugins: [],

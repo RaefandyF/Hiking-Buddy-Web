@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import googleIcon from "../../public/google-icon.png";
 import Image from "next/image";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import bg from "../../public/login-register-bg.png";
 
 export default function LoginMobile() {
   const [password, setPassword] = useState("");
@@ -9,7 +10,7 @@ export default function LoginMobile() {
 
   return (
     <main className="">
-      <section className="bg-[#274753] pt-20 px-7 pb-7">
+      <section style={{ backgroundImage: `url(${bg.src})` }} className="pt-20 px-7 pb-7 bg-cover">
         <h1 className="text-3xl max-w-[15rem] font-bold text-white">
           Sign In to Your Account
         </h1>

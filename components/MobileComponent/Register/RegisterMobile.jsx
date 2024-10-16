@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import bg from "../../../public/login-register-bg.png";
 
 export default function RegisterMobile() {
   const [password, setPassword] = useState("");
@@ -10,9 +11,12 @@ export default function RegisterMobile() {
 
   return (
     <main className="">
-      <section className="bg-[#274753] pt-20 px-7 pb-7">
+      <section
+        style={{ backgroundImage: `url(${bg.src})` }}
+        className="bg-cover pt-20 px-7 pb-7"
+      >
         <h1 className="text-3xl max-w-[15rem] font-bold text-white">
-          Sign Up to Your Account
+          Sign up your Account
         </h1>
         <p className="text-white/60">Sign Up to Your Account</p>
       </section>
