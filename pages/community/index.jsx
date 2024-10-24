@@ -6,38 +6,55 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import helperSession from "@/helper/SessionHelper";
+import CommunityMobile from "@/components/MobileComponent/CommunityMobile/CommunityMobile";
 
 export default function Community() {
+  const [isMobile, setIsMobile] = useState(false);
 
-  const [name, setFullname] = useState('')
-  const [community, setAllCommunity] = useState([])
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 425); // Mengatur breakpoint untuk ukuran mobile (768px)
+    };
 
-  // get all community data 
-  const getAllCommunity = () => {
-    axios.get(`http://localhost:8080/community/get-all-community`)
-    .then((res)=>{
-      console.log(res.data.data)
-      setAllCommunity(res.data.data)
-    })
+    handleResize(); // Cek ukuran layar saat pertama kali komponen di-mount
+    window.addEventListener("resize", handleResize); // Event listener untuk menangani perubahan ukuran layar
+
+    return () => window.removeEventListener("resize", handleResize); // Cleanup
+  }, []);
+
+  // const [name, setFullname] = useState('')
+  // const [community, setAllCommunity] = useState([])
+
+  // // get all community data
+  // const getAllCommunity = () => {
+  //   axios.get(`http://localhost:8080/community/get-all-community`)
+  //   .then((res)=>{
+  //     console.log(res.data.data)
+  //     setAllCommunity(res.data.data)
+  //   })
+  // }
+
+  // // get current login data
+  // const getCurrent = (sessid) => {
+  //   if(sessid){
+  //     axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem('userid')}`)
+  //     .then((res)=>{
+  //       setFullname(res.data.data[0].Userfullname)
+  //     })
+  //   }
+  // }
+
+  // useEffect(()=>{
+
+  //   const sessid = helperSession()
+
+  //   getCurrent(sessid)
+  //   getAllCommunity()
+  // }, [])
+
+  if (isMobile) {
+    return <CommunityMobile />; // Jika ukuran layar mobile, render komponen LoginMobile
   }
-
-  // get current login data 
-  const getCurrent = (sessid) => {
-    if(sessid){
-      axios.get(`http://localhost:8080/customer/get-current-login?userid=${sessionStorage.getItem('userid')}`)
-      .then((res)=>{
-        setFullname(res.data.data[0].Userfullname)
-      })
-    }
-  }
-
-  useEffect(()=>{
-
-    const sessid = helperSession()
-
-    getCurrent(sessid)
-    getAllCommunity()
-  }, [])
 
   return (
     <main className="min-h-screen">
@@ -45,10 +62,7 @@ export default function Community() {
         style={{ backgroundImage: `url(${"/community-bg.png"})` }}
         className="px-10 flex flex-col gap-24 lg:gap-36 h-[50vw] bg-no-repeat bg-contain"
       >
-        <Navbar 
-          log={name}
-          taildwindStyle="text-white"
-        />
+        <Navbar taildwindStyle="text-white" />
         <div className="flex flex-col gap-5 max-w-[70vw]">
           <h1 className="font-bold text-[3vw] text-white">
             Empowering a Community of Mountain Enthusiasts to Reach New Heights
@@ -58,7 +72,7 @@ export default function Community() {
             dolor sit amet
           </p>
           <span>
-            <Link href={'/create-community'}>
+            <Link href={"/create-community"}>
               <button className="bg-primary text-white p-2 px-8 text-[2vw] rounded-xl">
                 Create Community
               </button>
@@ -88,7 +102,7 @@ export default function Community() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-[8vw] mt-[5vw] mx-[5vw]">
-          {
+          {/* {
             community.map((data, idx)=>(
               <Card
               key={idx}
@@ -98,7 +112,7 @@ export default function Community() {
               buttonText={'15 post'}
               />
             ))
-          }
+          } */}
         </div>
       </section>
       <div className="mt-[10px] mb-[40px] flex justify-center items-center">
