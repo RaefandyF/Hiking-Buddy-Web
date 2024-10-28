@@ -4,6 +4,41 @@ const cr = require('../services/CommunityController')
 const img_controller = require('../services/UploadImage')
 
 // add new community 
+/**
+ * @swagger 
+ * /community/add-new-community:
+ *  post:
+ *      summary: create new community data (add community)
+ *      description: endpoint for create new community data
+ *      requestBody:
+ *          required: true 
+ *          content:
+ *              application/json:
+ *                  schema: 
+ *                      type: object
+ *                      properties: 
+ *                          Communityid:
+ *                              type: string 
+ *                              description: Communityid must start with CM followed by 5 characters of number
+ *                              example: CM99999
+ *                          Communityname:
+ *                              type: string
+ *                              description: Communityname can be filled here 
+ *                              example: Communityku
+ *                          CommunityDateRelease:
+ *                              type: date 
+ *                              description: input date of community release
+ *                              example: 2022-01-01
+ *                          Communitydesc:
+ *                              type: string 
+ *                              description: input the description of community
+ *                              example: I love my community
+ *                      required:
+ *                         - Communityid
+ *                         - Communityname
+ *                         - CommunityDateRelease
+ *                         - Communitydesc
+ */
 router.post('/add-new-community', async(req, res)=>{
     try {
         res.json(await cr.addNewCommunity(req.body))

@@ -18,8 +18,12 @@ const acc = require('../services/ArticleCategoryController')
  *                      properties: 
  *                          Categoryid:
  *                              type: string 
+ *                              description: Categoryid must start with CT followed by 5 characters of number
+ *                              example: CT99999
  *                          Categoryname:
  *                              type: string
+ *                              description: Categoryname can be filled here 
+ *                              example: Categoryku
  *                      required:
  *                         - Categoryid 
  *                         - Categoryname
