@@ -3,7 +3,8 @@ const app = express()
 const port = 8080
 const cookieParser = require('cookie-parser')
 const http = require('http')
-
+const swaggerDocs = require('./swagger')
+const swaggerUi = require('swagger-ui-express')
 
 const server = http.createServer(app)
 
@@ -36,6 +37,8 @@ app.use(
     })
 )
 
+// docs api
+app.use("/docs-api", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use('/customer', loginRouter)
 app.use('/customer', customerRouter)

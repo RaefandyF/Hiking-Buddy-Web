@@ -3,6 +3,27 @@ const router = express.Router()
 const acc = require('../services/ArticleCategoryController')
 
 // add new category route 
+/**
+ * @swagger 
+ * /article/add-new-category:
+ *  post:
+ *      summary: create new category data 
+ *      description: endpoint for create new category data 
+ *      requestBody:
+ *          required: true 
+ *          content:
+ *              application/json:
+ *                  schema: 
+ *                      type: object
+ *                      properties: 
+ *                          Categoryid:
+ *                              type: string 
+ *                          Categoryname:
+ *                              type: string
+ *                      required:
+ *                         - Categoryid 
+ *                         - Categoryname
+ */
 router.post('/add-new-category', async (req, res)=>{
     try {
         res.json(await acc.addNewCategory(req.body))
