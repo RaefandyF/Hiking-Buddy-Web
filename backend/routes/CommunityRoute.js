@@ -3,6 +3,7 @@ const router = express.Router()
 const cr = require('../services/CommunityController')
 const img_controller = require('../services/UploadImage')
 
+
 // add new community 
 /**
  * @swagger 
@@ -10,6 +11,7 @@ const img_controller = require('../services/UploadImage')
  *  post:
  *      summary: create new community data (add community)
  *      description: endpoint for create new community data
+ *      tags: [Community]
  *      requestBody:
  *          required: true 
  *          content:
@@ -52,6 +54,32 @@ router.post('/add-new-community', async(req, res)=>{
 })
 
 // create community connect 
+/**
+ * @swagger
+ * /community/add-new-community-connect:
+ *  post:
+ *      summary: create new community connected with userid data (add new community connect)
+ *      description: endpoint for create new community data connect
+ *      tags: [Community]
+ *      requestBody:
+ *          required: true 
+ *          content:
+ *              application/json:
+ *                  schema: 
+ *                      type: object
+ *                      properties: 
+ *                          Userid:
+ *                              type: string 
+ *                              description: Userid must start with US followed by 5 characters of number
+ *                              example: US99999
+ *                          Communityid:
+ *                              type: string
+ *                              description: Communityid can be filled here 
+ *                              example: CM99999
+ *                      required:
+ *                         - Userid
+ *                         - Communityid
+ */
 router.post('/add-new-community-connect', async (req, res)=>{
     try {
         res.json(await cr.addNewCommunityConnect(req.body))
@@ -64,6 +92,32 @@ router.post('/add-new-community-connect', async (req, res)=>{
 })
 
 // upload image for community 
+/**
+ * @swagger
+ * /community/upload-img-community:
+ *  post:
+ *      summary: upload image community (add new community connect)
+ *      description: endpoint for create new community data connect
+ *      tags: [Community]
+ *      requestBody:
+ *          required: true 
+ *          content:
+ *              application/json:
+ *                  schema: 
+ *                      type: object
+ *                      properties: 
+ *                          Userid:
+ *                              type: string 
+ *                              description: Userid must start with US followed by 5 characters of number
+ *                              example: US99999
+ *                          Communityid:
+ *                              type: string
+ *                              description: Communityid can be filled here 
+ *                              example: CM99999
+ *                      required:
+ *                         - Userid
+ *                         - Communityid
+ */
 router.post('/upload-img-community', async (req, res) => {
     try {
         res.json(await img_controller.uploadImageCommunity(req.body))
@@ -77,6 +131,16 @@ router.post('/upload-img-community', async (req, res) => {
 })
 
 // get all community data
+/**
+ * @swagger
+ * /community/get-all-community:
+ *  get:
+ *    summary: get all community data 
+ *    tags: [Community]
+ *    responses:
+ *      200: 
+ *        description: success 
+ */
 router.get('/get-all-community', async (req, res)=>{
     try {
         res.json(await cr.getAllCommunity())
@@ -89,6 +153,19 @@ router.get('/get-all-community', async (req, res)=>{
 })
 
 // get detail community data 
+/**
+ * @swagger 
+ * /community/get-detail-community?id={id}: 
+ *  get: 
+ *    summary: get detail community data 
+ *    tags: [Community]
+ *    parameters: 
+ *     - in: query 
+ *       name: id
+ *       schema:
+ *         type: string 
+ *       description: get detail community
+ */
 router.get(`/get-detail-community`, async(req, res)=>{
     try {
         res.json(await cr.getCommunityById(req.query.id))
@@ -101,6 +178,19 @@ router.get(`/get-detail-community`, async(req, res)=>{
 })
 
 // get comment detail community 
+/**
+ * @swagger
+ * /community/get-comment-community?communityid={id}:
+ *  get: 
+ *    summary: get community comment all 
+ *    tags: [Community]
+ *    parameters: 
+ *    - in: query 
+ *      name: communityid 
+ *      schema: 
+ *        type: string 
+ *      description: get comment id with detail comment data
+ */
 router.get('/get-comment-community', async (req, res)=>{
     try {
         res.json(await cr.getCommentCommunity(req.query.communityid))
@@ -113,6 +203,24 @@ router.get('/get-comment-community', async (req, res)=>{
 })
 
 // get reply comment specific and community 
+/**
+ * @swagger
+ * /community/get-reply-comment?commentid={commentid}&communityid={communityid}:
+ *  get: 
+ *    summary: reply community comment data 
+ *    tags: [Community]
+ *    parameters: 
+ *    - in: query 
+ *      name: communityid 
+ *      schema: 
+ *        type: string 
+ *      description: get community id with detail comment data
+ *    - in: query
+ *      name: commentid 
+ *      schema: 
+ *        type: string 
+ *      description: get comment id in community id data 
+ */
 router.get('/get-reply-comment', async(req, res)=>{
     try {
         res.json(await cr.getReplyComment(req.query.commentid, req.query.communityid))

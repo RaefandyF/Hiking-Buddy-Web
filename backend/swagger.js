@@ -8,6 +8,16 @@ const swaggerOptions = {
             version: "1.0.0", 
             description: "API docs Hiking Buddy"
         }, 
+        tags: [
+            {
+                name: 'Community', 
+                description: 'Community group of route Api'
+            }, 
+            {
+                name: 'Article', 
+                description: 'Article group of route API'
+            }
+        ], 
         servers: [
             {
                 url: "http://localhost:8080"
