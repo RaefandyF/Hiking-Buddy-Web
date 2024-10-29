@@ -123,7 +123,7 @@ export default function HomeMobile() {
         </div>
       </section>
 
-      <FooterMobile home={"border-t-[4px] border-[#F09024] text-[#F09024]"} />
+      <FooterMobile home={"border-t-[4px] border-[#F09024] text-[#F09024]"} komunitas={"py-7"} aktivitas={"py-7"} profile={"py-7"} />
     </main>
   );
 }

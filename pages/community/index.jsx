@@ -13,7 +13,7 @@ export default function Community() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 425); // Mengatur breakpoint untuk ukuran mobile (768px)
+      setIsMobile(window.innerWidth <= 430); // Mengatur breakpoint untuk ukuran mobile (768px)
     };
 
     handleResize(); // Cek ukuran layar saat pertama kali komponen di-mount

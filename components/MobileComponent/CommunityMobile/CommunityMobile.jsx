@@ -107,7 +107,9 @@ export default function CommunityMobile() {
       </section>
 
       <FooterMobile
-        komunitas={"border-t-[4px] border-[#F09024] text-[#F09024]"}
+        komunitas={"border-t-[4px] border-[#F09024] text-[#F09024] py-5"}
+        aktivitas={"py-5"}
+        profile={"py-5"}
       />
     </main>
   );
