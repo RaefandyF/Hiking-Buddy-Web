@@ -16,6 +16,10 @@ const swaggerOptions = {
             {
                 name: 'Article', 
                 description: 'Article group of route API'
+            },
+            {
+                name: 'Customer', 
+                description: 'Customer group of route API'
             }
         ], 
         servers: [
