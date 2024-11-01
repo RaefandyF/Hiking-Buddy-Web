@@ -7,8 +7,7 @@ const config = {
         host: 'localhost', 
         user: 'root', 
         password: '', 
-        database: 'HikingBuddy', 
-        connectTimeout: 60000
+        database: 'hikingbuddy2'
     }, 
     listPerPage: 10
 }

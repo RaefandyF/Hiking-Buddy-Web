@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser')
 const http = require('http')
 const swaggerDocs = require('./swagger')
 const swaggerUi = require('swagger-ui-express')
+const mysql = require('mysql2')
+const config = require('./config')
 
 const server = http.createServer(app)
 
@@ -24,6 +26,9 @@ const businessUnitRoute = require('./routes/BusinessUnitRoute')
 const businessUnitProductRoute = require('./routes/BusinessUnitProductRoute')
 const cartRoute = require('./routes/CartRoute')
 const bagRoute = require('./routes/BagRoute')
+
+const userRouteV2 = require('./routes/v2/UsersRoute')
+const threadRouteV2 = require('./routes/v2/ThreadRoute')
 
 const cors = require('cors')
 
@@ -55,6 +60,24 @@ app.use('/cookies', cookiesRoute)
 app.use('/business-unit', businessUnitRoute)
 app.use('/cart', cartRoute)
 app.use('/bag', bagRoute)
+
+const db = mysql.createConnection({
+    host: config.db.host,
+    user: config.db.user,
+    password: config.db.password,
+    database: config.db.database
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Database connection error:', err);
+    } else {
+        console.log('Connected to the MySQL database');
+    }
+});
+
+app.use('/api/v2/users', userRouteV2)
+app.use('/api/v2/threads', threadRouteV2)
 
 app.get('/', (req,res) =>{
     res.json({"message": "ok"})
