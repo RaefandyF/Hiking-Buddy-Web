@@ -5,7 +5,7 @@ const img_controller = require('../../services/UploadImage')
 
 // get all thread v2 
 router.get('/get-all-thread', async(req, res)=>{
-    const queryGet = "SELECT th.ThreadDescription, th.ThreadDateRelease, thp.TotalLike, thp.TotalComment, thp.TotalShare, us.UserFullName FROM Thread th JOIN ThreadPostHeader thp ON th.ThreadId = thp.ThreadId JOIN Users us ON us.UserId = thp.UserId"
+    const queryGet = "SELECT th.ThreadId,th.ThreadDescription, th.ThreadDateRelease, thp.TotalLike, thp.TotalComment, thp.TotalShare, us.UserFullName FROM Thread th JOIN ThreadPostHeader thp ON th.ThreadId = thp.ThreadId JOIN Users us ON us.UserId = thp.UserId"
     const threads = await db.query(queryGet)
 
     res.status(200).send({
