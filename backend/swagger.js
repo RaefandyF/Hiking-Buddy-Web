@@ -114,7 +114,66 @@ const swaggerOptions = {
                     }
                 }
             }, 
-            '/api/v2/thread/get-all-thread': {
+            '/api/v2/users/register': {
+                post: {
+                    tags: ['Customer_v2'], 
+                    summary: 'register new user', 
+                    description: 'register new user data', 
+                    requestBody: {
+                        required: true, 
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object', 
+                                    properties: {
+                                        UserId: {
+                                            type: 'string', 
+                                            description: 'user id data', 
+                                            example: 'US77777'
+                                        },
+                                        UserFullname: {
+                                            type: 'string', 
+                                            description: 'user fullname data', 
+                                            example: 'Pedri'
+                                        }, 
+                                        UserEmail: {
+                                            type: 'string', 
+                                            description: 'user email data', 
+                                            example: 'pedri123@gmail.com'
+                                        }, 
+                                        UserPhone: {
+                                            type: 'string', 
+                                            description: 'user phone data', 
+                                            example: '082143121'
+                                        }, 
+                                        UserRole: {
+                                            type: 'string', 
+                                            description: 'user role data', 
+                                            example: 'Member'
+                                        }, 
+                                        UserPassword: {
+                                            type: 'string', 
+                                            description: 'user password data', 
+                                            example: 'francis123'
+                                        }, 
+                                        UserConfirmPassword: {
+                                            type: 'string', 
+                                            description: 'user password confirm data', 
+                                            example: 'francis123'
+                                        }, 
+                                        Username: {
+                                            type: 'string', 
+                                            description: 'username data', 
+                                            example: 'francis_1'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/v2/threads/get-all-thread': {
                 get: {
                     tags: ['Thread_v2'], 
                     summary: 'get all threads data', 
@@ -173,7 +232,7 @@ const swaggerOptions = {
                     }
                 }
             },
-            '/api/v2/thread/add-new-thread': {
+            '/api/v2/threads/add-new-thread': {
                 post: {
                     tags: ['Thread_v2'], 
                     summary: 'add new thread data', 
@@ -224,6 +283,71 @@ const swaggerOptions = {
                                 }
                             }
                         }
+                    }
+                }
+            }, 
+            '/api/v2/threads/upload-img-thread': {
+                post: {
+                    tags: ['Thread_v2'], 
+                    summary: 'add new thread image', 
+                    description: 'add new thread image to firestore', 
+                    requestBody: {
+                        required: true, 
+                        content: {
+                            'multipart/form-data': {
+                                schema: {
+                                    type: 'object', 
+                                    properties: {
+                                        UserId: {
+                                            type: 'string', 
+                                            description: 'user id',
+                                            example: 'US99999'
+                                        },
+                                        imageName: {
+                                            type: 'string', 
+                                            format: 'binary', 
+                                            description: 'image upload data'
+                                        }
+                                    }, 
+                                    required: ['imageName']
+                                }
+                            }
+                        }
+                    }, 
+                    responses: {
+                        200: {
+                            description: 'Image uploaded successfully, with URL returned',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            imageUrl: {
+                                                type: 'string',
+                                                description: 'URL of the uploaded image',
+                                                example: 'https://firebasestorage.googleapis.com/v0/b/example.appspot.com/o/image.jpg?alt=media',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }, 
+                        400:  {
+                            description: 'Bad Request - Invalid file or file type',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            message: {
+                                                type: 'string',
+                                                example: 'Invalid file type. Only images are allowed.',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
                     }
                 }
             }
