@@ -40,17 +40,7 @@ router.post('/upload-img-community', async (req, res) => {
     }
 })
 
-// get all community data
-/**
- * @swagger
- * /community/get-all-community:
- *  get:
- *    summary: get all community data 
- *    tags: [Community]
- *    responses:
- *      200: 
- *        description: success 
- */
+
 router.get('/get-all-community', async (req, res)=>{
     try {
         res.json(await cr.getAllCommunity())
@@ -74,19 +64,6 @@ router.get(`/get-detail-community`, async(req, res)=>{
 })
 
 // get comment detail community 
-/**
- * @swagger
- * /community/get-comment-community?communityid={id}:
- *  get: 
- *    summary: get community comment all 
- *    tags: [Community]
- *    parameters: 
- *    - in: query 
- *      name: communityid 
- *      schema: 
- *        type: string 
- *      description: get comment id with detail comment data
- */
 router.get('/get-comment-community', async (req, res)=>{
     try {
         res.json(await cr.getCommentCommunity(req.query.communityid))

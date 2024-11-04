@@ -148,4 +148,47 @@ router.post('/add-thread-comment', async(req, res)=>{
 
 })
 
+// get total like v2 
+router.get('/get-total-like', async(req, res)=>{
+    // ambil dari query thread id yang didapat 
+    const {threadId} = req.query 
+
+    // select dari database 
+    const sqlQuery = `SELECT TotalLike FROM ThreadPostHeader WHERE ThreadId = ?`
+    const result = await db.query(sqlQuery, [threadId])
+
+    return res.status(200).send({
+        "status": "success", 
+        "data": result
+    })
+})
+
+// get total comment thread v2 
+router.get('/get-total-comment', async(req, res)=>{
+    const {threadId} = req.query 
+
+    // query for get total comment of thread 
+    const sqlQuery = `SELECT TotalComment FROM ThreadPostHeader WHERE ThreadId = ?`
+    const result = await db.query(sqlQuery, [threadId])
+
+    return res.status(200).send({
+        "status": "success", 
+        "data": result
+    })
+})
+
+// get total share v2 
+router.get('/get-total-share', async(req, res)=>{
+    const {threadId} = req.query 
+
+    // query for get 
+    const getQuery = `SELECT TotalShare FROM ThreadPostHeader WHERE ThreadId = ?`
+    const result = await db.query(getQuery, [threadId])
+
+    return res.json({
+        "status": "success", 
+        "data": result
+    })
+})
+
 module.exports = router

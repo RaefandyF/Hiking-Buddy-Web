@@ -228,6 +228,125 @@ const swaggerOptions = {
                     }
                 }
             },
+            'api/v2/threads/get-total-like?threadId=[threadId]': {
+                get: {
+                    tags: ['Thread_v2'], 
+                    summary: 'get total like of thread', 
+                    description: 'get total thread likes', 
+                    security: [
+                        {
+                            bearerAuth: []
+                        }
+                    ],
+                    parameters: [
+                        {
+                            in: 'query', 
+                            name: 'threadId', 
+                            schema:{
+                                type: 'string'
+                            }, 
+                            required: true
+                        }
+                    ], 
+                    responses: {
+                        200: {
+                            description: 'succesful get all like', 
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object', 
+                                        properties: {
+                                            TotalLike: {
+                                                type: 'integer', 
+                                                description: 'total like of thread'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/v2/threads/get-total-comment?threadId=[ThreadId]':{
+                get: {
+                    tags: ['Thread_v2'], 
+                    summary: 'get total comment thread', 
+                    description: 'get total comment thread data', 
+                    security: [
+                        {
+                            bearerAuth: []
+                        }
+                    ],
+                    parameters: [
+                        {
+                            in: 'query', 
+                            name: 'threadId', 
+                            schema:{
+                                type: 'string'
+                            }, 
+                            required: true
+                        }
+                    ], 
+                    responses: {
+                        200: {
+                            description: 'succesful get all like', 
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object', 
+                                        properties: {
+                                            TotalComment: {
+                                                type: 'integer', 
+                                                description: 'total comment of thread'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/v2/threads/get-total-share?threadId=[ThreadId]':{
+                get: {
+                    tags: ['Thread_v2'], 
+                    summary: 'get thread total comment', 
+                    description: 'get thread total comment from ThreadPostHeader', 
+                    security: [
+                        {
+                            bearerAuth: []
+                        }
+                    ],
+                    parameters: [
+                        {
+                            in: 'query', 
+                            name: 'threadId', 
+                            schema:{
+                                type: 'string'
+                            }, 
+                            required: true
+                        }
+                    ], 
+                    responses: {
+                        200: {
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object', 
+                                        properties: {
+                                            TotalShare: {
+                                                type: 'integer', 
+                                                description: 'total share of thread'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             '/api/v2/threads/add-new-thread': {
                 post: {
                     tags: ['Thread_v2'], 
