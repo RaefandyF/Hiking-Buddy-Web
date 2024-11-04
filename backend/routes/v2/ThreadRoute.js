@@ -49,7 +49,7 @@ router.post('/upload-img-thread',upload.single('imageName'), async (req, res) =>
     }
 })
 
-// give like v2 
+// give like v2 thread 
 router.post('/add-like-thread', async(req,res)=>{
     // get the data from request 
     const {ThreadId, UserId} = req.body 
@@ -107,6 +107,45 @@ router.post('/add-like-thread', async(req,res)=>{
             })
         }
     }
+})
+
+// add comment data v2 thread 
+router.post('/add-thread-comment', async(req, res)=>{
+    // bound the data from request 
+    const {ThreadId, UserId, CommentData} = req.body
+
+    // add data to table Thread Comment 
+    const query1 = `INSERT INTO ThreadComment VALUES (?,?,?)`
+    const resultadd_1 = await db.query(query1, [ThreadId, UserId, CommentData])
+
+    // select total comment data for get latest and update 
+    const query2 = `SELECT ThreadId, TotalComment FROM ThreadPostHeader WHERE ThreadId = ?`
+    const resultQuery = await db.query(query2, [ThreadId])
+    
+    let temp;
+    resultQuery.map((re)=>{
+        if(re.ThreadId == ThreadId){
+            temp = re.TotalComment
+        }
+    })
+
+    // update total comment setelah di dapatkan data comment sebeelumnya 
+    const sqlUpdate = `UPDATE ThreadPostHeader SET TotalComment = ? WHERE ThreadId = ?`
+    const resultUpdate = await db.query(sqlUpdate, [parseInt(temp)+1, ThreadId])
+
+    // check apakah berhasil
+    if(resultUpdate.affectedRows > 0 && resultadd_1.affectedRows > 0){
+        return res.status(200).send({
+            "status": "success", 
+            "message": "success give comment data !"
+        })
+    }
+
+    return res.status(404).send({
+        "status": "failed", 
+        "message": "failed give comment data !"
+    })
+
 })
 
 module.exports = router

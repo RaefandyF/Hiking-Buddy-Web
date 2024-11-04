@@ -10,14 +10,6 @@ const swaggerOptions = {
         }, 
         tags: [
             {
-                name: 'Community', 
-                description: 'Community group of route Api'
-            }, 
-            {
-                name: 'Article', 
-                description: 'Article group of route API'
-            },
-            {
                 name: 'Customer', 
                 description: 'Customer group of route API'
             }, 
@@ -28,6 +20,10 @@ const swaggerOptions = {
             {
                 name: 'Thread_v2', 
                 description: 'Thread v2 that used for group the Thread Route data'
+            },
+            {
+                name: 'Article_v2', 
+                description: 'Article v2 that used for group article route data'
             }
         ], 
         servers: [
@@ -286,6 +282,76 @@ const swaggerOptions = {
                     }
                 }
             }, 
+            '/api/v2/threads/add-like-thread': {
+                post: {
+                    tags: ['Thread_v2'], 
+                    summary: 'add thread like', 
+                    description: 'add thread like in thread page', 
+                    requestBody: {
+                        required: true, 
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object', 
+                                    properties: {
+                                        ThreadId: {
+                                            type: 'string', 
+                                            description: 'thread id',
+                                            example: 'TE99999'
+                                        },
+                                        UserId: {
+                                            type: 'string', 
+                                            description: 'image upload data',
+                                             example: 'US99999'
+                                        }
+                                    }, 
+                                    required: ['ThreadId', 'UserId']
+                                }
+                            }
+                        }
+                    }, 
+                    responses: {
+                        200: {
+                            description: 'Likr uploaded successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            status: {
+                                                type: 'string',
+                                                description: 'status',
+                                                example: 'success',
+                                            },
+                                            message: {
+                                                type: 'string', 
+                                                description: 'message', 
+                                                example: 'You have successful give like !'
+                                            }
+                                        },
+                                    },
+                                },
+                            },
+                        }, 
+                        400:  {
+                            description: 'Bad Request - Invalid file or file type',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            message: {
+                                                type: 'string',
+                                                example: 'Invalid file type. Only images are allowed.',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+                }
+            },
             '/api/v2/threads/upload-img-thread': {
                 post: {
                     tags: ['Thread_v2'], 
@@ -348,6 +414,109 @@ const swaggerOptions = {
                                 },
                             },
                         },
+                    }
+                }
+            }, 
+            '/api/v2/threads/add-thread-comment': {
+                post: {
+                    tags: ['Thread_v2'], 
+                    summary: 'add thread comment', 
+                    description: 'add thread comment in thread page', 
+                    requestBody: {
+                        required: true, 
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object', 
+                                    properties: {
+                                        ThreadId: {
+                                            type: 'string', 
+                                            description: 'thread id',
+                                            example: 'TE99999'
+                                        },
+                                        UserId: {
+                                            type: 'string', 
+                                            description: 'image upload data',
+                                             example: 'US99999'
+                                        }, 
+                                        CommentData: {
+                                            type: 'string', 
+                                            description: 'add comment data',
+                                            example: 'halooo haloo haii'
+                                        }
+                                    }, 
+                                    required: ['ThreadId', 'UserId', 'CommentData']
+                                }
+                            }
+                        }
+                    }, 
+                    responses: {
+                        200: {
+                            description: 'comment insert successful',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            status: {
+                                                type: 'string',
+                                                description: 'status',
+                                                example: 'success',
+                                            },
+                                            message: {
+                                                type: 'string', 
+                                                description: 'message',
+                                                example: 'success give comment data !'
+                                            }
+                                        },
+                                    },
+                                },
+                            },
+                        }, 
+                    }
+                }
+            },
+            '/api/v2/articles/get-all-article': {
+                get: {
+                    tags: ['Article_v2'],
+                    summary: 'Get all article data',
+                    description: 'Get all article data from database',
+                    responses: {
+                        200: {
+                            description: 'Data for get article successful',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'array',
+                                        items: { // Use "items" to specify the type of objects in the array
+                                            type: 'object',
+                                            properties: {
+                                                ArticleId: {
+                                                    type: 'string',
+                                                    description: 'Display ArticleId',
+                                                    example: 'AR99999'
+                                                },
+                                                ArticleTitle: {
+                                                    type: 'string',
+                                                    description: 'Display the article title data',
+                                                    example: 'Gunung rinjani sebagai pesona alam indonesia'
+                                                }, 
+                                                ArticleData: {
+                                                    type: 'string', 
+                                                    description: 'Display the description of the data', 
+                                                    example: 'engaku pecinta alam dan penikmat gunung? Belum lengkap rasanya jika belum merasakan sensasi mendaki di gunung yang terkenal sangat cantik akan pesona alamnya ini. Gunung Rinjani terletak di utara Pulau Lombok, Nusa Tenggara Barat, dan merupakan gunung berapi kedua tertinggi di Indonesia dengan ketinggian 3.726 mdpl.'
+                                                }, 
+                                                ArticleDateRelease: {
+                                                    type: 'date', 
+                                                    description: 'display date of the data', 
+                                                    example: '2024-01-30'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
