@@ -23,8 +23,8 @@ router.post('/add-new-thread', async(req,res)=>{
 
     const sqlquery = "INSERT INTO ThreadPostHeader VALUES (?,?,?,?,?)"
     const sqlquery2 = "INSERT INTO Thread VALUES (?,?,?)"
-    const res1 = await db.query(sqlquery, [ThreadId, UserId, TotalLike, TotalComment, TotalShare])
     const res2 = await db.query(sqlquery2, [ThreadId, ThreadDescription, ThreadDateRelease])
+    const res1 = await db.query(sqlquery, [ThreadId, UserId, TotalLike, TotalComment, TotalShare])
 
     if(res1.affectedRows > 0 && res2.affectedRows > 0){
         res.status(200).send({
