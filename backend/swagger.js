@@ -122,11 +122,6 @@ const swaggerOptions = {
                                 schema: {
                                     type: 'object', 
                                     properties: {
-                                        UserId: {
-                                            type: 'string', 
-                                            description: 'user id data', 
-                                            example: 'US77777'
-                                        },
                                         UserFullname: {
                                             type: 'string', 
                                             description: 'user fullname data', 
@@ -364,26 +359,6 @@ const swaggerOptions = {
                                             description: 'id user', 
                                             example: 'US99999'
                                         }, 
-                                        ThreadId: {
-                                            type: 'string', 
-                                            description: 'thread id', 
-                                            example: 'TE99999'
-                                        },
-                                        TotalLike: {
-                                            type: 'integer', 
-                                            description: 'total like that use for display total like of thread', 
-                                            example: '12'
-                                        }, 
-                                        TotalComment: {
-                                            type: 'integer', 
-                                            description: 'total comment that displayed for every thread', 
-                                            example: '111'
-                                        }, 
-                                        TotalShare: {
-                                            type: 'integer', 
-                                            description: 'total share that getted for every thread', 
-                                            example: 10
-                                        }, 
                                         ThreadDescription: {
                                             type: 'string', 
                                             description: 'main content of the thread', 
@@ -394,6 +369,8 @@ const swaggerOptions = {
                                             description: 'thread date release', 
                                             example: '21 January 2024'
                                         }
+                                        
+                            
                                     }
                                 }
                             }

@@ -2,52 +2,102 @@ const express = require('express')
 const router = express.Router()
 const db = require('../../services/db')
 const img_controller = require('../../services/UploadImage')
-
+const {v4: uuidv4} =  require('uuid')
 const multer = require('multer')
-const upload = multer()
+const { bucket } = require('../../services/firebaseDb')
+
+const upload = multer({
+    storage: multer.memoryStorage()
+})
 
 // get all thread v2 
 router.get('/get-all-thread', async(req, res)=>{
-    const queryGet = "SELECT th.ThreadId,th.ThreadDescription, th.ThreadDateRelease, thp.TotalLike, thp.TotalComment, thp.TotalShare, us.UserFullName FROM Thread th JOIN ThreadPostHeader thp ON th.ThreadId = thp.ThreadId JOIN Users us ON us.UserId = thp.UserId"
-    const threads = await db.query(queryGet)
+    try {
+        const queryGet = "SELECT th.ThreadId,th.ThreadDescription, th.ThreadDateRelease, thp.TotalLike, thp.TotalComment, thp.TotalShare, us.UserFullName FROM Thread th JOIN ThreadPostHeader thp ON th.ThreadId = thp.ThreadId JOIN Users us ON us.UserId = thp.UserId"
+        const threads = await db.query(queryGet)
 
-    res.status(200).send({
-        "status": "success", 
-        "threads": threads
-    })
-})
+        // ambil data dari firebase storage
+        const threadWithImages = await Promise.all(threads.map(async(tr)=>{
+            const file = bucket.file(`images/${tr.ThreadId}`)
 
-// add new thread v2
-router.post('/add-new-thread', async(req,res)=>{
-    const {UserId, ThreadId, TotalLike, TotalComment, TotalShare, ThreadDescription, ThreadDateRelease} = req.body
+            let imageUrl = null;
+            try {
+                const [url] = await file.getSignedUrl({
+                action: 'read',
+                expires: '03-09-2500'
+                });
+                imageUrl = url;
+            } catch (error) {
+                console.error(`Error fetching image for ThreadId ${tr.ThreadId}:`, error);
+            }
 
-    const sqlquery = "INSERT INTO ThreadPostHeader VALUES (?,?,?,?,?)"
-    const sqlquery2 = "INSERT INTO Thread VALUES (?,?,?)"
-    const res2 = await db.query(sqlquery2, [ThreadId, ThreadDescription, ThreadDateRelease])
-    const res1 = await db.query(sqlquery, [ThreadId, UserId, TotalLike, TotalComment, TotalShare])
+            return {...tr, imageUrl: imageUrl}
 
-    if(res1.affectedRows > 0 && res2.affectedRows > 0){
+        }))
+
         res.status(200).send({
             "status": "success", 
-            "message": "data successfully inserted !"
+            "threads": threadWithImages
         })
-    }
-})
-
-// upload img thread v2 
-router.post('/upload-img-thread',upload.single('imageName'), async (req, res) => {
-    try {
-        console.log(req.body)
-        console.log(req.file)
-        res.json(await img_controller.uploadImageCommunity(req.body, req.file))
     } catch (error) {
-        console.log(error)
         res.status(404).send({
-            "status": "error", 
+            "status": "failed", 
             "message": error.message
         })
     }
 })
+
+// add new thread v2
+router.post('/add-new-thread', upload.single("imageName") , async(req,res)=>{
+    // user id diambil dari current login data user 
+    const {UserId, ThreadDescription, ThreadDateRelease} = req.body
+
+    // memasukkan data uuid v4
+    const ThreadId = uuidv4()
+
+    const sqlquery = "INSERT INTO ThreadPostHeader VALUES (?,?,?,?,?)"
+    const sqlquery2 = "INSERT INTO Thread VALUES (?,?,?)"
+    const res2 = await db.query(sqlquery2, [ThreadId, ThreadDescription, ThreadDateRelease])
+    const res1 = await db.query(sqlquery, [ThreadId, UserId, 0, 0, 0])
+
+    if(res1.affectedRows == 0 && res2.affectedRows == 0){
+        res.status(500).send({
+            "status": "failed", 
+            "message": "data cannot be inserted !", 
+        })
+    }
+
+     // set file name 
+     const fileName = `images/${ThreadId}`
+     const file = bucket.file(fileName)
+ 
+     // masukkan data ke firebase storage 
+     await file.save(req.file.buffer, {
+         metadata: {
+             contentType: req.file.mimetype
+         }
+     })
+
+     res.status(200).send({
+        status: "success",
+        message: "Data successfully inserted!",
+      });
+})
+
+// upload img thread v2 
+// router.post('/upload-img-thread',upload.single('imageName'), async (req, res) => {
+//     try {
+//         console.log(req.body)
+//         console.log(req.file)
+//         res.json(await img_controller.uploadImageCommunity(req.body, req.file))
+//     } catch (error) {
+//         console.log(error)
+//         res.status(404).send({
+//             "status": "error", 
+//             "message": error.message
+//         })
+//     }
+// })
 
 // give like v2 thread 
 router.post('/add-like-thread', async(req,res)=>{

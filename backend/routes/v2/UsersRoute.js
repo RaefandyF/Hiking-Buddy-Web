@@ -4,6 +4,7 @@ const db = require('../../services/db')
 const jwt = require('jsonwebtoken')
 const AuthenticationToken = require('./middleware/authenticationToken')
 require('dotenv').config()
+const {v4: uuidv4} = require('uuid')
 
 const SECRET_KEY = process.env.SECRET_KEY
 
@@ -39,10 +40,10 @@ router.get('/get-current-login', AuthenticationToken ,async (req, res)=>{
 
 // register user v2
 router.post('/register', async (req, res)=>{
-    const {UserId, UserFullname, UserEmail, UserPhone, UserRole, UserPassword, UserConfirmPassword, Username} = req.body
+    const {UserFullname, UserEmail, UserPhone, UserRole, UserPassword, UserConfirmPassword, Username} = req.body
 
     // jika kosong 
-    if(!UserId || !UserFullname || !UserEmail || !UserPhone || !UserRole || !UserPassword || !UserConfirmPassword || !Username){
+    if(!UserFullname || !UserEmail || !UserPhone || !UserRole || !UserPassword || !UserConfirmPassword || !Username){
         return res.status(404).send({
             "status": "failed", 
             "message": "the data cannot be empty !"
@@ -56,6 +57,9 @@ router.post('/register', async (req, res)=>{
             "message": "user password with confirmation password not same !"
         })
     }
+
+     // set data user id 
+     const UserId = uuidv4()
 
     const queryReg = `INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?)`
     const result = await db.query(queryReg, [UserId, UserFullname, UserEmail, UserPhone, UserRole, UserPassword, Username])
