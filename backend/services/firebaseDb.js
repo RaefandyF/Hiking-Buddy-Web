@@ -1,10 +1,9 @@
 // import { initializeApp } from "firebase/app";
-const firebase = require('firebase/app')
-const storage = require('firebase/storage')
-const admin = require('firebase-admin')
-const serviceAccount = require('/Users/yosolukito/Documents/hikingbuddy/Hiking-Buddy-Web/backend/hikingbuddyimagedb-firebase-adminsdk-7z4lj-fbb4c5889a.json')
+const firebase = require("firebase/app");
+const storage = require("firebase/storage");
+const admin = require("firebase-admin");
+const serviceAccount = require("../hikingbuddyimagedb-firebase-adminsdk-7z4lj-fbb4c5889a.json");
 // import {getStorage} from "firebase/storage"
-
 
 // const firebaseConfig = {
 //     apiKey: "AIzaSyC0VCXNz_zISy1DcAVwvgcrwZO3D_0SPcc",
@@ -18,12 +17,12 @@ const serviceAccount = require('/Users/yosolukito/Documents/hikingbuddy/Hiking-B
 // const app = firebase.initializeApp(firebaseConfig);
 // const imagedb = storage.getStorage(app)
 
-// firebas admin config 
+// firebas admin config
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount) ,
-  storageBucket: 'hikingbuddyimagedb.appspot.com'
-})
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "hikingbuddyimagedb.appspot.com",
+});
 
-const bucket = admin.storage().bucket()
+const bucket = admin.storage().bucket();
 
-module.exports = {bucket}
+module.exports = { bucket };

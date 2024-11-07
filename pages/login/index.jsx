@@ -11,7 +11,7 @@ export default function Login() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 425); // Mengatur breakpoint untuk ukuran mobile (768px)
+      setIsMobile(window.innerWidth <= 440); // Mengatur breakpoint untuk ukuran mobile (768px)
     };
 
     handleResize(); // Cek ukuran layar saat pertama kali komponen di-mount

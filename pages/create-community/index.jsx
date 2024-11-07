@@ -1,8 +1,27 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
+import { useRef, useState } from "react";
 
 export default function CreateCommunity() {
+  const fileInputRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log("Selected files:", selectedFile);
+    if (selectedFile && selectedFile.type.startsWith("image/")) {
+      setPreviewImage(URL.createObjectURL(selectedFile)); // Buat URL sementara untuk pratinjau
+    } else {
+      alert("Please select a valid image file");
+      setPreviewImage(null);
+    }
+    // Lakukan sesuatu dengan file yang dipilih, seperti mengirim ke server
+  };
   return (
     <main className="font-poppins flex justify-center">
       <div className="w-full max-w-[440px] p-5">
@@ -17,6 +36,17 @@ export default function CreateCommunity() {
           </button>
         </section>
 
+        {/* Tampilkan pratinjau gambar */}
+        {previewImage && (
+          <div className="mt-4">
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="w-full h-[12rem] object-cover rounded-md shadow-lg"
+            />
+          </div>
+        )}
+
         <section className="mt-8">
           <textarea
             className="w-full border-gray-200 border-2 bg-[#f7f7f7] rounded-[1vw] p-[2vw]"
@@ -24,9 +54,21 @@ export default function CreateCommunity() {
             rows={20}
           />
           <div className="flex justify-end mt-2">
-            <button className="bg-[#F09024] py-5 px-8 text-white rounded-3xl">
-              Pilih Foto dan Video
+            <button
+              onClick={handleButtonClick}
+              className="bg-[#F09024] py-5 px-8 text-white rounded-3xl"
+            >
+              Upload Foto dan Video
             </button>
+
+            {/* Input file yang disembunyikan */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*" // Batasi hanya untuk file gambar
+              className="hidden"
+            />
           </div>
         </section>
       </div>

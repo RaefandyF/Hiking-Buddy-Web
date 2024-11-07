@@ -32,28 +32,30 @@ export default function Article() {
 
         <section className="mt-5">
           <div className="flex flex-col gap-3">
-            <div className="flex gap-3 items-center">
-              <img
-                alt="article"
-                height={100}
-                width={100}
-                src={article1.src}
-                className="max-[348px]:h-[160px] max-[307px]:h-[200px]"
-              />
-              <div className="flex flex-col gap-2">
-                <span className="flex gap-5 text-[0.6rem] text-[#B5ADAD]">
-                  <p>BY LOREM IPSUM</p>
-                  <p>23 Februari 2024</p>
-                </span>
-                <h1 className="text-[0.8rem] font-bold">
-                  Gunung Rinjani, Pesona Keindahan Alam Eksotis di Atap Lombok
-                </h1>
-                <p className="text-[0.6rem]">
-                  Lorem ipsum sit amet lorem ipsum sit amet lorem ipsum sit amet
-                  Lorem ipsum sit amet lorem....
-                </p>
+            <Link href={"/article/1"}>
+              <div className="flex gap-3 items-center">
+                <img
+                  alt="article"
+                  height={100}
+                  width={100}
+                  src={article1.src}
+                  className="max-[348px]:h-[160px] max-[307px]:h-[200px]"
+                />
+                <div className="flex flex-col gap-2">
+                  <span className="flex gap-5 text-[0.6rem] text-[#B5ADAD]">
+                    <p>BY LOREM IPSUM</p>
+                    <p>23 Februari 2024</p>
+                  </span>
+                  <h1 className="text-[0.8rem] font-bold">
+                    Gunung Rinjani, Pesona Keindahan Alam Eksotis di Atap Lombok
+                  </h1>
+                  <p className="text-[0.6rem]">
+                    Lorem ipsum sit amet lorem ipsum sit amet lorem ipsum sit
+                    amet Lorem ipsum sit amet lorem....
+                  </p>
+                </div>
               </div>
-            </div>
+            </Link>
 
             <div className="flex gap-3 items-center">
               <img

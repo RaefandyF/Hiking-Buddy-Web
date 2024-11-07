@@ -23,7 +23,7 @@ export default function CommunityMobile() {
           "http://localhost:8080/api/v2/threads/get-all-thread"
         );
         // Set data dari respons API ke state
-        setData(response);
+        setData(response.data.threads);
         setLoading(false);
       } catch (err) {
         // Set error jika terjadi kesalahan
@@ -35,6 +35,11 @@ export default function CommunityMobile() {
     fetchData();
   }, []);
 
+  // console.log(data);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
     <main className="font-poppins pb-[7rem]">
       <header className="flex justify-between p-5 items-center gap-2 shadow-lg">
@@ -54,38 +59,41 @@ export default function CommunityMobile() {
 
       <section className="p-5">
         <div className="flex flex-col gap-5">
-          {/* {data.map((item) => ( */}
-            <div className="border border-black/10 p-3 rounded-xl">
+          {data.map((item, id) => (
+            <div key={id} className="border border-black/10 p-3 rounded-xl">
               <div className="flex justify-between items-center">
                 <div className="flex gap-3 items-center">
                   <img className="rounded-full bg-black w-11 h-11" />
                   <div>
-                    <h1 className="font-bold">Ann Calista</h1>
+                    <h1 className="font-bold">{item.Username}</h1>
                     <p className="text-xs text-black/30">21 Jam yang Lalu</p>
                   </div>
                 </div>
                 <CiMenuKebab className="text-3xl rotate-90" />
               </div>
               <div className="mt-3 flex flex-col gap-3">
-                <p className="text-[0.65rem]">{}</p>
-                <img src={CommunityImage1.src} className="" />
+                <p className="text-[0.65rem]">{item.ThreadDescription}</p>
+                <img
+                  src={item.imageUrl}
+                  className="w-full h-[10rem] object-cover"
+                />
                 <div className="flex gap-8">
                   <span className="flex gap-2 items-center">
                     <FaHeart className="text-2xl text-[#F09024]" />
-                    <h3 className="text-black/50">101</h3>
+                    <h3 className="text-black/50">{item.TotalLike}</h3>
                   </span>
                   <span className="flex gap-2 items-center">
                     <AiOutlineMessage className="text-2xl text-black/50" />
-                    <h3 className="text-black/50">15</h3>
+                    <h3 className="text-black/50">{item.TotalComment}</h3>
                   </span>
                   <span className="flex gap-2 items-center">
                     <PiShareFat className="text-2xl text-black/50" />
-                    <h3 className="text-black/50">9</h3>
+                    <h3 className="text-black/50">{item.TotalShare}</h3>
                   </span>
                 </div>
               </div>
             </div>
-          {/* ))} */}
+          ))}
 
           <div className="border border-black/10 p-3 rounded-xl">
             <div className="flex justify-between items-center">

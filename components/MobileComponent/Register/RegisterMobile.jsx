@@ -1,13 +1,52 @@
 import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import bg from "../../../public/login-register-bg.png";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import axios from "axios";
 export default function RegisterMobile() {
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [formData, setFormData] = useState({
+    UserFullname: "",
+    UserEmail: "",
+    UserPhone: "",
+    UserRole: "Member",
+    UserPassword: "",
+    UserConfirmPassword: "",
+    Username: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setRegisterLoading(true);
+    if (formData.UserPassword !== formData.UserConfirmPassword) {
+      setRegisterLoading(false);
+      setErrorMessage("Konfirmasi password tidak cocok");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v2/users/register",
+        formData
+      );
+      console.log(response.data);
+      setRegisterLoading(false);
+      window.location.href = "/login";
+    } catch (error) {
+      setRegisterLoading(false);
+      console.error(error);
+    }
+  };
 
   return (
     <main className="">
@@ -20,15 +59,19 @@ export default function RegisterMobile() {
         </h1>
         <p className="text-white/60">Sign Up to Your Account</p>
       </section>
-      <section className="px-7 py-7">
+      <form onSubmit={handleRegister} className="px-7 py-7">
         <div className="">
           <h3 className="bg-white w-[8rem] pl-3 relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
             Nama Lengkap
           </h3>
           <input
+            name="UserFullname"
             type="text"
             placeholder="Masukkan Nama Lengkap"
             className="w-[100%] border border-black/10 p-4 rounded-lg"
+            value={formData.UserFullname}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mt-2">
@@ -36,9 +79,13 @@ export default function RegisterMobile() {
             Username
           </h3>
           <input
+            name="Username"
             type="text"
             placeholder="Masukkan Username"
             className="w-[100%] border border-black/10 p-4 rounded-lg"
+            value={formData.Username}
+            onChange={handleChange}
+            required
           />
         </div>
 
@@ -47,9 +94,13 @@ export default function RegisterMobile() {
             Email
           </h3>
           <input
+            name="UserEmail"
             type="email"
             placeholder="Masukkan email"
             className="w-[100%] border border-black/10 p-4 rounded-lg"
+            value={formData.UserEmail}
+            onChange={handleChange}
+            required
           />
         </div>
 
@@ -58,9 +109,13 @@ export default function RegisterMobile() {
             No. Handphone
           </h3>
           <input
-            type="email"
+            name="UserPhone"
+            type="number"
             placeholder="Masukkan email"
             className="w-[100%] border border-black/10 p-4 rounded-lg"
+            value={formData.UserPhone}
+            onChange={handleChange}
+            required
           />
         </div>
 
@@ -71,11 +126,13 @@ export default function RegisterMobile() {
           {showPassword ? (
             <div className="flex">
               <input
+                name="UserPassword"
                 placeholder="Masukkan password"
-                value={password}
+                value={formData.UserPassword}
+                onChange={handleChange}
                 type="text"
-                onChange={(e) => setPassword(e.target.value)}
                 className="w-[100%] border border-black/10 p-4 rounded-lg"
+                required
               />
               <FaEye
                 onClick={() => setShowPassword(false)}
@@ -85,11 +142,13 @@ export default function RegisterMobile() {
           ) : (
             <div className="flex">
               <input
+                name="UserPassword"
                 placeholder="Masukkan password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.UserPassword}
+                onChange={handleChange}
                 type="password"
                 className="w-[100%] border border-black/10 p-4 rounded-lg"
+                required
               />
               <FaEyeSlash
                 onClick={() => setShowPassword(true)}
@@ -106,11 +165,13 @@ export default function RegisterMobile() {
           {showConfirmPassword ? (
             <div className="flex">
               <input
+                name="UserConfirmPassword"
                 placeholder="Masukkan password"
-                value={confirmPassword}
+                value={formData.UserConfirmPassword}
+                onChange={handleChange}
                 type="text"
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-[100%] border border-black/10 p-4 rounded-lg"
+                required
               />
               <FaEye
                 onClick={() => setShowConfirmPassword(false)}
@@ -120,11 +181,13 @@ export default function RegisterMobile() {
           ) : (
             <div className="flex">
               <input
+                name="UserConfirmPassword"
                 placeholder="Masukkan password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.UserConfirmPassword}
+                onChange={handleChange}
                 type="password"
                 className="w-[100%] border border-black/10 p-4 rounded-lg"
+                required
               />
               <FaEyeSlash
                 onClick={() => setShowConfirmPassword(true)}
@@ -133,10 +196,25 @@ export default function RegisterMobile() {
             </div>
           )}
         </div>
+        <div className="mt-3 flex justify-center">
+          <p className="text-red-600">{errorMessage}</p>
+        </div>
 
-        <button className="mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg">
-          Sign Up
-        </button>
+        {registerLoading ? (
+          <button
+            type="submit"
+            className="mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg items-center justify-center flex"
+          >
+            <AiOutlineLoading3Quarters className="animate-spin text-lg" />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg"
+          >
+            Sign Up
+          </button>
+        )}
 
         <div className="flex justify-center mt-5">
           <p className="text-black/50">
@@ -146,7 +224,7 @@ export default function RegisterMobile() {
             </a>
           </p>
         </div>
-      </section>
+      </form>
     </main>
   );
 }

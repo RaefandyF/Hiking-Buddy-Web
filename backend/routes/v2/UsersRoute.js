@@ -1,10 +1,10 @@
-const express = require('express')
-const router = express.Router()
-const db = require('../../services/db')
-const jwt = require('jsonwebtoken')
-const AuthenticationToken = require('./middleware/authenticationToken')
-require('dotenv').config()
-const {v4: uuidv4} = require('uuid')
+const express = require("express");
+const router = express.Router();
+const db = require("../../services/db");
+const jwt = require("jsonwebtoken");
+const AuthenticationToken = require("./middleware/authenticationToken");
+require("dotenv").config();
+const { v4: uuidv4 } = require("uuid");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -39,27 +39,43 @@ router.get("/get-current-login", AuthenticationToken, async (req, res) => {
 });
 
 // register user v2
-router.post('/register', async (req, res)=>{
-    const {UserFullname, UserEmail, UserPhone, UserRole, UserPassword, UserConfirmPassword, Username} = req.body
+router.post("/register", async (req, res) => {
+  const {
+    UserFullname,
+    UserEmail,
+    UserPhone,
+    UserRole,
+    UserPassword,
+    UserConfirmPassword,
+    Username,
+  } = req.body;
 
-    // jika kosong 
-    if(!UserFullname || !UserEmail || !UserPhone || !UserRole || !UserPassword || !UserConfirmPassword || !Username){
-        return res.status(404).send({
-            "status": "failed", 
-            "message": "the data cannot be empty !"
-        })
-    }
+  // jika kosong
+  if (
+    !UserFullname ||
+    !UserEmail ||
+    !UserPhone ||
+    !UserRole ||
+    !UserPassword ||
+    !UserConfirmPassword ||
+    !Username
+  ) {
+    return res.status(404).send({
+      status: "failed",
+      message: "the data cannot be empty !",
+    });
+  }
 
-    // user validation password 
-    if(UserPassword !== UserConfirmPassword){
-        return res.status(404).send({
-            "status": "failed", 
-            "message": "user password with confirmation password not same !"
-        })
-    }
+  // user validation password
+  if (UserPassword !== UserConfirmPassword) {
+    return res.status(404).send({
+      status: "failed",
+      message: "user password with confirmation password not same !",
+    });
+  }
 
-     // set data user id 
-     const UserId = uuidv4()
+  // set data user id
+  const UserId = uuidv4();
 
   const queryReg = `INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?)`;
   const result = await db.query(queryReg, [
