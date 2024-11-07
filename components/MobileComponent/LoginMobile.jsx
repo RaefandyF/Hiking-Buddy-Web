@@ -1,16 +1,54 @@
 import React, { useState } from "react";
 import googleIcon from "../../public/google-icon.png";
+import { useRouter } from "next/router";
+import axios from "axios";
 import Image from "next/image";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import bg from "../../public/login-register-bg.png";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function LoginMobile() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [invalidLogin, setInvalidLogin] = useState(false);
+
+  // Login handler
+  const handleLogin = async () => {
+    setInvalidLogin(false);
+    setLoginLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v2/users/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      // Save the token to localStorage
+      localStorage.setItem("HikingBuddyToken", response.data.token);
+      console.log(response.data);
+      setLoginLoading(false);
+      router.push("/");
+      console.log("Token saved:", response.data.token);
+    } catch (err) {
+      setLoginLoading(false);
+      if (err.response?.data?.message === "invalid credentials") {
+        setInvalidLogin(true);
+      }
+      console.log(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <main className="">
-      <section style={{ backgroundImage: `url(${bg.src})` }} className="pt-20 px-7 pb-7 bg-cover">
+      <section
+        style={{ backgroundImage: `url(${bg.src})` }}
+        className="pt-20 px-7 pb-7 bg-cover"
+      >
         <h1 className="text-3xl max-w-[15rem] font-bold text-white">
           Sign In to Your Account
         </h1>
@@ -23,6 +61,7 @@ export default function LoginMobile() {
           </h3>
           <input
             placeholder="Masukkan email"
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             className="w-[100%] border border-black/10 p-4 rounded-lg"
           />
@@ -60,18 +99,35 @@ export default function LoginMobile() {
               />
             </div>
           )}
+          {invalidLogin && (
+            <div className="flex justify-center mt-2 text-sm text-red-500">
+              <p className="text-center">
+                Email atau password yang anda masukkan salah
+              </p>
+            </div>
+          )}
         </div>
 
         <p className="mt-8 flex justify-end text-[#F09024] font-bold cursor-pointer">
           Lupa Password?
         </p>
 
-        <button className="mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg">
-          Sign In
-        </button>
+        {loginLoading ? (
+          <button className="flex mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg items-center justify-center">
+            <AiOutlineLoading3Quarters className="animate-spin text-lg" />
+          </button>
+        ) : (
+          <button
+            onClick={handleLogin}
+            className="mt-10 w-[100%] bg-[#F09024] p-4 rounded-xl text-white text-lg"
+          >
+            Sign In
+          </button>
+        )}
 
         <button className="mt-7 w-[100%] p-4 rounded-xl border border-black/10 text-lg flex gap-5 items-center justify-center">
-          <Image src={googleIcon} className="w-[1.5rem]" /> Sign In With Google
+          <Image alt="google" src={googleIcon} className="w-[1.5rem]" /> Sign In
+          With Google
         </button>
 
         <div className="flex justify-center mt-5">

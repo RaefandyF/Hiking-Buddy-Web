@@ -11,12 +11,13 @@ import daruratIcon from "./assets/darurat-menu.png";
 import fireIcon from "./assets/fire-icon.png";
 import article1 from "./assets/article1-photo.png";
 import FooterMobile from "../FooterMobile/FooterMobile";
+import Link from "next/link";
 // }border-t-[4px] border-[#F09024] text-[#F09024]
 export default function HomeMobile() {
   return (
     <main className="font-poppins pb-[7rem]">
       <header className="flex justify-between p-5 items-center">
-        <img height={80} width={80} src={logo.src} />
+        <img alt="logo" height={80} width={80} src={logo.src} />
         <div className="flex gap-3">
           <FaRegCompass className="text-2xl" />
           <IoIosNotifications className="text-2xl" />
@@ -24,27 +25,42 @@ export default function HomeMobile() {
       </header>
       <section>
         <div className="">
-          <img src={banner1.src} className="w-full h-[12rem]" />
+          <img alt="banner" src={banner1.src} className="w-full h-[12rem]" />
         </div>
         <div className="flex mx-5 shadow-xl rounded-xl p-5 relative bottom-4 bg-white gap-8 max-[410px]:gap-7 max-[330px]:gap-5 max-[290px]:gap-3 justify-center">
           <span className="flex flex-col max-w-[2rem] items-center gap-1">
-            <img className="max-w-[2rem] max-h-[2rem]" src={ruteIcon.src} />
+            <img
+              className="max-w-[2rem] max-h-[2rem]"
+              alt="rute icon"
+              src={ruteIcon.src}
+            />
             <p className="text-[0.6rem] text-center">Rute dan Informasi</p>
           </span>
           <span className="flex flex-col max-w-[4rem] max-[379px]:max-w-[2rem] items-center gap-1">
-            <img className="max-w-[2rem]" src={tripIcon.src} />
+            <img className="max-w-[2rem]" alt="trip icon" src={tripIcon.src} />
             <p className="text-[0.6rem] text-center">Open Trip</p>
           </span>
           <span className="flex flex-col max-w-[4rem] max-[379px]:max-w-[2rem] items-center gap-1">
-            <img className="max-w-[2rem]" src={alatIcon.src} />
+            <img className="max-w-[2rem]" alt="alat icon" src={alatIcon.src} />
             <p className="text-[0.6rem] text-center">Sewa Alat</p>
           </span>
-          <span className="flex flex-col items-center gap-1">
-            <img className="max-w-[2rem]" src={artikelIcon.src} />
-            <p className="text-[0.6rem] text-center">Artikel</p>
-          </span>
+
+          <Link href="/article">
+            <span className="flex flex-col items-center gap-1">
+              <img
+                className="max-w-[2rem]"
+                alt="artikel icon"
+                src={artikelIcon.src}
+              />
+              <p className="text-[0.6rem] text-center">Artikel</p>
+            </span>
+          </Link>
           <span className="flex flex-col max-w-[2rem] items-center gap-1">
-            <img className="max-w-[2rem]" src={daruratIcon.src} />
+            <img
+              className="max-w-[2rem]"
+              alt="darurat icon"
+              src={daruratIcon.src}
+            />
             <p className="text-[0.6rem] text-center">Kontak Darurat</p>
           </span>
         </div>
@@ -54,10 +70,12 @@ export default function HomeMobile() {
         <div>
           <span className="flex justify-between items-center">
             <span className="flex gap-2">
-              <img className="w-4 h-5" src={fireIcon.src} />
+              <img className="w-4 h-5" alt="fire icon" src={fireIcon.src} />
               <h1 className="font-bold">Temukan Artikel Terpopuler</h1>
             </span>
-            <h2 className="text-sm text-[#F09024] w-[5.7rem]">Lihat Semua</h2>
+            <Link href="/article">
+              <h2 className="text-sm text-[#F09024] w-[5.7rem]">Lihat Semua</h2>
+            </Link>
           </span>
           <p className="text-xs text-[#908989] mt-1">
             plus rekomendasi lainnya
@@ -67,6 +85,7 @@ export default function HomeMobile() {
         <div className="mt-7 flex flex-col gap-5">
           <div className="flex gap-3 items-center">
             <img
+              alt="article"
               height={80}
               width={130}
               src={article1.src}
@@ -88,7 +107,7 @@ export default function HomeMobile() {
           </div>
 
           <div className="flex gap-3 items-center">
-            <img height={80} width={130} src={article1.src} />
+            <img alt="article" height={80} width={130} src={article1.src} />
             <div className="flex flex-col gap-2">
               <span className="flex gap-5 text-[0.6rem] text-[#B5ADAD]">
                 <p>BY LOREM IPSUM</p>
@@ -105,7 +124,7 @@ export default function HomeMobile() {
           </div>
 
           <div className="flex gap-3 items-center">
-            <img height={80} width={130} src={article1.src} />
+            <img alt="article" height={80} width={130} src={article1.src} />
             <div className="flex flex-col gap-2">
               <span className="flex gap-5 text-[0.6rem] text-[#B5ADAD]">
                 <p>BY LOREM IPSUM</p>
@@ -123,7 +142,12 @@ export default function HomeMobile() {
         </div>
       </section>
 
-      <FooterMobile home={"border-t-[4px] border-[#F09024] text-[#F09024]"} komunitas={"py-7"} aktivitas={"py-7"} profile={"py-7"} />
+      <FooterMobile
+        home={"border-t-[4px] border-[#F09024] text-[#F09024]"}
+        komunitas={"py-7"}
+        aktivitas={"py-7"}
+        profile={"py-7"}
+      />
     </main>
   );
 }

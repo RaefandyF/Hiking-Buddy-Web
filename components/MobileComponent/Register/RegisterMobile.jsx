@@ -22,6 +22,16 @@ export default function RegisterMobile() {
       </section>
       <section className="px-7 py-7">
         <div className="">
+          <h3 className="bg-white w-[8rem] pl-3 relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
+            Nama Lengkap
+          </h3>
+          <input
+            type="text"
+            placeholder="Masukkan Nama Lengkap"
+            className="w-[100%] border border-black/10 p-4 rounded-lg"
+          />
+        </div>
+        <div className="mt-2">
           <h3 className="bg-white w-[5rem] pl-3 relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
             Username
           </h3>
@@ -32,7 +42,7 @@ export default function RegisterMobile() {
           />
         </div>
 
-        <div className="">
+        <div className="mt-2">
           <h3 className="bg-white w-[5rem] pl-3 relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
             Email
           </h3>
@@ -43,7 +53,18 @@ export default function RegisterMobile() {
           />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-2">
+          <h3 className="bg-white w-[8rem] pl-3 relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
+            No. Handphone
+          </h3>
+          <input
+            type="email"
+            placeholder="Masukkan email"
+            className="w-[100%] border border-black/10 p-4 rounded-lg"
+          />
+        </div>
+
+        <div className="mt-3">
           <h3 className="bg-white w-[5rem] pl-3 text-center relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
             Password
           </h3>
@@ -58,7 +79,7 @@ export default function RegisterMobile() {
               />
               <FaEye
                 onClick={() => setShowPassword(false)}
-                className="text-black/50 text-xl absolute right-12 top-[28.5rem]"
+                className="text-black/50 text-xl absolute right-12 top-[39.3rem]"
               />
             </div>
           ) : (
@@ -72,13 +93,13 @@ export default function RegisterMobile() {
               />
               <FaEyeSlash
                 onClick={() => setShowPassword(true)}
-                className="text-black/50 text-xl absolute right-12 top-[28.5rem]"
+                className="text-black/50 text-xl absolute right-12 top-[39.3rem]"
               />
             </div>
           )}
         </div>
 
-        <div className="mt-6">
+        <div className="mt-3">
           <h3 className="bg-white w-[10rem] pl-3 text-center relative top-[0.65rem] left-[0.0rem] text-black/40 text-[0.9rem]">
             Konfirmasi Password
           </h3>
@@ -93,7 +114,7 @@ export default function RegisterMobile() {
               />
               <FaEye
                 onClick={() => setShowConfirmPassword(false)}
-                className="text-black/50 text-xl absolute right-12 top-[35rem]"
+                className="text-black/50 text-xl absolute right-12 top-[45rem]"
               />
             </div>
           ) : (
@@ -107,7 +128,7 @@ export default function RegisterMobile() {
               />
               <FaEyeSlash
                 onClick={() => setShowConfirmPassword(true)}
-                className="text-black/50 text-xl absolute right-12 top-[35rem]"
+                className="text-black/50 text-xl absolute right-12 top-[45rem]"
               />
             </div>
           )}
