@@ -1,0 +1,131 @@
+const express = require('express')
+const router = express.Router()
+const db = require('../../services/db')
+const {v4: uuidv4} = require('uuid')
+const AuthenticationToken = require('./middleware/authenticationToken')
+
+// add new ticket data 
+router.post('/insert-new-ticket', async(req, res)=>{
+
+    try {
+
+        const {TicketName, TicketCity, TicketProvince, DistanceToPeak, TicketPrice, Longitude, Latitude} = req.body 
+    
+        // check input cannot be empty 
+        if(!TicketName || !TicketCity || !TicketProvince || !DistanceToPeak || !TicketPrice || !Longitude || !Latitude){
+            return res.status(200).send({
+                "message": "failed", 
+                "message": "data inputted cannot be empty !"
+            })
+        }
+
+        // generate ticket id 
+        const ticketId = uuidv4()
+
+        // insert data to database
+        const sql = `INSERT INTO Ticket VALUES (?,?,?,?,?,?,?,?)` 
+        const insertTicket = await db.query(sql, [
+            ticketId, 
+            TicketName, 
+            TicketCity, 
+            TicketProvince, 
+            DistanceToPeak, 
+            TicketPrice, 
+            Longitude, 
+            Latitude
+        ])
+
+        if(insertTicket.affectedRows == 0){
+            return res.status(404).send({
+                "status": "failed", 
+                "message": "cannot inserted the data"
+            })
+        }
+
+        // sucess resp
+        return res.status(200).send({
+            "status": "success", 
+            "message": "successful insert the ticket data !"
+        })
+        
+    } catch (error) {
+        return res.status(400).send({
+            "status": "failed", 
+            "message": error.message
+        })
+    }
+})
+
+// get all ticket 
+router.get('/get-list-ticket', async(req, res)=>{
+    try {
+        // read all ticket 
+        const query = `SELECT * FROM Ticket`
+        const result = await db.query(query)
+
+        return res.status(200).send({
+            "status": "success", 
+            "data": result
+        })
+
+    } catch (error) {
+        res.status(404).send({
+            "status": "sucess", 
+            "message": error.message
+        })
+    }
+})
+
+// buy the ticket 
+router.post('/buy-ticket', AuthenticationToken , async(req, res)=>{
+
+    try {
+        // request for transaction header and detail
+        const {TransactionId, UserId, TicketId ,TotalAmount, PaymentMethod, TicketPaymentDate, Quantity} = req.body
+
+        // buy new ticket 
+        const query = `INSERT INTO TicketTransactionHeader VALUES (?,?,?,?,?)`
+        const result1 = await db.query(query, [
+            TransactionId, 
+            UserId, 
+            TotalAmount, 
+            PaymentMethod, 
+            TicketPaymentDate
+        ])
+
+        if(result1.affectedRows == 0){
+            return res.status(404).send({
+                "status": "failed", 
+                "message": "cannot insert new data !"
+            })
+        }
+
+        // insert data detail 
+        const query2 = `INSERT INTO TicketTransactionDetail VALUES (?,?,?)`
+        const result2 = await db.query(query2, [
+            TransactionId, 
+            TicketId, 
+            Quantity
+        ])
+
+        if(result2.affectedRows == 0){
+            return res.status(404).send({
+                "status": "failed", 
+                "message": "cannot inserted transaction detail"
+            })
+        }
+
+        return res.status(200).send({
+            "status": "success", 
+            "message": "successfully buy ticket in hiking buddy !"
+        })
+
+    } catch (error) {
+        return res.status(404).send({
+            "status": "failed", 
+            "message": error.message
+        })
+    }
+})
+
+module.exports = router 

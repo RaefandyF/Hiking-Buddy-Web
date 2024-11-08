@@ -24,6 +24,10 @@ const swaggerOptions = {
             {
                 name: 'Article_v2', 
                 description: 'Article v2 that used for group article route data'
+            }, 
+            {
+                name: 'Ticket_v2', 
+                description: 'Ticket v2 that used for route group ticket data'
             }
         ], 
         servers: [
@@ -181,40 +185,47 @@ const swaggerOptions = {
                                             properties: {
                                                 ThreadId: {
                                                     type: 'string',
-                                                    description: 'Display ThreadId',
-                                                    example: 'TE99999'
+                                                    description: 'Unique identifier for the thread',
+                                                    example: '03266c91-6d77-4fd2-b9b2-cca2697389c8'
                                                 },
                                                 ThreadDescription: {
                                                     type: 'string',
-                                                    description: 'Display the thread description data',
-                                                    example: 'baguss asli banget !'
+                                                    description: 'Description of the thread',
+                                                    example: 'testes'
                                                 },
                                                 ThreadDateRelease: {
-                                                    type: 'date', 
-                                                    description: 'display thread date', 
-                                                    example: '2024-12-01'
+                                                    type: 'string', 
+                                                    format: 'date-time',
+                                                    description: 'The release date of the thread in ISO format', 
+                                                    example: '2022-12-31T17:00:00.000Z'
                                                 }, 
                                                 TotalLike: {
                                                     type: 'integer', 
-                                                    description: 'display total like', 
-                                                    example: '111'
+                                                    description: 'Total number of likes on the thread', 
+                                                    example: 0
                                                 }, 
                                                 TotalComment: {
                                                     type: 'integer', 
-                                                    description: 'display total comment', 
-                                                    example: '10'
+                                                    description: 'Total number of comments on the thread', 
+                                                    example: 0
                                                 }, 
                                                 TotalShare: {
                                                     type: 'integer',
-                                                    description: 'display total share', 
-                                                    example: '10'
+                                                    description: 'Total number of shares on the thread', 
+                                                    example: 0
                                                 }, 
-                                                UserFullName: {
+                                                Username: {
                                                     type: 'string', 
-                                                    description: 'display full name', 
-                                                    example: 'Zaky Yusuf'
+                                                    description: 'Username of the thread creator', 
+                                                    example: 'francis'
+                                                },
+                                                imageUrl: {
+                                                    type: 'string',
+                                                    description: 'URL of the image associated with the thread',
+                                                    example: 'https://storage.googleapis.com/hikingbuddyimagedb.appspot.com/images/03266c91-6d77-4fd2-b9b2-cca2697389c8?GoogleAccessId=firebase-adminsdk-7z4lj%40hikingbuddyimagedb.iam.gserviceaccount.com&Expires=16730989200&Signature=q5rJgOEpUQ50qy4bO6rFWVhMvAPxY6JdY43pKR6r42T55fYTMmz2VOlFxsEnQ5pTzDP3zDEDrGasqu%2FTc5R%2BTyYriIw4vbw8fvU73fzYEKhvyIF%2FH3vo7sTys48j1hsL6JYlstCnB0qnRARoOL0yNZsyLH%2FA1ztk4e6IA9DCLW1Y0R9wkAyBHpVRz7E%2FC9GukPlvFN3w93q4%2FYIqs263NBLTJyUhfEgqutmchylDjOvLJUzT7glvLBXr6ao5pcMkvOGo7axQPazjufkC6VAozjdA6OYpZcjitrquUbuTZeuk%2BLFQvWtdAPpfidxqEJ9G38AdVX6A%2FXs%2B3NuPjS5uwQ%3D%3D'
                                                 }
                                             }
+                                            
                                         }
                                     }
                                 }
@@ -342,42 +353,72 @@ const swaggerOptions = {
                     }
                 }
             },
-            '/api/v2/threads/add-new-thread': {
-                post: {
-                    tags: ['Thread_v2'], 
-                    summary: 'add new thread data', 
-                    description: 'add new thread data for thread page application', 
-                    requestBody: {
-                        required: true, 
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'object', 
-                                    properties: {
-                                        UserId: {
-                                            type: 'string', 
-                                            description: 'id user', 
-                                            example: 'US99999'
-                                        }, 
-                                        ThreadDescription: {
-                                            type: 'string', 
-                                            description: 'main content of the thread', 
-                                            example: 'pemandangan sangat bagus'
-                                        }, 
-                                        ThreadDateRelease: {
-                                            type: 'date', 
-                                            description: 'thread date release', 
-                                            example: '21 January 2024'
-                                        }
-                                        
-                            
-                                    }
+            "/api/v2/threads/add-new-thread": {
+                        "post": {
+                        "tags": ["Thread_v2"], 
+                        "summary": "Add new thread with image",
+                        "consumes": [
+                            "multipart/form-data"
+                        ],
+                        "parameters": [
+                            {
+                            "name": "imageName",
+                            "in": "formData",
+                            "description": "The image file to upload",
+                            "required": true,
+                            "type": "file"
+                            },
+                            {
+                            "name": "UserId",
+                            "in": "formData",
+                            "description": "The ID of the user",
+                            "required": true,
+                            "type": "string",
+                            "format": "uuid"
+                            },
+                            {
+                            "name": "ThreadDescription",
+                            "in": "formData",
+                            "description": "Description of the thread",
+                            "required": true,
+                            "type": "string"
+                            },
+                            {
+                            "name": "ThreadDateRelease",
+                            "in": "formData",
+                            "description": "Release date of the thread",
+                            "required": true,
+                            "type": "string",
+                            "format": "date"
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                            "description": "Successful upload and thread creation",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "imageUrl": {
+                                    "type": "string"
+                                }
                                 }
                             }
+                            },
+                            "400": {
+                            "description": "Bad request, validation error"
+                            },
+                            "500": {
+                            "description": "Server error"
+                            }
                         }
-                    }
-                }
-            }, 
+                        }
+                    },
             '/api/v2/threads/add-like-thread': {
                 post: {
                     tags: ['Thread_v2'], 
@@ -424,71 +465,6 @@ const swaggerOptions = {
                                                 description: 'message', 
                                                 example: 'You have successful give like !'
                                             }
-                                        },
-                                    },
-                                },
-                            },
-                        }, 
-                        400:  {
-                            description: 'Bad Request - Invalid file or file type',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        type: 'object',
-                                        properties: {
-                                            message: {
-                                                type: 'string',
-                                                example: 'Invalid file type. Only images are allowed.',
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    }
-                }
-            },
-            '/api/v2/threads/upload-img-thread': {
-                post: {
-                    tags: ['Thread_v2'], 
-                    summary: 'add new thread image', 
-                    description: 'add new thread image to firestore', 
-                    requestBody: {
-                        required: true, 
-                        content: {
-                            'multipart/form-data': {
-                                schema: {
-                                    type: 'object', 
-                                    properties: {
-                                        UserId: {
-                                            type: 'string', 
-                                            description: 'user id',
-                                            example: 'US99999'
-                                        },
-                                        imageName: {
-                                            type: 'string', 
-                                            format: 'binary', 
-                                            description: 'image upload data'
-                                        }
-                                    }, 
-                                    required: ['imageName']
-                                }
-                            }
-                        }
-                    }, 
-                    responses: {
-                        200: {
-                            description: 'Image uploaded successfully, with URL returned',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        type: 'object',
-                                        properties: {
-                                            imageUrl: {
-                                                type: 'string',
-                                                description: 'URL of the uploaded image',
-                                                example: 'https://firebasestorage.googleapis.com/v0/b/example.appspot.com/o/image.jpg?alt=media',
-                                            },
                                         },
                                     },
                                 },
@@ -614,6 +590,11 @@ const swaggerOptions = {
                             }
                         }
                     }
+                }
+            },
+            '/api/v2/tickets/get-list-ticket': {
+                get: {
+                    tags: ['']
                 }
             }
         }

@@ -29,6 +29,7 @@ const bagRoute = require("./routes/BagRoute");
 const userRouteV2 = require('./routes/v2/UsersRoute')
 const threadRouteV2 = require('./routes/v2/ThreadRoute')
 const articleRouteV2 = require('./routes/v2/ArticleRoute')
+const ticketRouteV2 = require('./routes/v2/TicketRoute')
 
 const cors = require("cors");
 
@@ -79,6 +80,7 @@ db.connect((err) => {
 app.use('/api/v2/users', userRouteV2)
 app.use('/api/v2/threads', threadRouteV2)
 app.use('/api/v2/articles', articleRouteV2)
+app.use('/api/v2/tickets', ticketRouteV2)
 
 app.get("/", (req, res) => {
   res.json({ message: "ok" });
