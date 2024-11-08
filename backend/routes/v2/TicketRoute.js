@@ -81,7 +81,9 @@ router.post('/buy-ticket', AuthenticationToken , async(req, res)=>{
 
     try {
         // request for transaction header and detail
-        const {TransactionId, UserId, TicketId ,TotalAmount, PaymentMethod, TicketPaymentDate, Quantity} = req.body
+        const {UserId, TicketId ,TotalAmount, PaymentMethod, TicketPaymentDate, Quantity} = req.body
+
+        const TransactionId = uuidv4()
 
         // buy new ticket 
         const query = `INSERT INTO TicketTransactionHeader VALUES (?,?,?,?,?)`

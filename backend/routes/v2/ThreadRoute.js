@@ -22,13 +22,19 @@ router.get("/get-all-thread", async (req, res) => {
       threads.map(async (tr) => {
         const file = bucket.file(`images/${tr.ThreadId}`);
 
-        let imageUrl = null;
+        let imageUrl = '';
         try {
-          const [url] = await file.getSignedUrl({
-            action: "read",
-            expires: "03-09-2500",
-          });
-          imageUrl = url;
+          // cek image apakah ada di firebase 
+          const [exists] = await file.exists()
+
+          if(exists){
+            const [url] = await file.getSignedUrl({
+              action: "read",
+              expires: "03-09-2500",
+            });
+            imageUrl = url;
+          }
+
         } catch (error) {
           console.error(
             `Error fetching image for ThreadId ${tr.ThreadId}:`,
@@ -76,21 +82,25 @@ router.post("/add-new-thread", upload.single("imageName"), async (req, res) => {
     });
   }
 
-  // set file name
-  const fileName = `images/${ThreadId}`;
-  const file = bucket.file(fileName);
+  // check file not found
+  if(req.file){
+    // set file name
+    const fileName = `images/${ThreadId}`;
+    const file = bucket.file(fileName);
 
-  // masukkan data ke firebase storage
-  await file.save(req.file.buffer, {
-    metadata: {
-      contentType: req.file.mimetype,
-    },
-  });
+    // masukkan data ke firebase storage
+    await file.save(req.file.buffer, {
+      metadata: {
+        contentType: req.file.mimetype,
+      },
+    });
+  }
 
   res.status(200).send({
     status: "success",
     message: "Data successfully inserted!",
   });
+
 });
 
 // upload img thread v2

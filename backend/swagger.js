@@ -594,7 +594,293 @@ const swaggerOptions = {
             },
             '/api/v2/tickets/get-list-ticket': {
                 get: {
-                    tags: ['']
+                    tags: ['Ticket_v2'], 
+                    summary: "get all ticket data", 
+                    description: "get all ticket data API", 
+                    responses: {
+                        '200': {
+                          description: "Successful response",
+                          content: {
+                            'application/json': {
+                              schema: {
+                                type: 'object',
+                                properties: {
+                                  status: {
+                                    type: 'string',
+                                    example: "success"
+                                  },
+                                  data: {
+                                    type: 'array',
+                                    items: {
+                                      type: 'object',
+                                      properties: {
+                                        TicketId: {
+                                          type: 'string',
+                                          example: "0fcc6a2e-94af-4c5d-97b1-bef602f604de"
+                                        },
+                                        TicketName: {
+                                          type: 'string',
+                                          example: "Gunung Andong Magelang"
+                                        },
+                                        TicketCity: {
+                                          type: 'string',
+                                          example: "Magelang"
+                                        },
+                                        TicketProvince: {
+                                          type: 'string',
+                                          example: "Jawa Tengah"
+                                        },
+                                        DistanceToPeak: {
+                                          type: 'integer',
+                                          example: 20
+                                        },
+                                        TicketPrice: {
+                                          type: 'integer',
+                                          example: 62000
+                                        },
+                                        Longitude: {
+                                          type: 'string',
+                                          example: "7.388730"
+                                        },
+                                        Latitude: {
+                                          type: 'string',
+                                          example: "110.371390"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            },
+            '/api/v2/tickets/insert-new-ticket': {
+                post: {
+                    tags: ['Ticket_v2'], 
+                    summary: 'API for add new ticket data', 
+                    description: 'insert new ticket API', 
+                    requestBody: {
+                        required: true,
+                        content: {
+                          'application/json': {
+                            schema: {
+                              type: 'object',
+                              properties: {
+                                TicketName: {
+                                  type: 'string',
+                                  description: "Name of the ticket",
+                                  example: "Gunung Andong Magelang"
+                                },
+                                TicketCity: {
+                                  type: 'string',
+                                  description: "City where the ticket is located",
+                                  example: "Magelang"
+                                },
+                                TicketProvince: {
+                                  type: 'string',
+                                  description: "Province where the ticket is located",
+                                  example: "Jawa Tengah"
+                                },
+                                DistanceToPeak: {
+                                  type: 'integer',
+                                  description: "Distance to the peak in meters",
+                                  example: 20
+                                },
+                                TicketPrice: {
+                                  type: 'integer',
+                                  description: "Price of the ticket",
+                                  example: 62000
+                                },
+                                Longitude: {
+                                  type: 'number',
+                                  description: "Longitude of the location",
+                                  example: 7.38873
+                                },
+                                Latitude: {
+                                  type: 'number',
+                                  description: "Latitude of the location",
+                                  example: 110.37139
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }, 
+                      responses: {
+                        '200': {
+                          description: "Ticket successfully added",
+                          content: {
+                            'application/json': {
+                              schema: {
+                                type: 'object',
+                                properties: {
+                                  status: {
+                                    type: 'string',
+                                    example: "success"
+                                  },
+                                  message: {
+                                    type: 'string',
+                                    example: "Ticket added successfully"
+                                  },
+                                  data: {
+                                    type: 'object',
+                                    properties: {
+                                      TicketId: {
+                                        type: 'string',
+                                        example: "0fcc6a2e-94af-4c5d-97b1-bef602f604de"
+                                      },
+                                      TicketName: {
+                                        type: 'string',
+                                        example: "Gunung Andong Magelang"
+                                      },
+                                      TicketCity: {
+                                        type: 'string',
+                                        example: "Magelang"
+                                      },
+                                      TicketProvince: {
+                                        type: 'string',
+                                        example: "Jawa Tengah"
+                                      },
+                                      DistanceToPeak: {
+                                        type: 'integer',
+                                        example: 20
+                                      },
+                                      TicketPrice: {
+                                        type: 'integer',
+                                        example: 62000
+                                      },
+                                      Longitude: {
+                                        type: 'number',
+                                        example: 7.38873
+                                      },
+                                      Latitude: {
+                                        type: 'number',
+                                        example: 110.37139
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            }, 
+            '/api/v2/tickets/buy-ticket': {
+                post: {
+                    tags: ['Ticket_v2'], 
+                    summary: 'buy new ticket',
+                    description: 'buy new ticket API', 
+                    requestBody: {
+                        required: true,
+                        content: {
+                          'application/json': {
+                            schema: {
+                              type: 'object',
+                              properties: {
+                                UserId: {
+                                  type: 'string',
+                                  description: "UserId of the ticket",
+                                  example: "9eff7896-d390-43bc-9ce3-573e106620f2"
+                                },
+                                TicketId: {
+                                  type: 'string',
+                                  description: "TicketId of the ticket",
+                                  example: "0fcc6a2e-94af-4c5d-97b1-bef602f604de"
+                                },
+                                TotalPayment: {
+                                  type: 'number',
+                                  description: "",
+                                  example: "Jawa Tengah"
+                                },
+                                DistanceToPeak: {
+                                  type: 'integer',
+                                  description: "Distance to the peak in meters",
+                                  example: 20
+                                },
+                                TicketPrice: {
+                                  type: 'integer',
+                                  description: "Price of the ticket",
+                                  example: 62000
+                                },
+                                Longitude: {
+                                  type: 'number',
+                                  description: "Longitude of the location",
+                                  example: 7.38873
+                                },
+                                Latitude: {
+                                  type: 'number',
+                                  description: "Latitude of the location",
+                                  example: 110.37139
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }, 
+                      responses: {
+                        '200': {
+                          description: "Ticket successfully added",
+                          content: {
+                            'application/json': {
+                              schema: {
+                                type: 'object',
+                                properties: {
+                                  status: {
+                                    type: 'string',
+                                    example: "success"
+                                  },
+                                  message: {
+                                    type: 'string',
+                                    example: "Ticket added successfully"
+                                  },
+                                  data: {
+                                    type: 'object',
+                                    properties: {
+                                      TicketId: {
+                                        type: 'string',
+                                        example: "0fcc6a2e-94af-4c5d-97b1-bef602f604de"
+                                      },
+                                      TicketName: {
+                                        type: 'string',
+                                        example: "Gunung Andong Magelang"
+                                      },
+                                      TicketCity: {
+                                        type: 'string',
+                                        example: "Magelang"
+                                      },
+                                      TicketProvince: {
+                                        type: 'string',
+                                        example: "Jawa Tengah"
+                                      },
+                                      DistanceToPeak: {
+                                        type: 'integer',
+                                        example: 20
+                                      },
+                                      TicketPrice: {
+                                        type: 'integer',
+                                        example: 62000
+                                      },
+                                      Longitude: {
+                                        type: 'number',
+                                        example: 7.38873
+                                      },
+                                      Latitude: {
+                                        type: 'number',
+                                        example: 110.37139
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
                 }
             }
         }
