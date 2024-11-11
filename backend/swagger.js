@@ -787,35 +787,35 @@ const swaggerOptions = {
                                   description: "UserId of the ticket",
                                   example: "9eff7896-d390-43bc-9ce3-573e106620f2"
                                 },
-                                TicketId: {
-                                  type: 'string',
-                                  description: "TicketId of the ticket",
-                                  example: "0fcc6a2e-94af-4c5d-97b1-bef602f604de"
-                                },
-                                TotalPayment: {
-                                  type: 'number',
-                                  description: "",
-                                  example: "Jawa Tengah"
-                                },
-                                DistanceToPeak: {
-                                  type: 'integer',
-                                  description: "Distance to the peak in meters",
-                                  example: 20
-                                },
-                                TicketPrice: {
-                                  type: 'integer',
-                                  description: "Price of the ticket",
-                                  example: 62000
-                                },
-                                Longitude: {
-                                  type: 'number',
-                                  description: "Longitude of the location",
-                                  example: 7.38873
-                                },
-                                Latitude: {
-                                  type: 'number',
-                                  description: "Latitude of the location",
-                                  example: 110.37139
+                                ticketItems: {
+                                    type: 'array', 
+                                    description: 'list of ticket that purchased', 
+                                    items: {
+                                        type: 'object', 
+                                        properties: {
+                                            TicketId: {
+                                                type: 'string', 
+                                                format: 'uuid', 
+                                                description: 'id of ticket', 
+                                                example: '0fcc6a2e-94af-4c5d-97b1-bef602f604de'
+                                            }, 
+                                            Quantity: {
+                                                type: 'integer', 
+                                                description: 'quantity of ticket', 
+                                                example: 2
+                                            }
+                                        }
+                                    }
+                                }, 
+                                PaymentMethod: {
+                                    type: 'string', 
+                                    description: 'payment method of purchase', 
+                                    example: 'Transfer'
+                                }, 
+                                TicketPaymentDate: {
+                                    type: 'date', 
+                                    description: 'date of payment data', 
+                                    example: '2024-05-01'
                                 }
                               }
                             }

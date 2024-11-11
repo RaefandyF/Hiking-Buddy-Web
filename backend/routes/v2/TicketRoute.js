@@ -81,16 +81,34 @@ router.post('/buy-ticket', AuthenticationToken , async(req, res)=>{
 
     try {
         // request for transaction header and detail
-        const {UserId, TicketId ,TotalAmount, PaymentMethod, TicketPaymentDate, Quantity} = req.body
+        const {UserId,ticketItems, PaymentMethod, TicketPaymentDate} = req.body
 
         const TransactionId = uuidv4()
+        let totalAmount = 0
+        let totalQuantity = 0
+        // get data from obeject ticket items for get total amount data and total quantity 
+        await Promise.all( ticketItems.map(async(ti)=>{
+            const querySelect = `SELECT TicketPrice FROM Ticket WHERE TicketId = ?`
+            const result = await db.query(querySelect, [
+                ti.TicketId
+            ])
+
+            // get every data after result (TicketPrice)
+            result.map((price)=>{
+                totalQuantity += ti.Quantity 
+                temp = ti.Quantity * price.TicketPrice
+                totalAmount += temp 
+            })
+            
+            
+        }))
 
         // buy new ticket 
         const query = `INSERT INTO TicketTransactionHeader VALUES (?,?,?,?,?)`
         const result1 = await db.query(query, [
             TransactionId, 
             UserId, 
-            TotalAmount, 
+            totalAmount, 
             PaymentMethod, 
             TicketPaymentDate
         ])
@@ -102,15 +120,24 @@ router.post('/buy-ticket', AuthenticationToken , async(req, res)=>{
             })
         }
 
-        // insert data detail 
-        const query2 = `INSERT INTO TicketTransactionDetail VALUES (?,?,?)`
-        const result2 = await db.query(query2, [
-            TransactionId, 
-            TicketId, 
-            Quantity
-        ])
+        // insert data detail every ticket items 
+        let isValid = true
+        Promise.all(ticketItems.map(async(ti)=>{
+            const query2 = `INSERT INTO TicketTransactionDetail VALUES (?,?,?)`
+            const result2 = await db.query(query2, [
+                TransactionId, 
+                ti.TicketId, 
+                ti.Quantity
+            ])
 
-        if(result2.affectedRows == 0){
+            if(result2.affectedRows == 0){
+                isValid = false 
+                return 
+            }
+        }))
+        
+
+        if(!isValid){
             return res.status(404).send({
                 "status": "failed", 
                 "message": "cannot inserted transaction detail"
