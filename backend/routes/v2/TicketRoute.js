@@ -157,4 +157,42 @@ router.post('/buy-ticket', AuthenticationToken , async(req, res)=>{
     }
 })
 
+// show trending ticket data 
+router.get('/get-trending-ticket', async(req, res) => {
+
+    try {
+        // query untuk mengambil data trending dari terbanyak 
+        const queryTrend = `SELECT 
+        T.TicketId,
+        T.TicketName,
+        T.TicketCity,
+        T.TicketProvince,
+        SUM(TD.Quantity) AS TotalQuantitySold
+        FROM 
+            TicketTransactionDetail TD
+        JOIN 
+            Ticket T ON TD.TicketId = T.TicketId
+        GROUP BY 
+            T.TicketId, T.TicketName, T.TicketCity, T.TicketProvince
+        ORDER BY 
+            TotalQuantitySold DESC
+        LIMIT 10;`
+
+        // mengambil result query 
+        const resultQuery = await db.query(queryTrend)
+
+        return res.status(200).send({
+            "status": "success", 
+            "data": resultQuery
+        })
+
+    } catch (error) {
+        return res.status(404).send({
+            "status": "success", 
+            "message": error.message
+        })
+    }
+
+})
+
 module.exports = router 
