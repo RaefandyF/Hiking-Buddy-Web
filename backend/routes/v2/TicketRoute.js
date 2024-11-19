@@ -195,4 +195,48 @@ router.get('/get-trending-ticket', async(req, res) => {
 
 })
 
+
+// get nearest ticket route data 
+router.get("/get-nearest-ticket-data", async(req, res)=>{
+    try {
+
+        // get data from the api 
+        const {latitude, longitude} = req.query
+
+        // val 
+        if(!latitude || !longitude){
+            return res.status(400).send({
+                "status": "failed", 
+                "message": "data cannot be empty !"
+            })
+        }
+
+        // Haversine Formula Query
+        const query = `
+            SELECT TicketName, Longitude, Latitude,
+            ABS(? - (-7.388730)) AS lat_diff,
+            ABS(? - 110.371390) AS lon_diff,
+            (ABS(? - (-7.388730)) + ABS(Longitude - 110.371390)) AS total_diff
+            FROM Ticket
+            ORDER BY total_diff ASC
+            LIMIT 5;
+        `;
+
+        // connect dengan query 
+        const rows = await db.query(query, [latitude, longitude, latitude])
+
+        return res.status(200).send({
+            "status": "success", 
+            "message": rows
+        })
+
+    } catch (error) {
+        return res.status(400).send({
+            "status": "failed", 
+            "message": error.message
+        })
+    }
+})
+
+
 module.exports = router 

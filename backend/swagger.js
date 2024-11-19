@@ -882,6 +882,138 @@ const swaggerOptions = {
                         }
                     }
                 }
+            }, 
+            '/api/v2/tickets/get-nearest-ticket-data?latitude=7.388724&longitude=110.371380': {
+                get: {
+                    tags: ['Ticket_v2'],
+                    summary: 'Get nearest ticket data',
+                    description: 'API to fetch the nearest tickets based on latitude and longitude.',
+                    parameters: [
+                        {
+                            name: 'latitude',
+                            in: 'query',
+                            required: true,
+                            description: 'Latitude of the user\'s location',
+                            schema: {
+                            type: 'number',
+                            example: 7.388724
+                            }
+                        },
+                        {
+                            name: 'longitude',
+                            in: 'query',
+                            required: true,
+                            description: 'Longitude of the user\'s location',
+                            schema: {
+                            type: 'number',
+                            example: 110.371380
+                            }
+                        }
+                    ],
+                    responses: {
+                        200: {
+                            description: 'Nearest ticket data fetched successfully',
+                            content: {
+                              'application/json': {
+                                schema: {
+                                  type: 'object',
+                                  properties: {
+                                    status: {
+                                      type: 'string',
+                                      example: 'success'
+                                    },
+                                    message: {
+                                      type: 'array',
+                                      items: {
+                                        type: 'object',
+                                        properties: {
+                                          TicketName: {
+                                            type: 'string',
+                                            description: 'Name of the ticket location',
+                                            example: 'Gunung Andong Magelang'
+                                          },
+                                          Longitude: {
+                                            type: 'string',
+                                            description: 'Longitude of the ticket location',
+                                            example: '7.388730'
+                                          },
+                                          Latitude: {
+                                            type: 'string',
+                                            description: 'Latitude of the ticket location',
+                                            example: '110.371390'
+                                          },
+                                          lat_diff: {
+                                            type: 'number',
+                                            description: 'Difference in latitude from the user location',
+                                            example: 14.777453999999999
+                                          },
+                                          lon_diff: {
+                                            type: 'number',
+                                            description: 'Difference in longitude from the user location',
+                                            example: 0.000010000000003174137
+                                          },
+                                          total_diff: {
+                                            type: 'number',
+                                            description: 'Total difference calculated based on latitude and longitude differences',
+                                            example: 117.76011399999999
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                    }
+                }
+            }, 
+            '/api/v2/tickets/get-trending-ticket': {
+                get: {
+                    tags: ['Ticket_v2'],
+                    summary: 'Get ticket details',
+                    description: 'API to fetch detailed information about a trending ticket.',
+                    responses: {
+                        200: {
+                          description: 'Ticket details retrieved successfully',
+                          content: {
+                            'application/json': {
+                              schema: {
+                                type: 'object',
+                                properties: {
+                                  TicketId: {
+                                    type: 'string',
+                                    format: 'uuid',
+                                    description: 'The unique identifier of the ticket',
+                                    example: '42071a34-a88a-4eed-952e-b94302b6dd67'
+                                  },
+                                  TicketName: {
+                                    type: 'string',
+                                    description: 'Name of the ticket location',
+                                    example: 'Gunung Merapi Boyolali'
+                                  },
+                                  TicketCity: {
+                                    type: 'string',
+                                    description: 'City where the ticket location is situated',
+                                    example: 'Boyolali'
+                                  },
+                                  TicketProvince: {
+                                    type: 'string',
+                                    description: 'Province where the ticket location is situated',
+                                    example: 'Jawa Tengah'
+                                  },
+                                  TotalQuantitySold: {
+                                    type: 'integer',
+                                    description: 'Total quantity of tickets sold',
+                                    example: 4
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
             }
         }
     }, 
