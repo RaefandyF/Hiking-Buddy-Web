@@ -26,7 +26,7 @@ export default function DetailArticle() {
           </div>
 
           <div className="mt-[8.5rem] flex flex-col gap-2">
-            <h1 className="text-white font-bold">
+            <h1 className="text-white font-bold text-xl">
               Gunung Rinjani, Pesona Keindahan Alam Eksotis di Atap Lombok
             </h1>
             <div className="flex gap-5 items-center">

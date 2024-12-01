@@ -24,7 +24,7 @@ export default function Login() {
 
   const LoginNewUser = async () => {
     axios
-      .post(`http://localhost:8080/customer/login`, {
+      .post(`https://hikingbuddyapp.gleamora.id/customer/login`, {
         Useremail: email,
         Userpassword: password,
       })

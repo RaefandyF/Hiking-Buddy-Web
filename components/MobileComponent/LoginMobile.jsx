@@ -21,7 +21,7 @@ export default function LoginMobile() {
     setLoginLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v2/users/login",
+        "https://hikingbuddyapp.gleamora.id/api/v2/users/login",
         {
           email,
           password,

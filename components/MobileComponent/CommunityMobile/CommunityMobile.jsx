@@ -4,23 +4,35 @@ import { IoIosNotifications } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { CiMenuKebab } from "react-icons/ci";
 import CommunityImage1 from "./assets/community1.png";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { AiOutlineMessage } from "react-icons/ai";
 import { PiShareFat } from "react-icons/pi";
 import FooterMobile from "../FooterMobile/FooterMobile";
 import Link from "next/link";
 import axios from "axios";
+import jwt from "jsonwebtoken";
+import { getRelativeTime } from "@/utils/timeUtils";
 
 export default function CommunityMobile() {
   const [data, setData] = useState([]);
+  const [likedThreads, setLikedThreads] = useState({});
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    if (localStorage.getItem("HikingBuddyToken") !== null) {
+      const token = localStorage.getItem("HikingBuddyToken") || "";
+      const decoded = jwt.decode(token) || "";
+      setUserId(decoded.result[0].UserId);
+    }
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Lakukan GET request ke API
         const response = await axios.get(
-          "http://localhost:8080/api/v2/threads/get-all-thread"
+          "https://hikingbuddyapp.gleamora.id/api/v2/threads/get-all-thread"
         );
         // Set data dari respons API ke state
         setData(response.data.threads);
@@ -34,6 +46,69 @@ export default function CommunityMobile() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchLikes = async () => {
+      const likesData = {};
+      for (const thread of data) {
+        try {
+          const response = await fetch(
+            `https://hikingbuddyapp.gleamora.id/api/v2/threads/show-all-like-thread/${thread.ThreadId}`
+          );
+          const result = await response.json();
+          if (result.status === "success") {
+            likesData[thread.ThreadId] = {
+              users: result.data.map((like) => like.UserId),
+              total: result.data.length,
+            };
+          }
+        } catch (error) {
+          console.error("Failed to fetch likes:", error);
+        }
+      }
+      setLikedThreads(likesData);
+    };
+    fetchLikes();
+  }, [data]);
+
+  // Add like to thread
+  const addLike = async (threadId) => {
+    if (!userId) {
+      alert("Silahkan Login terlebih dahulu");
+      return;
+    }
+    try {
+      const response = await fetch(
+        "https://hikingbuddyapp.gleamora.id/api/v2/threads/add-like-thread",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ThreadId: threadId,
+            UserId: userId,
+          }),
+        }
+      );
+
+      const result = await response.json();
+      if (result.status === "success") {
+        // Update local state to reflect new like
+        setLikedThreads((prev) => ({
+          ...prev,
+          [threadId]: {
+            users: [...(prev[threadId]?.users || []), userId],
+            total: (prev[threadId]?.total || 0) + 1,
+          },
+        }));
+      } else {
+        console.error("Failed to like thread:", result.message);
+      }
+    } catch (error) {
+      console.error("Error adding like:", error.message);
+    }
+  };
 
   // console.log(data);
 
@@ -66,7 +141,9 @@ export default function CommunityMobile() {
                   <img className="rounded-full bg-black w-11 h-11" />
                   <div>
                     <h1 className="font-bold">{item.Username}</h1>
-                    <p className="text-xs text-black/30">21 Jam yang Lalu</p>
+                    <p className="text-xs text-black/30">
+                      {getRelativeTime(item.ThreadDateRelease)}
+                    </p>
                   </div>
                 </div>
                 <CiMenuKebab className="text-3xl rotate-90" />
@@ -75,19 +152,29 @@ export default function CommunityMobile() {
                 <p className="text-[0.65rem]">{item.ThreadDescription}</p>
                 <img
                   src={item.imageUrl}
-                  className="w-full h-[10rem] object-cover"
+                  alt="thread"
+                  className="w-full h-[10rem] object-cover rounded-lg border border-black/10"
                 />
                 <div className="flex gap-8">
                   <span className="flex gap-2 items-center">
-                    <FaHeart className="text-2xl text-[#F09024]" />
-                    <h3 className="text-black/50">{item.TotalLike}</h3>
+                    {likedThreads[item.ThreadId]?.users.includes(userId) ? (
+                      <FaHeart className="text-xl text-[#F09024]" />
+                    ) : (
+                      <FaRegHeart
+                        onClick={() => addLike(item.ThreadId)}
+                        className="text-xl text-black/50"
+                      />
+                    )}
+                    <h3 className="text-black/50">
+                      {likedThreads[item.ThreadId]?.total || item.TotalLike}
+                    </h3>
                   </span>
                   <span className="flex gap-2 items-center">
-                    <AiOutlineMessage className="text-2xl text-black/50" />
+                    <AiOutlineMessage className="text-xl text-black/50" />
                     <h3 className="text-black/50">{item.TotalComment}</h3>
                   </span>
                   <span className="flex gap-2 items-center">
-                    <PiShareFat className="text-2xl text-black/50" />
+                    <PiShareFat className="text-xl text-black/50" />
                     <h3 className="text-black/50">{item.TotalShare}</h3>
                   </span>
                 </div>

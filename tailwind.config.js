@@ -16,9 +16,9 @@ module.exports = {
         primary: "#F09024",
       },
       fontFamily: {
-        'poppins': ['Poppins']
-      }
+        poppins: ["Poppins"],
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

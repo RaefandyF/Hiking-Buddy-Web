@@ -36,7 +36,7 @@ export default function RegisterMobile() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v2/users/register",
+        "https://hikingbuddyapp.gleamora.id/api/v2/users/register",
         formData
       );
       console.log(response.data);

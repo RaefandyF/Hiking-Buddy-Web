@@ -1,27 +1,99 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import jwt from "jsonwebtoken";
+import moment from "moment";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function CreateCommunity() {
+  const router = useRouter();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); // untuk menyimpan file yang dipilih
+  const [threadDescription, setThreadDescription] = useState("");
+  const [userId, setUserId] = useState("");
+  const threadDateRelease = moment().format("YYYY-MM-DD HH:mm:ss"); // Ambil tanggal saat ini sebagai tanggal release
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
+
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("HikingBuddyToken");
+  //   const decoded = jwt.decode(storedToken);
+  //   setUserId(decoded.result[0].UserId);
+  // }, []);
+
+  // Periksa token di localStorage ketika komponen dimuat
+  useEffect(() => {
+    const token = localStorage.getItem("HikingBuddyToken"); // Sesuaikan nama token jika perlu
+    if (!token) {
+      // Jika token tidak ada, arahkan ke halaman login
+      router.push("/login");
+    } else {
+      const decoded = jwt.decode(token);
+      setUserId(decoded.result[0].UserId);
+      setIsAuthenticated(true);
+    }
+  }, [router]);
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    console.log("Selected files:", selectedFile);
-    if (selectedFile && selectedFile.type.startsWith("image/")) {
-      setPreviewImage(URL.createObjectURL(selectedFile)); // Buat URL sementara untuk pratinjau
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setPreviewImage(URL.createObjectURL(file)); // Pratinjau gambar
+      setSelectedFile(file); // Simpan file untuk di-upload
     } else {
-      alert("Please select a valid image file");
+      alert("Hanya dapat mengupload gambar.");
       setPreviewImage(null);
+      setSelectedFile(null);
     }
-    // Lakukan sesuatu dengan file yang dipilih, seperti mengirim ke server
   };
+
+  const handlePost = async () => {
+    if (!selectedFile || !threadDescription) {
+      alert("Please select an image and enter a description.");
+      return;
+    }
+    setLoadingPost(true);
+
+    const formData = new FormData();
+    formData.append("imageName", selectedFile);
+    formData.append("UserId", userId);
+    formData.append("ThreadDescription", threadDescription);
+    formData.append("ThreadDateRelease", threadDateRelease);
+
+    try {
+      const response = await axios.post(
+        "https://hikingbuddyapp.gleamora.id/api/v2/threads/add-new-thread",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("berhasil post");
+      router.push("/community");
+      setLoadingPost(false);
+      // console.log("Post successful:", response.data);
+      // Tambahkan tindakan lain jika diperlukan, seperti navigasi atau reset form
+    } catch (error) {
+      console.error(
+        "Error posting thread:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  if (!isAuthenticated) {
+    return null; // Atau bisa diganti dengan komponen loading
+  }
+
   return (
     <main className="font-poppins flex justify-center">
       <div className="w-full max-w-[440px] p-5">
@@ -31,9 +103,23 @@ export default function CreateCommunity() {
               <IoIosArrowBack className="text-xl" />
             </Link>
           </button>
-          <button className="bg-[#F09024] py-1 px-8 text-white rounded-full">
-            post
-          </button>
+          {loadingPost ? (
+            <button
+              onClick={handlePost}
+              className="bg-gray-400 py-1 px-5 text-white rounded-full flex gap-2 items-center"
+              disabled
+            >
+              <AiOutlineLoading3Quarters className="animate-spin" />
+              post
+            </button>
+          ) : (
+            <button
+              onClick={handlePost}
+              className="bg-[#F09024] py-1 px-8 text-white rounded-full"
+            >
+              post
+            </button>
+          )}
         </section>
 
         {/* Tampilkan pratinjau gambar */}
@@ -52,6 +138,8 @@ export default function CreateCommunity() {
             className="w-full border-gray-200 border-2 bg-[#f7f7f7] rounded-[1vw] p-[2vw]"
             placeholder="Tulis thread disini.."
             rows={20}
+            value={threadDescription}
+            onChange={(e) => setThreadDescription(e.target.value)}
           />
           <div className="flex justify-end mt-2">
             <button
