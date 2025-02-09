@@ -8,10 +8,10 @@ export default function ExpandableText({ text, maxLength = 100 }) {
   };
 
   return (
-    <div className="text-gray-800">
+    <div className="text-black/50">
       <p className="text-[13px]">
-        {isExpanded ? text : `${text.slice(0, maxLength)}...`}
-        {text.length > maxLength && (
+        {isExpanded ? text : `${text?.slice(0, maxLength)}...`}
+        {text?.length > maxLength && (
           <span
             onClick={toggleExpanded}
             className="text-[#274753] font-semibold cursor-pointer ml-2"

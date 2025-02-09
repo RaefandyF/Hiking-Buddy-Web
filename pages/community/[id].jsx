@@ -1,293 +1,380 @@
-import NavbarComponent from "@/components/Navbar";
-import React, { useEffect, useState } from "react";
-import { ref, getDownloadURL } from "firebase/storage";
-import { imagedb } from "@/config";
+import React, { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { IoIosArrowBack } from "react-icons/io";
+import { CiMenuKebab } from "react-icons/ci";
+import CommunityImage1 from "@/public/detail-community-img.png";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { AiOutlineMessage } from "react-icons/ai";
+import { PiShareFat } from "react-icons/pi";
+import { FaRegBookmark } from "react-icons/fa";
+import { IoSend } from "react-icons/io5";
+import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
-import { MdPersonAdd } from "react-icons/md";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { AiOutlineComment } from "react-icons/ai";
+import { getRelativeTime } from "@/utils/timeUtils";
+import LoadingFull from "@/components/Loading/LoadingFull";
+import { ro } from "date-fns/locale";
+import jwt from "jsonwebtoken";
+import { formatIndonesianTimeAuto } from "@/utils/timeUtils";
+import { set } from "date-fns";
 
-function CommunityDetail(props) {
+export default function DetailCommunity() {
   const router = useRouter();
+  const { id } = router.query;
+  const textareaRef = useRef(null);
+  const [dataReply, setDataReply] = useState();
+  const [dataThread, setDataThread] = useState();
+  const [comment, setComment] = useState("");
+  const [updateChange, setUpdateChange] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [likedThreads, setLikedThreads] = useState({});
 
-  const [imgUrl, setImageUrl] = useState("");
-  const [dataComm, setDataComm] = useState([]);
-  const [loading, setIsLoading] = useState(false);
-  const [communityName, setCommunityName] = useState("");
-  const [communityDesc, setCommunityDesc] = useState("");
-  const [tabLeftClick, setTabLeftClick] = useState(true);
-  const [tabRightClick, setTabRightClick] = useState(false);
+  // localStorage.getItem
 
-  const [replies, setReplies] = useState([])
-
-  const [comments, setComments] = useState([]);
-
-  const [cmeId, setCmeId] = useState("");
-
-  // get iamge from firebase
-  const getImageFirebase = () => {
-    const imgref = ref(imagedb, `images/${router.query.id}`);
-    getDownloadURL(imgref).then((url) => {
-      if (url) {
-        setImageUrl(url);
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
-    });
+  const goBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      router.push("/"); // Fallback ke halaman utama jika tidak ada riwayat
+    }
   };
-
-  // get community detail data
-  const getDetailCommunityData = () => {
-    axios
-      .get(
-        `http://localhost:8080/community/get-detail-community?id=${router.query.id}`
-      )
-      .then((res) => {
-        if (res.data.data) {
-          setDataComm(res.data.data);
-          setCommunityName(res.data.data[0].CommunityName);
-          setCommunityDesc(res.data.data[0].Communitydesc);
-          setIsLoading(false);
-        } else {
-          setIsLoading(true);
-        }
-      });
-  };
-
-  // get comment data
-  const getCommentData = async () => {
-    axios
-      .get(
-        `http://localhost:8080/community/get-comment-community?communityid=${router.query.id}`
-      )
-      .then((res) => {
-        console.log(res.data.data);
-        setComments(res.data.data);
-      });
-  };
-
-  // get reply comment base comment 
-  const getReplyComment = async (commentid) => {
-    console.log(cmeId)
-    axios.get(`http://localhost:8080/community/get-reply-comment?commentid=${commentid}&communityid=${router.query.id}`)
-    .then((res)=>{
-        console.log(res.data.data)
-        setReplies(res.data.data)
-    })
-  }
 
   useEffect(() => {
-    getImageFirebase();
-    getDetailCommunityData();
-    getCommentData();
-    getReplyComment()
-  }, []);
+    const fetchData = async () => {
+      try {
+        // Lakukan GET request ke API dengan limit dan offset sebagai query params
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/get-comment-data`,
+          {
+            params: {
+              threadId: id,
+            },
+          }
+        );
+        // Set data dari respons API ke state
+        setDataReply(response.data.data);
+      } catch (err) {
+        // Set error jika terjadi kesalahan
+        console.error(err.message);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [updateChange, id]);
+
+  useEffect(() => {
+    const fetchDataThread = async () => {
+      try {
+        // Lakukan GET request ke API dengan limit dan offset sebagai query params
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/get-thread`,
+          {
+            params: {
+              threadId: id,
+            },
+          }
+        );
+        // Set data dari respons API ke state
+        setDataThread(response.data.data[0]);
+      } catch (err) {
+        // Set error jika terjadi kesalahan
+        console.error(err.message);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchDataThread();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (dataThread && dataReply) {
+      setLoading(false);
+    }
+  }, [dataThread, dataReply]);
+
+  const handlePostRepy = async () => {
+    const token = localStorage.getItem("HikingBuddyToken");
+    try {
+      const decoded = jwt.decode(token);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/add-thread-comment`,
+        {
+          ThreadId: id,
+          UserId: decoded.result[0].UserId,
+          CommentData: comment,
+        }
+      );
+      console.log(response);
+      alert("Berhsil menambahkan komentar");
+      setComment("");
+      setUpdateChange(!updateChange);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // useEffect(() => {
+  //   const fetchLikes = async () => {
+  //     const likesData = {};
+  //     for (const thread of data) {
+  //       try {
+  //         const response = await fetch(
+  //           `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/show-all-like-thread/${thread.ThreadId}`
+  //         );
+  //         const result = await response.json();
+  //         if (result.status === "success") {
+  //           likesData[thread.ThreadId] = {
+  //             users: result.data.map((like) => like.UserId),
+  //             total: result.data.length,
+  //           };
+  //         }
+  //       } catch (error) {
+  //         console.error("Failed to fetch likes:", error);
+  //       }
+  //     }
+  //     setLikedThreads(likesData);
+  //   };
+  //   fetchLikes();
+  // }, [dataThread]);
+
+  // const addLike = async (threadId) => {
+  //   console.log("halo");
+  //   console.log(threadId);
+  //   console.log(userId);
+
+  //   if (!userId) {
+  //     alert("Silahkan Login terlebih dahulu");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/add-like-thread`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           ThreadId: threadId,
+  //           UserId: userId,
+  //         }),
+  //       }
+  //     );
+
+  //     const result = await response.json();
+  //     if (result.status === "success") {
+  //       // Update local state to reflect new like
+  //       setLikedThreads((prev) => ({
+  //         ...prev,
+  //         [threadId]: {
+  //           users: [...(prev[threadId]?.users || []), userId],
+  //           total: (prev[threadId]?.total || 0) + 1,
+  //         },
+  //       }));
+  //     } else {
+  //       console.error("Failed to like thread:", result.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding like:", error.message);
+  //   }
+  // };
+
+  // const removeLike = async (threadId) => {
+  //   axios
+  //     .delete(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/remove-like-thread`,
+  //       {
+  //         data: {
+  //           ThreadId: threadId,
+  //           UserId: userId,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       if (response.data.status === "success") {
+  //         setLikedThreads((prev) => {
+  //           const updatedLikes = { ...prev };
+  //           if (updatedLikes[threadId]) {
+  //             updatedLikes[threadId].users = updatedLikes[
+  //               threadId
+  //             ].users.filter((id) => id !== userId);
+  //             updatedLikes[threadId].total -= 1;
+  //           }
+  //           return updatedLikes;
+  //         });
+  //       } else {
+  //         console.error("Failed to unlike thread:", response.data.message);
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error removing like:", error.message));
+  // };
+
+  // axios.get();
 
   return (
-    <div className="min-h-screen">
-      <div className="relative w-full">
-        <img className="w-full" src="/detail-community.png" />
-        <div className="absolute top-0 w-full">
-          <NavbarComponent />
-        </div>
-      </div>
-
-      <div className="relative h-72 w-full shadow-[0_0_10px_0_rgba(0,0,0,0.3)]">
-        <div className="w-full flex items-center justify-center">
-          {loading ? (
-            <div>
-              <p className="text-2xl">Loading...</p>
+    <main className="font-poppins flex justify-center">
+      {loading ? (
+        <LoadingFull />
+      ) : (
+        <div className="w-full max-w-[440px] pb-[5rem]">
+          <section className="p-5">
+            <button
+              onClick={goBack}
+              className="flex justify-between items-center p-2 rounded-full bg-[#F5F5F5]"
+            >
+              <IoIosArrowBack className="text-xl" />
+            </button>
+            <div className="flex justify-center mt-[-1.7rem]">
+              <h1 className="text-[18px]">Komunitas</h1>
             </div>
-          ) : (
-            <div className="flex w-full justify-between mx-5 my-[80px]">
-              <div className="flex">
-                <div className="flex">
-                  <div className="w-32">
-                    <img src={imgUrl} />
-                  </div>
-                  <div className="mx-5">
-                    <div className="font-bold text-[35px]">
-                      <p>{communityName}</p>
-                    </div>
-                    <div className="text-[20px]">
-                      <p>{communityDesc}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-20 flex items-center">
-                <button className="flex bg-[#F09024] w-full rounded-xl p-2 text-white">
-                  <div className="h-full flex items-center justify-center">
-                    <MdPersonAdd className="mt-1 mr-1" />
-                  </div>
-                  <p className="ml-1">Join</p>
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="absolute flex bottom-0 mx-[50px]">
-          <div
-            onClick={() => {
-              setTabLeftClick(true);
-              setTabRightClick(false);
-            }}
-            className={`mx-5 cursor-pointer ${
-              tabLeftClick ? "border-b-4 border-[#F09024]" : ``
-            }`}
-          >
-            <p>Latest post</p>
-          </div>
-          <div
-            onClick={() => {
-              setTabLeftClick(false);
-              setTabRightClick(true);
-            }}
-            className={`mx-5 cursor-pointer ${
-              tabRightClick ? "border-b-4 border-[#F09024]" : ``
-            }`}
-          >
-            <p>Photo and Video</p>
-          </div>
-        </div>
-      </div>
-
-      {/* latest post */}
-      <div className="w-full h-[700px] overflow-y-scroll scroll-smoth">
-        {comments.map((cmt, idx) => (
-          <div
-            key={idx}
-            className="min-h-[450px] px-5 py-3 border-b border-gray-300"
-          >
-            <div className="w-full flex">
-              <div className="flex mr-1">
-                <img src="/berawan.png" className="rounded w-[80px]" />
-              </div>
-              <div className="ml-1">
-                <div>
-                  <p>{cmt.Userfullname}</p>
-                </div>
-                <div>
-                  <p>{cmt.CommentDate.split("T")[0]}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="bg-black w-[2px] h-[200px] my-2 mx-[30px]"></div>
-              <div className="mt-5 mx-5">
-                <p>{cmt.Commentfill}</p>
-                <div>
+          </section>
+          <section className="px-5">
+            <div className="p-3 rounded-xl">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-3 items-center">
                   <img
-                    src="/post-community.png"
-                    width={100}
-                    height={80}
-                    className="my-5 rounded w-[500px] h-[200px]"
+                    src={dataThread?.profileImageUrl}
+                    className="rounded-full w-11 h-11"
                   />
-                </div>
-              </div>
-            </div>
-            <div className="flex h-full mx-[70px]">
-              <div className="flex w-[200px]">
-                <FcLikePlaceholder
-                  size={30}
-                  color="bg-white"
-                  className="bg-white mr-1"
-                />
-                <div className="flex items-center ml-1">
-                  <p>2000</p>
-                </div>
-              </div>
-              <div
-                onClick={() => {
-                  cmeId ? setCmeId("") : setCmeId(cmt.Commentid);
-                  getReplyComment(cmt.Commentid)
-                }}
-                className="flex"
-              >
-                <AiOutlineComment size={30} className="mr-1" />
-                <div className="flex items-center ml-1">
-                  <p>30</p>
-                </div>
-              </div>
-            </div>
-            {cmeId == cmt.Commentid ? (
-              <div className="h-[300px]">
-                <div className="w-full border shadow-lg rounded p-3">
                   <div>
-                    <p>New comment</p>
-                  </div>
-                  <div className="">
-                    <input
-                      className="border rounded w-3/4 p-1"
-                      type="text"
-                      placeholder="new comments..."
-                    />
+                    <h1 className="font-bold text-[14px]">
+                      {dataThread?.Username}
+                    </h1>
+                    <p className="text-black/30 text-[10px]">
+                      {getRelativeTime(dataThread?.ThreadDateRelease)}
+                    </p>
                   </div>
                 </div>
-                <div className="scroll-auto h-full overflow-y-scroll">
-                    {replies.map((re, idx)=>(
-                        <div className="h-[90px] rounded border px-[20px] py-[10px]" key={idx}>
-                            <div>
-                                <p>{re.Userfullname}</p>
-                            </div>
-                            <div>
-                                <p>{re.ReplyCommentfill}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
               </div>
-            ) : (
-              <></>
-            )}
-          </div>
-        ))}
-
-        {/* <div className="h-[450px] px-5 py-3 border-b border-gray-300">
-          <div className="w-full flex">
-            <div className="flex mr-1">
-              <img src="/berawan.png" className="rounded w-[80px]" />
-            </div>
-            <div className="ml-1">
-              <div>
-                <p>An Wijaya</p>
-              </div>
-              <div>
-                <p>17 april 2022</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="bg-black w-[2px] h-[20  0px] my-2 mx-[30px]"></div>
-            <div className="mt-5 mx-5">
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum
-              </p>
-              <div>
+              <div className="mt-5 flex flex-col gap-3">
+                <p className="text-[11px]">{dataThread?.ThreadDescription}</p>
                 <img
-                  src="/post-community.png"
-                  width={100}
-                  height={80}
-                  className="my-5 rounded w-[500px] h-[200px]"
+                  src={dataThread?.imageUrl}
+                  className="w-full h-[18rem] rounded-2xl"
                 />
+                <div className="text-black/60 text-[12px] flex gap-3 border-b-[1px] pb-2">
+                  <p className="">15.25</p>
+                  <p>•</p>
+                  <p>
+                    {formatIndonesianTimeAuto(
+                      dataThread?.ThreadDateRelease,
+                      "date"
+                    )}
+                  </p>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex gap-5">
+                    <span className="flex gap-2 items-center">
+                      <FaRegHeart className="text-xl text-black/50" />
+                      <h3 className="text-black/50 text-[14px]">
+                        {dataThread?.TotalLike}
+                      </h3>
+                    </span>
+                    <span className="flex gap-2 items-center">
+                      <AiOutlineMessage className="text-2xl text-black/50" />
+                      <h3 className="text-black/50 text-[14px]">
+                        {dataThread?.TotalComment}
+                      </h3>
+                    </span>
+                    <span className="flex gap-2 items-center">
+                      <PiShareFat className="text-2xl text-black/50" />
+                      <h3 className="text-black/50 text-[14px]">
+                        {dataThread?.TotalShare}
+                      </h3>
+                    </span>
+                  </div>
+                  <div>
+                    <FaRegBookmark className="text-xl text-black/50" />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div> */}
-      </div>
-    </div>
+          </section>
+
+          <section className="mt-1 pb-5">
+            <hr />
+            <div className="mt-3 text-[14px]">
+              <h3 className="px-5">Balasan</h3>
+              {dataReply?.map((item, index) => (
+                <div className="border-b-[1px] pb-3">
+                  <div className="px-5">
+                    <div className="flex gap-3 items-center mt-4">
+                      <img
+                        src={item.profileImageUrl}
+                        className="rounded-full w-11 h-11"
+                      />
+                      <div>
+                        <h1 className="font-bold text-[14px]">
+                          {item.Username}
+                        </h1>
+                        <p className="text-black/30 text-[10px]">
+                          {getRelativeTime(item.CommentDateRelease)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="">
+                      <div className="px-5 pl-14">
+                        <p className="text-[12px]">{item.CommentData}</p>
+                        <span className="flex gap-2 items-center mt-3">
+                          <FaRegHeart className="text-lg text-black/50" />
+                          <h3 className="text-black/50 text-[12px]">
+                            {item.TotalLike}
+                          </h3>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* <div className="border-b-[1px] pb-3">
+              <div className="px-5">
+                <div className="flex gap-3 items-center mt-4">
+                  <img className="rounded-full bg-black w-11 h-11" />
+                  <div>
+                    <h1 className="font-bold text-[14px]">Ann Calista</h1>
+                    <p className="text-black/30 text-[10px]">
+                      21 Jam yang Lalu
+                    </p>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="px-5 pl-14">
+                    <p className="text-[12px]">Keren bener weyy</p>
+                    <span className="flex gap-2 items-center mt-3">
+                      <FaHeart className="text-lg text-[#F09024]" />
+                      <h3 className="text-black/50 text-[12px]">20</h3>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+            </div>
+          </section>
+
+          <footer className="flex justify-between items-center gap-6 p-4 px-5 pt-5 drop-shadow-4xl fixed bottom-0 w-full bg-white max-w-[440px]">
+            <TextareaAutosize
+              className="w-full text-[12px] rounded-2xl border-gray-200 border-2 bg-[#f7f7f7] p-2 px-4"
+              placeholder="Tulis balasan disini.."
+              minRows={1}
+              maxRows={10}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              // value={threadDescription}
+              // onChange={(e) => setThreadDescription(e.target.value)}
+            />
+            <IoSend
+              onClick={handlePostRepy}
+              className="text-2xl text-[#F09024]"
+            />
+          </footer>
+        </div>
+      )}
+    </main>
   );
 }
-
-export default CommunityDetail;

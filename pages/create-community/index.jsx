@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
 import moment from "moment";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaRegImage } from "react-icons/fa6";
 
 export default function CreateCommunity() {
   const router = useRouter();
@@ -69,7 +70,7 @@ export default function CreateCommunity() {
 
     try {
       const response = await axios.post(
-        "https://hikingbuddyapp.gleamora.id/api/v2/threads/add-new-thread",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/threads/add-new-thread`,
         formData,
         {
           headers: {
@@ -96,8 +97,8 @@ export default function CreateCommunity() {
 
   return (
     <main className="font-poppins flex justify-center">
-      <div className="w-full max-w-[440px] p-5">
-        <section className="flex justify-between items-center">
+      <div className="w-full max-w-[440px] py-5">
+        <section className="flex justify-between items-center px-5">
           <button className="flex justify-between items-center p-2 rounded-full bg-[#F5F5F5]">
             <Link href="/community">
               <IoIosArrowBack className="text-xl" />
@@ -124,7 +125,7 @@ export default function CreateCommunity() {
 
         {/* Tampilkan pratinjau gambar */}
         {previewImage && (
-          <div className="mt-4">
+          <div className="mt-4 px-5">
             <img
               src={previewImage}
               alt="Preview"
@@ -133,7 +134,7 @@ export default function CreateCommunity() {
           </div>
         )}
 
-        <section className="mt-8">
+        <section className="mt-8 px-5 mb-10">
           <textarea
             className="w-full border-gray-200 border-2 bg-[#f7f7f7] rounded-[1vw] p-[2vw]"
             placeholder="Tulis thread disini.."
@@ -141,24 +142,18 @@ export default function CreateCommunity() {
             value={threadDescription}
             onChange={(e) => setThreadDescription(e.target.value)}
           />
-          <div className="flex justify-end mt-2">
-            <button
-              onClick={handleButtonClick}
-              className="bg-[#F09024] py-5 px-8 text-white rounded-3xl"
-            >
-              Upload Foto dan Video
-            </button>
-
-            {/* Input file yang disembunyikan */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*" // Batasi hanya untuk file gambar
-              className="hidden"
-            />
-          </div>
         </section>
+
+        <footer className="fixed bottom-0 w-full bg-white border-t-2 border-gray-200 flex flex-col items-center px-5 py-4">
+          <FaRegImage onClick={handleButtonClick} className="text-2xl" />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*" // Batasi hanya untuk file gambar
+            className="hidden"
+          />
+        </footer>
       </div>
     </main>
   );

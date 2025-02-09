@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { IoIosArrowBack } from "react-icons/io";
 import Link from "next/link";
@@ -15,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Ticket() {
+  const router = useRouter();
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [dataTrendingTicket, setDataTrendingTicket] = useState([]);
   const [nearestTickets, setNearestTickets] = useState([]);
@@ -26,6 +28,14 @@ export default function Ticket() {
   const [debounceTimer, setDebounceTimer] = useState(null);
   const [isSearchPage, setIsSearchPage] = useState(false);
   const inputRef = useRef(null);
+
+  const goBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      router.push("/"); // Fallback ke halaman utama jika tidak ada riwayat
+    }
+  };
 
   useEffect(() => {
     // Mendapatkan lokasi pengguna
@@ -58,7 +68,7 @@ export default function Ticket() {
     setLoadingNearest(true);
     try {
       const response = await axios.get(
-        `https://hikingbuddyapp.gleamora.id/api/v2/tickets/get-nearest-ticket-data?latitude=${latitude}&longitude=${longitude}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/tickets/get-nearest-ticket-data?latitude=${latitude}&longitude=${longitude}`
       );
       setNearestTickets(response.data.data); // Simpan data dari API
       setLoadingNearest(false);
@@ -75,7 +85,7 @@ export default function Ticket() {
       try {
         // Lakukan GET request ke API
         const response = await axios.get(
-          "https://hikingbuddyapp.gleamora.id/api/v2/tickets/get-trending-ticket",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/tickets/get-trending-ticket`,
           {
             headers: {
               accept: "application/json", // Header API
@@ -115,7 +125,7 @@ export default function Ticket() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://hikingbuddyapp.gleamora.id/api/v2/tickets/search-ticket?searchData=${searchInput}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/tickets/search-ticket?searchData=${searchInput}`,
         {
           headers: {
             accept: "application/json", // Header API
@@ -148,10 +158,11 @@ export default function Ticket() {
       {!isSearchPage ? (
         <div className="w-full max-w-[440px]">
           <section className="p-5">
-            <button className="flex justify-between items-center p-2 rounded-full bg-[#F5F5F5]">
-              <Link href="/">
-                <IoIosArrowBack className="text-xl" />
-              </Link>
+            <button
+              onClick={goBack}
+              className="flex justify-between items-center p-2 rounded-full bg-[#F5F5F5]"
+            >
+              <IoIosArrowBack className="text-xl" />
             </button>
             <div className="mt-5 flex flex-col gap-2">
               <h1 className="font-bold text-xl">Beli Tiket</h1>
@@ -209,35 +220,40 @@ export default function Ticket() {
                       key={index}
                       href={`/ticket/mountain/${item.TicketId}`}
                     >
-                      <div className="min-w-[15rem]">
-                        <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[10.7rem] flex w-[3.5rem] items-center gap-1">
-                          <FaStar className="text-[#F09024]" />
-                          4.8
-                        </span>
-                        <img
-                          className="h-[10rem] object-cover rounded-md"
-                          src={item.ImageUrl}
-                        />
-                        <h1 className="text-[14px] mt-2">{item.TicketName}</h1>
-
-                        <div className="flex flex-col gap-[0.2rem]">
-                          <p className="text-[10px] flex items-center gap-1">
-                            <TbMapExclamation />
-                            {item.LevelMountain.charAt(0).toUpperCase() +
-                              String(item.LevelMountain).slice(1)}{" "}
-                            Level
-                          </p>
-                          <p className="text-[10px] flex items-center gap-1">
-                            <FiMapPin />
-                            {item.TicketCity}, {item.TicketProvince}
-                          </p>
-                          <p className="text-[10px] flex gap-1">
-                            <FaRoute />
-                            {item.DistanceToPeak} km
-                          </p>
+                      <div className="min-w-[13rem] shadow-md min-h-[16rem] mb-5 mt-5 rounded-lg">
+                        <div className="relative">
+                          <span className="bg-white rounded-full p-1 px-3 text-[10px] absolute top-2 right-2 flex w-[3.5rem] items-center gap-1">
+                            <FaStar className="text-[#F09024]" />
+                            4.8
+                          </span>
+                          <img
+                            className="h-[8rem] w-full object-cover rounded-t-lg"
+                            src={item.ImageUrl}
+                            alt="ticket image"
+                          />
                         </div>
-                        <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-                          <h2 className="text-white text-[12px]">
+                        <div className="px-2 flex flex-col gap-1">
+                          <h1 className="text-[12px] font-bold mt-2">
+                            {item.TicketName}
+                          </h1>
+
+                          <div className="flex flex-col gap-[0.2rem] text-black/60">
+                            <p className="text-[9px] flex items-center gap-1">
+                              <TbMapExclamation />
+                              {item.LevelMountain.charAt(0).toUpperCase() +
+                                String(item.LevelMountain).slice(1)}{" "}
+                              Level
+                            </p>
+                            <p className="text-[9px] flex items-center gap-1">
+                              <FiMapPin />
+                              {item.TicketCity}, {item.TicketProvince}
+                            </p>
+                            <p className="text-[9px] flex gap-1">
+                              <FaRoute />
+                              {item.DistanceToPeak} km
+                            </p>
+                          </div>
+                          <h2 className="text-[#F09024] text-[11px] font-bold">
                             Rp {item.TicketPrice.toLocaleString("id-ID")}
                           </h2>
                         </div>
@@ -284,37 +300,40 @@ export default function Ticket() {
                       key={index}
                       href={`/ticket/mountain/${item.TicketId}`}
                     >
-                      <div className="min-w-[10rem]">
-                        <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] flex w-[3.5rem] items-center gap-1">
-                          <FaStar className="text-[#F09024]" />
-                          4.8
-                        </span>
-                        <img
-                          className="h-[7rem] object-cover rounded-md"
-                          src={item.ImageUrl}
-                        />
-                        <h1 className="text-[14px] mt-2 max-w-[10rem]">
-                          {item.TicketName}
-                        </h1>
-
-                        <div className="flex flex-col gap-[0.2rem]">
-                          <p className="text-[10px] flex items-center gap-1">
-                            <TbMapExclamation />
-                            {item.LevelMountain.charAt(0).toUpperCase() +
-                              String(item.LevelMountain).slice(1)}{" "}
-                            Level
-                          </p>
-                          <p className="text-[10px] flex items-center gap-1">
-                            <FiMapPin />
-                            {item.TicketCity}, {item.TicketProvince}
-                          </p>
-                          <p className="text-[10px] flex gap-1">
-                            <FaRoute />
-                            {item.DistanceToPeak} km
-                          </p>
+                      <div className="min-w-[11rem] shadow-md min-h-[17rem] mb-5 mt-5 rounded-lg">
+                        <div className="relative">
+                          <span className="bg-white rounded-full p-1 px-3 text-[10px] absolute top-2 right-2 flex w-[3.5rem] items-center gap-1">
+                            <FaStar className="text-[#F09024]" />
+                            4.8
+                          </span>
+                          <img
+                            className="h-[8rem] w-full object-cover rounded-t-lg"
+                            src={item.ImageUrl}
+                            alt="ticket image"
+                          />
                         </div>
-                        <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-                          <h2 className="text-white text-[12px]">
+                        <div className="px-2 flex flex-col gap-1">
+                          <h1 className="text-[12px] font-bold mt-2">
+                            {item.TicketName}
+                          </h1>
+
+                          <div className="flex flex-col gap-[0.2rem] text-black/60">
+                            <p className="text-[9px] flex items-center gap-1">
+                              <TbMapExclamation />
+                              {item.LevelMountain.charAt(0).toUpperCase() +
+                                String(item.LevelMountain).slice(1)}{" "}
+                              Level
+                            </p>
+                            <p className="text-[9px] flex items-center gap-1">
+                              <FiMapPin />
+                              {item.TicketCity}, {item.TicketProvince}
+                            </p>
+                            <p className="text-[9px] flex gap-1">
+                              <FaRoute />
+                              {item.DistanceToPeak} km
+                            </p>
+                          </div>
+                          <h2 className="text-[#F09024] text-[11px] font-bold">
                             Rp {item.TicketPrice.toLocaleString("id-ID")}
                           </h2>
                         </div>
@@ -322,102 +341,6 @@ export default function Ticket() {
                     </Link>
                   ))
                 )}
-
-                {/* <div className="min-w-[10rem]">
-                <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] flex w-[3.5rem] items-center gap-1">
-                  <FaStar className="text-[#F09024]" />
-                  4.8
-                </span>
-                <img
-                  className="h-[7rem] object-cover rounded-md"
-                  src={trending1.src}
-                />
-                <h1 className="text-[14px] mt-2 max-w-[10rem]">
-                  Gunung Andong Magelang
-                </h1>
-
-                <div className="flex flex-col gap-[0.2rem]">
-                  <p className="text-[10px] flex items-center gap-1">
-                    <TbMapExclamation />
-                    Medium Level
-                  </p>
-                  <p className="text-[10px] flex items-center gap-1">
-                    <FiMapPin />
-                    Magelang, Jawa Tengah
-                  </p>
-                  <p className="text-[10px] flex gap-1">
-                    <FaRoute />
-                    14km
-                  </p>
-                </div>
-                <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-                  <h2 className="text-white text-[12px]">Rp65.000</h2>
-                </div>
-              </div>
-
-              <div className="min-w-[10rem]">
-                <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] flex w-[3.5rem] items-center gap-1">
-                  <FaStar className="text-[#F09024]" />
-                  4.8
-                </span>
-                <img
-                  className="h-[7rem] object-cover rounded-md"
-                  src={trending1.src}
-                />
-                <h1 className="text-[14px] mt-2 max-w-[10rem]">
-                  Gunung Andong Magelang
-                </h1>
-
-                <div className="flex flex-col gap-[0.2rem]">
-                  <p className="text-[10px] flex items-center gap-1">
-                    <TbMapExclamation />
-                    Medium Level
-                  </p>
-                  <p className="text-[10px] flex items-center gap-1">
-                    <FiMapPin />
-                    Magelang, Jawa Tengah
-                  </p>
-                  <p className="text-[10px] flex gap-1">
-                    <FaRoute />
-                    14km
-                  </p>
-                </div>
-                <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-                  <h2 className="text-white text-[12px]">Rp65.000</h2>
-                </div>
-              </div>
-
-              <div className="min-w-[10rem]">
-                <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] flex w-[3.5rem] items-center gap-1">
-                  <FaStar className="text-[#F09024]" />
-                  4.8
-                </span>
-                <img
-                  className="h-[7rem] object-cover rounded-md"
-                  src={trending1.src}
-                />
-                <h1 className="text-[14px] mt-2 max-w-[10rem]">
-                  Gunung Andong Magelang
-                </h1>
-
-                <div className="flex flex-col gap-[0.2rem]">
-                  <p className="text-[10px] flex items-center gap-1">
-                    <TbMapExclamation />
-                    Medium Level
-                  </p>
-                  <p className="text-[10px] flex items-center gap-1">
-                    <FiMapPin />
-                    Magelang, Jawa Tengah
-                  </p>
-                  <p className="text-[10px] flex gap-1">
-                    <FaRoute />
-                    14km
-                  </p>
-                </div>
-                <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-                  <h2 className="text-white text-[12px]">Rp65.000</h2>
-                </div>
-              </div> */}
               </div>
             </div>
           </section>

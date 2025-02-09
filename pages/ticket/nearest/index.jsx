@@ -18,10 +18,10 @@ export default function Nearest() {
   const [nearestTickets, setNearestTickets] = useState([]);
   const [loadingNearest, setLoadingNearest] = useState(true);
   const goBack = () => {
-    if (document.referrer) {
-      router.back();
+    if (window.history.length > 1) {
+      window.history.back();
     } else {
-      router.push("/"); // Redirects to home if there's no previous page
+      router.push("/"); // Fallback ke halaman utama jika tidak ada riwayat
     }
   };
 
@@ -56,7 +56,7 @@ export default function Nearest() {
     setLoadingNearest(true);
     try {
       const response = await axios.get(
-        `https://hikingbuddyapp.gleamora.id/api/v2/tickets/get-nearest-ticket-data?latitude=${latitude}&longitude=${longitude}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/tickets/get-nearest-ticket-data?latitude=${latitude}&longitude=${longitude}`
       );
       setNearestTickets(response.data.data); // Simpan data dari API
       setLoadingNearest(false);
@@ -159,165 +159,7 @@ export default function Nearest() {
             ))
           )}
 
-          <div className="min-w-[10rem] max-[368px]:max-w-[8rem] max-[368px]:min-w-[7rem] max-[303px]:max-w-full max-[303px]:min-w-[14rem]">
-            <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] min-[401px]:left-[7rem] min-[432px]:left-[8rem] max-[368px]:left-[5rem] flex w-[3.5rem] items-center gap-1">
-              <FaStar className="text-[#F09024]" />
-              4.8
-            </span>
-            <img
-              className="h-[7rem] w-[12rem] max-[431px]:w-[11rem] max-[400px]:w-[10rem] object-cover rounded-md"
-              src={trending1.src}
-            />
-            <h1 className="text-[14px] mt-2 max-w-[10rem]">
-              Gunung Andong Magelang
-            </h1>
-
-            <div className="flex flex-col gap-[0.2rem]">
-              <p className="text-[10px] flex items-center gap-1">
-                <TbMapExclamation />
-                Medium Level
-              </p>
-              <p className="text-[10px] flex items-center gap-1">
-                <FiMapPin />
-                Magelang, Jawa Tengah
-              </p>
-              <p className="text-[10px] flex gap-1">
-                <FaRoute />
-                14km
-              </p>
-            </div>
-            <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-              <h2 className="text-white text-[12px]">Rp65.000</h2>
-            </div>
-          </div>
-
-          <div className="min-w-[10rem] max-[368px]:max-w-[8rem] max-[368px]:min-w-[7rem] max-[303px]:max-w-full max-[303px]:min-w-[14rem]">
-            <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] min-[401px]:left-[7rem] min-[432px]:left-[8rem] max-[368px]:left-[5rem] flex w-[3.5rem] items-center gap-1">
-              <FaStar className="text-[#F09024]" />
-              4.8
-            </span>
-            <img
-              className="h-[7rem] w-[12rem] max-[431px]:w-[11rem] max-[400px]:w-[10rem] object-cover rounded-md"
-              src={trending1.src}
-            />
-            <h1 className="text-[14px] mt-2 max-w-[10rem]">
-              Gunung Andong Magelang
-            </h1>
-
-            <div className="flex flex-col gap-[0.2rem]">
-              <p className="text-[10px] flex items-center gap-1">
-                <TbMapExclamation />
-                Medium Level
-              </p>
-              <p className="text-[10px] flex items-center gap-1">
-                <FiMapPin />
-                Magelang, Jawa Tengah
-              </p>
-              <p className="text-[10px] flex gap-1">
-                <FaRoute />
-                14km
-              </p>
-            </div>
-            <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-              <h2 className="text-white text-[12px]">Rp65.000</h2>
-            </div>
-          </div>
-
-          <div className="min-w-[10rem] max-[368px]:max-w-[8rem] max-[368px]:min-w-[7rem] max-[303px]:max-w-full max-[303px]:min-w-[14rem]">
-            <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] min-[401px]:left-[7rem] min-[432px]:left-[8rem] max-[368px]:left-[5rem] flex w-[3.5rem] items-center gap-1">
-              <FaStar className="text-[#F09024]" />
-              4.8
-            </span>
-            <img
-              className="h-[7rem] w-[12rem] max-[431px]:w-[11rem] max-[400px]:w-[10rem] object-cover rounded-md"
-              src={trending1.src}
-            />
-            <h1 className="text-[14px] mt-2 max-w-[10rem]">
-              Gunung Andong Magelang
-            </h1>
-
-            <div className="flex flex-col gap-[0.2rem]">
-              <p className="text-[10px] flex items-center gap-1">
-                <TbMapExclamation />
-                Medium Level
-              </p>
-              <p className="text-[10px] flex items-center gap-1">
-                <FiMapPin />
-                Magelang, Jawa Tengah
-              </p>
-              <p className="text-[10px] flex gap-1">
-                <FaRoute />
-                14km
-              </p>
-            </div>
-            <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-              <h2 className="text-white text-[12px]">Rp65.000</h2>
-            </div>
-          </div>
-
-          <div className="min-w-[10rem] max-[368px]:max-w-[8rem] max-[368px]:min-w-[7rem] max-[303px]:max-w-full max-[303px]:min-w-[14rem]">
-            <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] min-[401px]:left-[7rem] min-[432px]:left-[8rem] max-[368px]:left-[5rem] flex w-[3.5rem] items-center gap-1">
-              <FaStar className="text-[#F09024]" />
-              4.8
-            </span>
-            <img
-              className="h-[7rem] w-[12rem] max-[431px]:w-[11rem] max-[400px]:w-[10rem] object-cover rounded-md"
-              src={trending1.src}
-            />
-            <h1 className="text-[14px] mt-2 max-w-[10rem]">
-              Gunung Andong Magelang
-            </h1>
-
-            <div className="flex flex-col gap-[0.2rem]">
-              <p className="text-[10px] flex items-center gap-1">
-                <TbMapExclamation />
-                Medium Level
-              </p>
-              <p className="text-[10px] flex items-center gap-1">
-                <FiMapPin />
-                Magelang, Jawa Tengah
-              </p>
-              <p className="text-[10px] flex gap-1">
-                <FaRoute />
-                14km
-              </p>
-            </div>
-            <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-              <h2 className="text-white text-[12px]">Rp65.000</h2>
-            </div>
-          </div>
-
-          <div className="min-w-[10rem] max-[368px]:max-w-[8rem] max-[368px]:min-w-[7rem] max-[303px]:max-w-full max-[303px]:min-w-[14rem]">
-            <span className="bg-white rounded-full p-1 px-3 text-[10px] relative top-8 left-[6rem] min-[401px]:left-[7rem] min-[432px]:left-[8rem] max-[368px]:left-[5rem] flex w-[3.5rem] items-center gap-1">
-              <FaStar className="text-[#F09024]" />
-              4.8
-            </span>
-            <img
-              className="h-[7rem] w-[12rem] max-[431px]:w-[11rem] max-[400px]:w-[10rem] object-cover rounded-md"
-              src={trending1.src}
-            />
-            <h1 className="text-[14px] mt-2 max-w-[10rem]">
-              Gunung Andong Magelang
-            </h1>
-
-            <div className="flex flex-col gap-[0.2rem]">
-              <p className="text-[10px] flex items-center gap-1">
-                <TbMapExclamation />
-                Medium Level
-              </p>
-              <p className="text-[10px] flex items-center gap-1">
-                <FiMapPin />
-                Magelang, Jawa Tengah
-              </p>
-              <p className="text-[10px] flex gap-1">
-                <FaRoute />
-                14km
-              </p>
-            </div>
-            <div className="p-[0.3rem] mt-3 rounded-full bg-[#274753] w-[6rem] text-center">
-              <h2 className="text-white text-[12px]">Rp65.000</h2>
-            </div>
-          </div>
+          
         </section>
       </div>
     </main>

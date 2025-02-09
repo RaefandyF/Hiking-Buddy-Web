@@ -17,10 +17,10 @@ export default function Trending() {
   const [dataTrendingTicket, setDataTrendingTicket] = useState([]);
   const [loadingTrending, setLoadingTrending] = useState(true);
   const goBack = () => {
-    if (document.referrer) {
-      router.back();
+    if (window.history.length > 1) {
+      window.history.back();
     } else {
-      router.push("/"); // Redirects to home if there's no previous page
+      router.push("/"); // Fallback ke halaman utama jika tidak ada riwayat
     }
   };
 
@@ -30,7 +30,7 @@ export default function Trending() {
       try {
         // Lakukan GET request ke API
         const response = await axios.get(
-          "https://hikingbuddyapp.gleamora.id/api/v2/tickets/get-trending-ticket",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/tickets/get-trending-ticket`,
           {
             headers: {
               accept: "application/json", // Header API

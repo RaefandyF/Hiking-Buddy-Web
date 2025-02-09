@@ -19,5 +19,11 @@ export default function ProfilePage() {
     return <ProfileMobile />; // Jika ukuran layar mobile, render komponen LoginMobile
   }
 
-  return <div>Profile Page Website</div>;
+  return (
+    <div className="flex justify-center">
+      <div className="max-w-[440px] w-full">
+        <ProfileMobile />
+      </div>
+    </div>
+  );
 }

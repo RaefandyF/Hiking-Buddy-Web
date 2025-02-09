@@ -41,11 +41,13 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <HeaderComponent />
-      <HeaderNavigation />
-      {/* <BodyNavigation /> */}
-      <Footer />
-    </div>
+    <HomeMobile />
+
+    // <div>
+    //   <HeaderComponent />
+    //   <HeaderNavigation />
+    //   {/* <BodyNavigation /> */}
+    //   <Footer />
+    // </div>
   );
 }

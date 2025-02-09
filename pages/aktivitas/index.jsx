@@ -19,5 +19,11 @@ export default function AktivitasPage() {
     return <AktivitasMobile />; // Jika ukuran layar mobile, render komponen LoginMobile
   }
 
-  return <div>AktivitasPage</div>;
+  return (
+    <div className="flex justify-center">
+      <div className="max-w-[440px] w-full">
+        <AktivitasMobile />
+      </div>
+    </div>
+  );
 }

@@ -21,7 +21,7 @@ export default function LoginMobile() {
     setLoginLoading(true);
     try {
       const response = await axios.post(
-        "https://hikingbuddyapp.gleamora.id/api/v2/users/login",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v2/users/login`,
         {
           email,
           password,
@@ -125,10 +125,10 @@ export default function LoginMobile() {
           </button>
         )}
 
-        <button className="mt-7 w-[100%] p-4 rounded-xl border border-black/10 text-lg flex gap-5 items-center justify-center">
+        {/* <button className="mt-7 w-[100%] p-4 rounded-xl border border-black/10 text-lg flex gap-5 items-center justify-center">
           <Image alt="google" src={googleIcon} className="w-[1.5rem]" /> Sign In
           With Google
-        </button>
+        </button> */}
 
         <div className="flex justify-center mt-5">
           <p className="text-black/50">
